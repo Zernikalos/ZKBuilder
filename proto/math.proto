@@ -1,0 +1,30 @@
+syntax = "proto2";
+
+package Zko;
+
+message ZkTransform {
+  required ZkVector3 location = 1;
+  required ZkQuaternion rotation = 2;
+  required ZkVector3 scale = 3;
+}
+
+message ZkVector3 {
+  required float x = 1;
+  required float y = 2;
+  required float z = 3;
+}
+
+message ZkVector4 {
+  required float x = 1;
+  required float y = 2;
+  required float z = 3;
+  required float w = 4;
+}
+
+message ZkQuaternion {
+  required float w = 1;
+
+  required float x = 2;
+  required float y = 3;
+  required float z = 4;
+}

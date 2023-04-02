@@ -1,0 +1,39 @@
+syntax = "proto2";
+
+package Zko;
+
+message ZkShaderProgram {
+  required ZkShader vertexShader = 1;
+  required ZkShader fragmentShader = 2;
+
+  map<string, ZkShaderAttribute> attributes = 3;
+  map<string, ZkShaderUniform> uniforms = 4;
+}
+
+message ZkShader {
+  required string type = 1;
+  required string source = 2;
+}
+
+message ZkShaderAttribute {
+  required uint32 index = 1;
+  required string attributeName = 2;
+}
+
+message ZkShaderUniform {
+  required string uniformName = 1;
+  required uint32 count = 2;
+  required ZkUniformType type = 3;
+}
+
+enum ZkUniformType {
+  SCALAR = 0;
+
+  VEC2 = 1;
+  VEC3 = 2;
+  VEC4 = 3;
+
+  MAT2 = 4;
+  MAT3 = 5;
+  MAT4 = 6;
+}

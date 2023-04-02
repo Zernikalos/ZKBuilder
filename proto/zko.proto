@@ -1,0 +1,39 @@
+syntax = "proto2";
+
+package Zko;
+
+import "./math.proto";
+import "./model.proto";
+
+message ProtoZkObject {
+  required string type = 1;
+
+  optional ZkScene scene = 2;
+  optional ZkGroup group = 3;
+  optional ZkModel model = 4;
+
+  repeated ProtoZkObject children = 100;
+}
+
+message ZkGroup {
+  required string id = 1;
+  required string name = 2;
+
+  required ZkTransform transform = 3;
+}
+
+message ZkColor {
+  required float r = 1;
+  required float g = 2;
+  required float b = 3;
+  required float a = 4;
+}
+
+message ZkScene {
+  required string id = 1;
+  required string name = 2;
+
+  required ZkTransform transform = 3;
+
+  required ZkColor clearColor = 4;
+}
