@@ -26,6 +26,7 @@ export const Zko = $root.Zko = (() => {
          * @property {Zko.ZkScene|null} [scene] ProtoZkObject scene
          * @property {Zko.ZkGroup|null} [group] ProtoZkObject group
          * @property {Zko.ZkModel|null} [model] ProtoZkObject model
+         * @property {Zko.ZkCamera|null} [camera] ProtoZkObject camera
          * @property {Array.<Zko.ProtoZkObject>|null} [children] ProtoZkObject children
          */
 
@@ -78,6 +79,14 @@ export const Zko = $root.Zko = (() => {
         ProtoZkObject.prototype.model = null;
 
         /**
+         * ProtoZkObject camera.
+         * @member {Zko.ZkCamera|null|undefined} camera
+         * @memberof Zko.ProtoZkObject
+         * @instance
+         */
+        ProtoZkObject.prototype.camera = null;
+
+        /**
          * ProtoZkObject children.
          * @member {Array.<Zko.ProtoZkObject>} children
          * @memberof Zko.ProtoZkObject
@@ -116,6 +125,8 @@ export const Zko = $root.Zko = (() => {
                 $root.Zko.ZkGroup.encode(message.group, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             if (message.model != null && Object.hasOwnProperty.call(message, "model"))
                 $root.Zko.ZkModel.encode(message.model, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            if (message.camera != null && Object.hasOwnProperty.call(message, "camera"))
+                $root.Zko.ZkCamera.encode(message.camera, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             if (message.children != null && message.children.length)
                 for (let i = 0; i < message.children.length; ++i)
                     $root.Zko.ProtoZkObject.encode(message.children[i], writer.uint32(/* id 100, wireType 2 =*/802).fork()).ldelim();
@@ -154,6 +165,10 @@ export const Zko = $root.Zko = (() => {
                     }
                 case 4: {
                         message.model = $root.Zko.ZkModel.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 5: {
+                        message.camera = $root.Zko.ZkCamera.decode(reader, reader.uint32());
                         break;
                     }
                 case 100: {
@@ -200,6 +215,11 @@ export const Zko = $root.Zko = (() => {
                 if (error)
                     return "model." + error;
             }
+            if (message.camera != null && message.hasOwnProperty("camera")) {
+                let error = $root.Zko.ZkCamera.verify(message.camera);
+                if (error)
+                    return "camera." + error;
+            }
             if (message.children != null && message.hasOwnProperty("children")) {
                 if (!Array.isArray(message.children))
                     return "children: array expected";
@@ -241,6 +261,11 @@ export const Zko = $root.Zko = (() => {
                     throw TypeError(".Zko.ProtoZkObject.model: object expected");
                 message.model = $root.Zko.ZkModel.fromObject(object.model);
             }
+            if (object.camera != null) {
+                if (typeof object.camera !== "object")
+                    throw TypeError(".Zko.ProtoZkObject.camera: object expected");
+                message.camera = $root.Zko.ZkCamera.fromObject(object.camera);
+            }
             if (object.children) {
                 if (!Array.isArray(object.children))
                     throw TypeError(".Zko.ProtoZkObject.children: array expected");
@@ -274,6 +299,7 @@ export const Zko = $root.Zko = (() => {
                 object.scene = null;
                 object.group = null;
                 object.model = null;
+                object.camera = null;
             }
             if (message.type != null && message.hasOwnProperty("type"))
                 object.type = message.type;
@@ -283,6 +309,8 @@ export const Zko = $root.Zko = (() => {
                 object.group = $root.Zko.ZkGroup.toObject(message.group, options);
             if (message.model != null && message.hasOwnProperty("model"))
                 object.model = $root.Zko.ZkModel.toObject(message.model, options);
+            if (message.camera != null && message.hasOwnProperty("camera"))
+                object.camera = $root.Zko.ZkCamera.toObject(message.camera, options);
             if (message.children && message.children.length) {
                 object.children = [];
                 for (let j = 0; j < message.children.length; ++j)
@@ -4549,6 +4577,506 @@ export const Zko = $root.Zko = (() => {
         values[valuesById[5] = "MAT3"] = 5;
         values[valuesById[6] = "MAT4"] = 6;
         return values;
+    })();
+
+    Zko.ZkCamera = (function() {
+
+        /**
+         * Properties of a ZkCamera.
+         * @memberof Zko
+         * @interface IZkCamera
+         * @property {string} id ZkCamera id
+         * @property {string} name ZkCamera name
+         * @property {Zko.ZkTransform} transform ZkCamera transform
+         * @property {Zko.ZkLens} lens ZkCamera lens
+         */
+
+        /**
+         * Constructs a new ZkCamera.
+         * @memberof Zko
+         * @classdesc Represents a ZkCamera.
+         * @implements IZkCamera
+         * @constructor
+         * @param {Zko.IZkCamera=} [properties] Properties to set
+         */
+        function ZkCamera(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ZkCamera id.
+         * @member {string} id
+         * @memberof Zko.ZkCamera
+         * @instance
+         */
+        ZkCamera.prototype.id = "";
+
+        /**
+         * ZkCamera name.
+         * @member {string} name
+         * @memberof Zko.ZkCamera
+         * @instance
+         */
+        ZkCamera.prototype.name = "";
+
+        /**
+         * ZkCamera transform.
+         * @member {Zko.ZkTransform} transform
+         * @memberof Zko.ZkCamera
+         * @instance
+         */
+        ZkCamera.prototype.transform = null;
+
+        /**
+         * ZkCamera lens.
+         * @member {Zko.ZkLens} lens
+         * @memberof Zko.ZkCamera
+         * @instance
+         */
+        ZkCamera.prototype.lens = null;
+
+        /**
+         * Creates a new ZkCamera instance using the specified properties.
+         * @function create
+         * @memberof Zko.ZkCamera
+         * @static
+         * @param {Zko.IZkCamera=} [properties] Properties to set
+         * @returns {Zko.ZkCamera} ZkCamera instance
+         */
+        ZkCamera.create = function create(properties) {
+            return new ZkCamera(properties);
+        };
+
+        /**
+         * Encodes the specified ZkCamera message. Does not implicitly {@link Zko.ZkCamera.verify|verify} messages.
+         * @function encode
+         * @memberof Zko.ZkCamera
+         * @static
+         * @param {Zko.ZkCamera} message ZkCamera message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ZkCamera.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+            $root.Zko.ZkTransform.encode(message.transform, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            $root.Zko.ZkLens.encode(message.lens, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Decodes a ZkCamera message from the specified reader or buffer.
+         * @function decode
+         * @memberof Zko.ZkCamera
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Zko.ZkCamera} ZkCamera
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ZkCamera.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkCamera();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.id = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.name = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.transform = $root.Zko.ZkTransform.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 4: {
+                        message.lens = $root.Zko.ZkLens.decode(reader, reader.uint32());
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("id"))
+                throw $util.ProtocolError("missing required 'id'", { instance: message });
+            if (!message.hasOwnProperty("name"))
+                throw $util.ProtocolError("missing required 'name'", { instance: message });
+            if (!message.hasOwnProperty("transform"))
+                throw $util.ProtocolError("missing required 'transform'", { instance: message });
+            if (!message.hasOwnProperty("lens"))
+                throw $util.ProtocolError("missing required 'lens'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Verifies a ZkCamera message.
+         * @function verify
+         * @memberof Zko.ZkCamera
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ZkCamera.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isString(message.id))
+                return "id: string expected";
+            if (!$util.isString(message.name))
+                return "name: string expected";
+            {
+                let error = $root.Zko.ZkTransform.verify(message.transform);
+                if (error)
+                    return "transform." + error;
+            }
+            {
+                let error = $root.Zko.ZkLens.verify(message.lens);
+                if (error)
+                    return "lens." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a ZkCamera message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Zko.ZkCamera
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Zko.ZkCamera} ZkCamera
+         */
+        ZkCamera.fromObject = function fromObject(object) {
+            if (object instanceof $root.Zko.ZkCamera)
+                return object;
+            let message = new $root.Zko.ZkCamera();
+            if (object.id != null)
+                message.id = String(object.id);
+            if (object.name != null)
+                message.name = String(object.name);
+            if (object.transform != null) {
+                if (typeof object.transform !== "object")
+                    throw TypeError(".Zko.ZkCamera.transform: object expected");
+                message.transform = $root.Zko.ZkTransform.fromObject(object.transform);
+            }
+            if (object.lens != null) {
+                if (typeof object.lens !== "object")
+                    throw TypeError(".Zko.ZkCamera.lens: object expected");
+                message.lens = $root.Zko.ZkLens.fromObject(object.lens);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ZkCamera message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Zko.ZkCamera
+         * @static
+         * @param {Zko.ZkCamera} message ZkCamera
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ZkCamera.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.id = "";
+                object.name = "";
+                object.transform = null;
+                object.lens = null;
+            }
+            if (message.id != null && message.hasOwnProperty("id"))
+                object.id = message.id;
+            if (message.name != null && message.hasOwnProperty("name"))
+                object.name = message.name;
+            if (message.transform != null && message.hasOwnProperty("transform"))
+                object.transform = $root.Zko.ZkTransform.toObject(message.transform, options);
+            if (message.lens != null && message.hasOwnProperty("lens"))
+                object.lens = $root.Zko.ZkLens.toObject(message.lens, options);
+            return object;
+        };
+
+        /**
+         * Converts this ZkCamera to JSON.
+         * @function toJSON
+         * @memberof Zko.ZkCamera
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ZkCamera.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ZkCamera
+         * @function getTypeUrl
+         * @memberof Zko.ZkCamera
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ZkCamera.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/Zko.ZkCamera";
+        };
+
+        return ZkCamera;
+    })();
+
+    Zko.ZkLens = (function() {
+
+        /**
+         * Properties of a ZkLens.
+         * @memberof Zko
+         * @interface IZkLens
+         * @property {number} near ZkLens near
+         * @property {number} far ZkLens far
+         * @property {number|null} [aspectRatio] ZkLens aspectRatio
+         * @property {number|null} [fov] ZkLens fov
+         */
+
+        /**
+         * Constructs a new ZkLens.
+         * @memberof Zko
+         * @classdesc Represents a ZkLens.
+         * @implements IZkLens
+         * @constructor
+         * @param {Zko.IZkLens=} [properties] Properties to set
+         */
+        function ZkLens(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ZkLens near.
+         * @member {number} near
+         * @memberof Zko.ZkLens
+         * @instance
+         */
+        ZkLens.prototype.near = 0;
+
+        /**
+         * ZkLens far.
+         * @member {number} far
+         * @memberof Zko.ZkLens
+         * @instance
+         */
+        ZkLens.prototype.far = 0;
+
+        /**
+         * ZkLens aspectRatio.
+         * @member {number} aspectRatio
+         * @memberof Zko.ZkLens
+         * @instance
+         */
+        ZkLens.prototype.aspectRatio = 0;
+
+        /**
+         * ZkLens fov.
+         * @member {number} fov
+         * @memberof Zko.ZkLens
+         * @instance
+         */
+        ZkLens.prototype.fov = 0;
+
+        /**
+         * Creates a new ZkLens instance using the specified properties.
+         * @function create
+         * @memberof Zko.ZkLens
+         * @static
+         * @param {Zko.IZkLens=} [properties] Properties to set
+         * @returns {Zko.ZkLens} ZkLens instance
+         */
+        ZkLens.create = function create(properties) {
+            return new ZkLens(properties);
+        };
+
+        /**
+         * Encodes the specified ZkLens message. Does not implicitly {@link Zko.ZkLens.verify|verify} messages.
+         * @function encode
+         * @memberof Zko.ZkLens
+         * @static
+         * @param {Zko.ZkLens} message ZkLens message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ZkLens.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 5 =*/13).float(message.near);
+            writer.uint32(/* id 2, wireType 5 =*/21).float(message.far);
+            if (message.aspectRatio != null && Object.hasOwnProperty.call(message, "aspectRatio"))
+                writer.uint32(/* id 3, wireType 5 =*/29).float(message.aspectRatio);
+            if (message.fov != null && Object.hasOwnProperty.call(message, "fov"))
+                writer.uint32(/* id 4, wireType 5 =*/37).float(message.fov);
+            return writer;
+        };
+
+        /**
+         * Decodes a ZkLens message from the specified reader or buffer.
+         * @function decode
+         * @memberof Zko.ZkLens
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Zko.ZkLens} ZkLens
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ZkLens.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkLens();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.near = reader.float();
+                        break;
+                    }
+                case 2: {
+                        message.far = reader.float();
+                        break;
+                    }
+                case 3: {
+                        message.aspectRatio = reader.float();
+                        break;
+                    }
+                case 4: {
+                        message.fov = reader.float();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("near"))
+                throw $util.ProtocolError("missing required 'near'", { instance: message });
+            if (!message.hasOwnProperty("far"))
+                throw $util.ProtocolError("missing required 'far'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Verifies a ZkLens message.
+         * @function verify
+         * @memberof Zko.ZkLens
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ZkLens.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (typeof message.near !== "number")
+                return "near: number expected";
+            if (typeof message.far !== "number")
+                return "far: number expected";
+            if (message.aspectRatio != null && message.hasOwnProperty("aspectRatio"))
+                if (typeof message.aspectRatio !== "number")
+                    return "aspectRatio: number expected";
+            if (message.fov != null && message.hasOwnProperty("fov"))
+                if (typeof message.fov !== "number")
+                    return "fov: number expected";
+            return null;
+        };
+
+        /**
+         * Creates a ZkLens message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Zko.ZkLens
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Zko.ZkLens} ZkLens
+         */
+        ZkLens.fromObject = function fromObject(object) {
+            if (object instanceof $root.Zko.ZkLens)
+                return object;
+            let message = new $root.Zko.ZkLens();
+            if (object.near != null)
+                message.near = Number(object.near);
+            if (object.far != null)
+                message.far = Number(object.far);
+            if (object.aspectRatio != null)
+                message.aspectRatio = Number(object.aspectRatio);
+            if (object.fov != null)
+                message.fov = Number(object.fov);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ZkLens message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Zko.ZkLens
+         * @static
+         * @param {Zko.ZkLens} message ZkLens
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ZkLens.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.near = 0;
+                object.far = 0;
+                object.aspectRatio = 0;
+                object.fov = 0;
+            }
+            if (message.near != null && message.hasOwnProperty("near"))
+                object.near = options.json && !isFinite(message.near) ? String(message.near) : message.near;
+            if (message.far != null && message.hasOwnProperty("far"))
+                object.far = options.json && !isFinite(message.far) ? String(message.far) : message.far;
+            if (message.aspectRatio != null && message.hasOwnProperty("aspectRatio"))
+                object.aspectRatio = options.json && !isFinite(message.aspectRatio) ? String(message.aspectRatio) : message.aspectRatio;
+            if (message.fov != null && message.hasOwnProperty("fov"))
+                object.fov = options.json && !isFinite(message.fov) ? String(message.fov) : message.fov;
+            return object;
+        };
+
+        /**
+         * Converts this ZkLens to JSON.
+         * @function toJSON
+         * @memberof Zko.ZkLens
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ZkLens.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ZkLens
+         * @function getTypeUrl
+         * @memberof Zko.ZkLens
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ZkLens.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/Zko.ZkLens";
+        };
+
+        return ZkLens;
     })();
 
     return Zko;

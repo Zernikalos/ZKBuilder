@@ -1,8 +1,12 @@
 import {ZObject, ZObjectType} from "../zernikalos/ZObject"
 import {Zko} from "../proto"
+import _ from "lodash"
 
 function writeTree(obj: ZObject): Zko.ProtoZkObject {
     const auxNode: Zko.ProtoZkObject = convertToProto(obj)
+    if (_.isNil(auxNode)) {
+        throw new Error(`Unrecognized conversion for object ${obj.name} with type ${obj.type}`)
+    }
 
     auxNode.children = obj.children.map(child => writeTree(child))
 
@@ -30,6 +34,12 @@ function convertToProto(obj: ZObject) {
             auxNode = new Zko.ProtoZkObject({
                 type: "Model",
                 model: Zko.ZkModel.fromObject(obj)
+            })
+            break
+        case ZObjectType.CAMERA:
+            auxNode = new Zko.ProtoZkObject({
+                type: "Camera",
+                camera: Zko.ZkCamera.fromObject(obj)
             })
             break
     }

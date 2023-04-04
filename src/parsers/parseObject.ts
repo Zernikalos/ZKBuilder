@@ -3,9 +3,10 @@ import {ZObject} from "../zernikalos/ZObject"
 import {parseGroup} from "./parseGroup"
 import {parseModel} from "./parseModel"
 import {isNil} from "lodash"
-import {Group, Mesh, Object3D, Scene} from "three";
+import {Camera, Group, Mesh, Object3D, Scene} from "three";
 import {parseTransform} from "./parseTransform";
 import {parseScene} from "./parseScene";
+import {parseCamera} from "./parseCamera";
 
 export function parseObject(threeObj: Object3D): ZObject | undefined {
     let zObject: ZObject
@@ -17,6 +18,10 @@ export function parseObject(threeObj: Object3D): ZObject | undefined {
         case "Mesh":
         case "SkinnedMesh":
             zObject = parseModel(threeObj as Mesh)
+            break
+        case "PerspectiveCamera":
+        case "OrthographicCamera":
+            zObject = parseCamera(threeObj as Camera)
             break
         case "Scene":
             zObject = parseScene(threeObj as Scene)

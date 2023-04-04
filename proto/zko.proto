@@ -4,6 +4,7 @@ package Zko;
 
 import "./math.proto";
 import "./model.proto";
+import "./camera.proto";
 
 message ProtoZkObject {
   required string type = 1;
@@ -11,6 +12,7 @@ message ProtoZkObject {
   optional ZkScene scene = 2;
   optional ZkGroup group = 3;
   optional ZkModel model = 4;
+  optional ZkCamera camera = 5;
 
   repeated ProtoZkObject children = 100;
 }

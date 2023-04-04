@@ -7,5 +7,14 @@ export async function gltfLoader(filePath: string): Promise<ZkoParseableObject> 
     const loader = new GLTFLoader()
 
     const threeObj = await loader.loadAsync(filePath)
+
+    // const parser = threeObj.parser
+    // const json = parser.json
+    // if (json.images.length > 0) {
+    //     for (const img of json.images) {
+    //         const bufferView = await parser.getDependency('bufferView', img.bufferView)
+    //     }
+    // }
+
     return new ZkoParseableObject(threeObj.scene)
 }

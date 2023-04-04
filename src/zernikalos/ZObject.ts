@@ -6,7 +6,8 @@ export enum ZObjectType {
     OBJECT = "Object",
     SCENE = "Scene",
     MODEL = "Model",
-    GROUP = "Group"
+    GROUP = "Group",
+    CAMERA = "Camera",
 }
 
 export class ZObject {

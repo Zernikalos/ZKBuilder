@@ -1,4 +1,4 @@
-import {ZObject} from "../zernikalos/ZObject"
+import {ZObject, ZObjectType} from "../zernikalos/ZObject"
 import {ZModel} from "../zernikalos/ZModel"
 import {isNil} from "lodash"
 import {postModel} from "./postModel"
@@ -6,11 +6,13 @@ import {postModel} from "./postModel"
 export function postProcess(obj: ZObject) {
     let postObj: ZObject
     switch (obj.type) {
-        case "Object":
-        case "Group":
+        case ZObjectType.SCENE:
+        case ZObjectType.OBJECT:
+        case ZObjectType.GROUP:
+        case ZObjectType.CAMERA:
             postObj = obj
             break
-        case "Model":
+        case ZObjectType.MODEL:
             postObj = postModel(obj as ZModel)
             break
     }

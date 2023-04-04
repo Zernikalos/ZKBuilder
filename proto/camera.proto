@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+package Zko;
+
+message ZkCamera {
+  required string id = 1;
+  required string name = 2;
+
+  required ZkTransform transform = 3;
+
+  required ZkLens lens = 4;
+}
+
+message ZkLens {
+  required float near = 1;
+  required float far = 2;
+
+  optional float aspectRatio = 3;
+  optional float fov = 4;
+}
