@@ -16,26 +16,26 @@
     "generate": "pbjs --target static-module --wrap es6 --es6 --force-message --no-delimited --out protobuild/index.js proto/zko.proto && pbts --no-comments --out protobuild/index.d.ts protobuild/index.js"
   },
   "dependencies": {
-    "@babel/runtime": "7.21.0",
-    "three": "0.150.1",
+    "@babel/runtime": "7.22.3",
+    "three": "0.152.2",
     "lodash": "4.17.21",
     "is-obj": "3.0.0",
     "is-regexp": "3.1.0",
     "get-own-enumerable-property-symbols": "3.0.2",
-    "protobufjs": "7.2.2",
+    "protobufjs": "7.2.3",
     "object-hash": "3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.21.0",
-    "@babel/preset-typescript": "7.21.0",
-    "@babel/plugin-transform-runtime": "7.21.0",
+    "@babel/core": "7.22.1",
+    "@babel/preset-typescript": "7.21.5",
+    "@babel/plugin-transform-runtime": "7.22.4",
     "@babel/plugin-proposal-export-default-from": "7.18.10",
-    "webpack": "5.75.0",
-    "webpack-merge": "5.8.0",
+    "webpack": "5.84.1",
+    "webpack-merge": "5.9.0",
     "webpack-bundle-analyzer": "4.8.0",
     "babel-loader": "9.1.2",
-    "@types/lodash": "4.14.191",
-    "@types/three": "0.149.0",
+    "@types/lodash": "4.14.195",
+    "@types/three": "0.152.1",
     "@types/object-hash": "3.0.2",
     "protobufjs-cli": "1.1.1"
   }
