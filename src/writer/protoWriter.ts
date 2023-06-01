@@ -2,15 +2,23 @@ import {ZObject, ZObjectType} from "../zernikalos/ZObject"
 import {Zko} from "../proto"
 import _ from "lodash"
 
-function writeTree(obj: ZObject): Zko.ProtoZkObject {
-    const auxNode: Zko.ProtoZkObject = convertToProto(obj)
+async function writeTree(obj: ZObject): Promise<Zko.ProtoZkObject> {
+    const auxNode: Zko.ProtoZkObject = await asyncConvertToProto(obj)
     if (_.isNil(auxNode)) {
         throw new Error(`Unrecognized conversion for object ${obj.name} with type ${obj.type}`)
     }
 
-    auxNode.children = obj.children.map(child => writeTree(child))
+    auxNode.children = await Promise.all(obj.children.map(async child => await writeTree(child)))
 
     return auxNode
+}
+
+function asyncConvertToProto(obj: ZObject): Promise<Zko.ProtoZkObject> {
+    return new Promise(resolve => {
+        setTimeout(() =>{
+            resolve(convertToProto(obj))
+        })
+    })
 }
 
 function convertToProto(obj: ZObject) {
