@@ -1,5 +1,4 @@
 import * as $protobuf from "protobufjs";
-import Long = require("long");
 export namespace Zko {
 
     interface IProtoZkObject {
@@ -77,7 +76,7 @@ export namespace Zko {
         id: string;
         name: string;
         transform: Zko.ZkTransform;
-        clearColor: Zko.ZkColor;
+        clearColor?: (Zko.ZkColor|null);
     }
 
     class ZkScene implements IZkScene {
@@ -85,7 +84,7 @@ export namespace Zko {
         public id: string;
         public name: string;
         public transform: Zko.ZkTransform;
-        public clearColor: Zko.ZkColor;
+        public clearColor?: (Zko.ZkColor|null);
         public static create(properties?: Zko.IZkScene): Zko.ZkScene;
         public static encode(message: Zko.ZkScene, writer?: $protobuf.Writer): $protobuf.Writer;
         public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkScene;
@@ -230,8 +229,20 @@ export namespace Zko {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
+    enum DataType {
+        BYTE = 0,
+        UBYTE = 1,
+        SHORT = 2,
+        USHORT = 3,
+        INT = 4,
+        UINT = 5,
+        FLOAT = 6,
+        DOUBLE = 7
+    }
+
     interface IZkAttributeKey {
         index: number;
+        dataType: Zko.DataType;
         size: number;
         count: number;
         normalized: boolean;
@@ -242,6 +253,7 @@ export namespace Zko {
     class ZkAttributeKey implements IZkAttributeKey {
         constructor(properties?: Zko.IZkAttributeKey);
         public index: number;
+        public dataType: Zko.DataType;
         public size: number;
         public count: number;
         public normalized: boolean;

@@ -828,7 +828,7 @@ export const Zko = $root.Zko = (() => {
          * @property {string} id ZkScene id
          * @property {string} name ZkScene name
          * @property {Zko.ZkTransform} transform ZkScene transform
-         * @property {Zko.ZkColor} clearColor ZkScene clearColor
+         * @property {Zko.ZkColor|null} [clearColor] ZkScene clearColor
          */
 
         /**
@@ -872,7 +872,7 @@ export const Zko = $root.Zko = (() => {
 
         /**
          * ZkScene clearColor.
-         * @member {Zko.ZkColor} clearColor
+         * @member {Zko.ZkColor|null|undefined} clearColor
          * @memberof Zko.ZkScene
          * @instance
          */
@@ -905,7 +905,8 @@ export const Zko = $root.Zko = (() => {
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
             $root.Zko.ZkTransform.encode(message.transform, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            $root.Zko.ZkColor.encode(message.clearColor, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            if (message.clearColor != null && Object.hasOwnProperty.call(message, "clearColor"))
+                $root.Zko.ZkColor.encode(message.clearColor, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
             return writer;
         };
 
@@ -954,8 +955,6 @@ export const Zko = $root.Zko = (() => {
                 throw $util.ProtocolError("missing required 'name'", { instance: message });
             if (!message.hasOwnProperty("transform"))
                 throw $util.ProtocolError("missing required 'transform'", { instance: message });
-            if (!message.hasOwnProperty("clearColor"))
-                throw $util.ProtocolError("missing required 'clearColor'", { instance: message });
             return message;
         };
 
@@ -979,7 +978,7 @@ export const Zko = $root.Zko = (() => {
                 if (error)
                     return "transform." + error;
             }
-            {
+            if (message.clearColor != null && message.hasOwnProperty("clearColor")) {
                 let error = $root.Zko.ZkColor.verify(message.clearColor);
                 if (error)
                     return "clearColor." + error;
@@ -2619,6 +2618,32 @@ export const Zko = $root.Zko = (() => {
         return ZkMesh;
     })();
 
+    /**
+     * DataType enum.
+     * @name Zko.DataType
+     * @enum {number}
+     * @property {number} BYTE=0 BYTE value
+     * @property {number} UBYTE=1 UBYTE value
+     * @property {number} SHORT=2 SHORT value
+     * @property {number} USHORT=3 USHORT value
+     * @property {number} INT=4 INT value
+     * @property {number} UINT=5 UINT value
+     * @property {number} FLOAT=6 FLOAT value
+     * @property {number} DOUBLE=7 DOUBLE value
+     */
+    Zko.DataType = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "BYTE"] = 0;
+        values[valuesById[1] = "UBYTE"] = 1;
+        values[valuesById[2] = "SHORT"] = 2;
+        values[valuesById[3] = "USHORT"] = 3;
+        values[valuesById[4] = "INT"] = 4;
+        values[valuesById[5] = "UINT"] = 5;
+        values[valuesById[6] = "FLOAT"] = 6;
+        values[valuesById[7] = "DOUBLE"] = 7;
+        return values;
+    })();
+
     Zko.ZkAttributeKey = (function() {
 
         /**
@@ -2626,6 +2651,7 @@ export const Zko = $root.Zko = (() => {
          * @memberof Zko
          * @interface IZkAttributeKey
          * @property {number} index ZkAttributeKey index
+         * @property {Zko.DataType} dataType ZkAttributeKey dataType
          * @property {number} size ZkAttributeKey size
          * @property {number} count ZkAttributeKey count
          * @property {boolean} normalized ZkAttributeKey normalized
@@ -2655,6 +2681,14 @@ export const Zko = $root.Zko = (() => {
          * @instance
          */
         ZkAttributeKey.prototype.index = 0;
+
+        /**
+         * ZkAttributeKey dataType.
+         * @member {Zko.DataType} dataType
+         * @memberof Zko.ZkAttributeKey
+         * @instance
+         */
+        ZkAttributeKey.prototype.dataType = 0;
 
         /**
          * ZkAttributeKey size.
@@ -2721,11 +2755,12 @@ export const Zko = $root.Zko = (() => {
             if (!writer)
                 writer = $Writer.create();
             writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.index);
-            writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.size);
-            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.count);
-            writer.uint32(/* id 4, wireType 0 =*/32).bool(message.normalized);
-            writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.offset);
-            writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.stride);
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.dataType);
+            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.size);
+            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.count);
+            writer.uint32(/* id 5, wireType 0 =*/40).bool(message.normalized);
+            writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.offset);
+            writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.stride);
             return writer;
         };
 
@@ -2752,22 +2787,26 @@ export const Zko = $root.Zko = (() => {
                         break;
                     }
                 case 2: {
-                        message.size = reader.uint32();
+                        message.dataType = reader.int32();
                         break;
                     }
                 case 3: {
-                        message.count = reader.uint32();
+                        message.size = reader.uint32();
                         break;
                     }
                 case 4: {
-                        message.normalized = reader.bool();
+                        message.count = reader.uint32();
                         break;
                     }
                 case 5: {
-                        message.offset = reader.uint32();
+                        message.normalized = reader.bool();
                         break;
                     }
                 case 6: {
+                        message.offset = reader.uint32();
+                        break;
+                    }
+                case 7: {
                         message.stride = reader.uint32();
                         break;
                     }
@@ -2778,6 +2817,8 @@ export const Zko = $root.Zko = (() => {
             }
             if (!message.hasOwnProperty("index"))
                 throw $util.ProtocolError("missing required 'index'", { instance: message });
+            if (!message.hasOwnProperty("dataType"))
+                throw $util.ProtocolError("missing required 'dataType'", { instance: message });
             if (!message.hasOwnProperty("size"))
                 throw $util.ProtocolError("missing required 'size'", { instance: message });
             if (!message.hasOwnProperty("count"))
@@ -2804,6 +2845,19 @@ export const Zko = $root.Zko = (() => {
                 return "object expected";
             if (!$util.isInteger(message.index))
                 return "index: integer expected";
+            switch (message.dataType) {
+            default:
+                return "dataType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+                break;
+            }
             if (!$util.isInteger(message.size))
                 return "size: integer expected";
             if (!$util.isInteger(message.count))
@@ -2831,6 +2885,46 @@ export const Zko = $root.Zko = (() => {
             let message = new $root.Zko.ZkAttributeKey();
             if (object.index != null)
                 message.index = object.index >>> 0;
+            switch (object.dataType) {
+            default:
+                if (typeof object.dataType === "number") {
+                    message.dataType = object.dataType;
+                    break;
+                }
+                break;
+            case "BYTE":
+            case 0:
+                message.dataType = 0;
+                break;
+            case "UBYTE":
+            case 1:
+                message.dataType = 1;
+                break;
+            case "SHORT":
+            case 2:
+                message.dataType = 2;
+                break;
+            case "USHORT":
+            case 3:
+                message.dataType = 3;
+                break;
+            case "INT":
+            case 4:
+                message.dataType = 4;
+                break;
+            case "UINT":
+            case 5:
+                message.dataType = 5;
+                break;
+            case "FLOAT":
+            case 6:
+                message.dataType = 6;
+                break;
+            case "DOUBLE":
+            case 7:
+                message.dataType = 7;
+                break;
+            }
             if (object.size != null)
                 message.size = object.size >>> 0;
             if (object.count != null)
@@ -2859,6 +2953,7 @@ export const Zko = $root.Zko = (() => {
             let object = {};
             if (options.defaults) {
                 object.index = 0;
+                object.dataType = options.enums === String ? "BYTE" : 0;
                 object.size = 0;
                 object.count = 0;
                 object.normalized = false;
@@ -2867,6 +2962,8 @@ export const Zko = $root.Zko = (() => {
             }
             if (message.index != null && message.hasOwnProperty("index"))
                 object.index = message.index;
+            if (message.dataType != null && message.hasOwnProperty("dataType"))
+                object.dataType = options.enums === String ? $root.Zko.DataType[message.dataType] === undefined ? message.dataType : $root.Zko.DataType[message.dataType] : message.dataType;
             if (message.size != null && message.hasOwnProperty("size"))
                 object.size = message.size;
             if (message.count != null && message.hasOwnProperty("count"))
