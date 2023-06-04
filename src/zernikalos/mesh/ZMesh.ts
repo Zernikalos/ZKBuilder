@@ -3,7 +3,7 @@ import {ZIndexBuffer} from "./ZIndexBuffer";
 import {ZVertexBuffer} from "./ZVertexBuffer";
 
 export class ZMesh {
-    indices: ZIndexBuffer = new ZIndexBuffer()
+    indices: ZIndexBuffer | undefined
 
     private _bufferKeys: Map<string, ZBufferKey> = new Map()
     private _buffers: Map<string, ZVertexBuffer> = new Map()

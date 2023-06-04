@@ -2314,7 +2314,7 @@ export const Zko = $root.Zko = (() => {
          * @memberof Zko
          * @interface IZkMesh
          * @property {Object.<string,Zko.ZBufferKey>|null} [bufferKeys] ZkMesh bufferKeys
-         * @property {Zko.ZkIndexBuffer} indices ZkMesh indices
+         * @property {Zko.ZkIndexBuffer|null} [indices] ZkMesh indices
          * @property {Object.<string,Zko.ZkVertexBuffer>|null} [buffers] ZkMesh buffers
          */
 
@@ -2345,7 +2345,7 @@ export const Zko = $root.Zko = (() => {
 
         /**
          * ZkMesh indices.
-         * @member {Zko.ZkIndexBuffer} indices
+         * @member {Zko.ZkIndexBuffer|null|undefined} indices
          * @memberof Zko.ZkMesh
          * @instance
          */
@@ -2388,7 +2388,8 @@ export const Zko = $root.Zko = (() => {
                     writer.uint32(/* id 1, wireType 2 =*/10).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
                     $root.Zko.ZBufferKey.encode(message.bufferKeys[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
                 }
-            $root.Zko.ZkIndexBuffer.encode(message.indices, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            if (message.indices != null && Object.hasOwnProperty.call(message, "indices"))
+                $root.Zko.ZkIndexBuffer.encode(message.indices, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             if (message.buffers != null && Object.hasOwnProperty.call(message, "buffers"))
                 for (let keys = Object.keys(message.buffers), i = 0; i < keys.length; ++i) {
                     writer.uint32(/* id 3, wireType 2 =*/26).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
@@ -2470,8 +2471,6 @@ export const Zko = $root.Zko = (() => {
                     break;
                 }
             }
-            if (!message.hasOwnProperty("indices"))
-                throw $util.ProtocolError("missing required 'indices'", { instance: message });
             return message;
         };
 
@@ -2496,7 +2495,7 @@ export const Zko = $root.Zko = (() => {
                         return "bufferKeys." + error;
                 }
             }
-            {
+            if (message.indices != null && message.hasOwnProperty("indices")) {
                 let error = $root.Zko.ZkIndexBuffer.verify(message.indices);
                 if (error)
                     return "indices." + error;

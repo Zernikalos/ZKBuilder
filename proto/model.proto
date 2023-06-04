@@ -16,7 +16,7 @@ message ZkModel {
 
 message ZkMesh {
   map<string, ZBufferKey> bufferKeys = 1;
-  required ZkIndexBuffer indices = 2;
+  optional ZkIndexBuffer indices = 2;
   map<string, ZkVertexBuffer> buffers = 3;
 }
 

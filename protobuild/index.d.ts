@@ -210,14 +210,14 @@ export namespace Zko {
 
     interface IZkMesh {
         bufferKeys?: ({ [k: string]: Zko.ZBufferKey }|null);
-        indices: Zko.ZkIndexBuffer;
+        indices?: (Zko.ZkIndexBuffer|null);
         buffers?: ({ [k: string]: Zko.ZkVertexBuffer }|null);
     }
 
     class ZkMesh implements IZkMesh {
         constructor(properties?: Zko.IZkMesh);
         public bufferKeys: { [k: string]: Zko.ZBufferKey };
-        public indices: Zko.ZkIndexBuffer;
+        public indices?: (Zko.ZkIndexBuffer|null);
         public buffers: { [k: string]: Zko.ZkVertexBuffer };
         public static create(properties?: Zko.IZkMesh): Zko.ZkMesh;
         public static encode(message: Zko.ZkMesh, writer?: $protobuf.Writer): $protobuf.Writer;

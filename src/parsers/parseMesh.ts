@@ -1,5 +1,5 @@
 import {BufferAttribute, BufferGeometry, InterleavedBufferAttribute} from "three"
-// import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils"
+import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils"
 import {ZMesh} from "../zernikalos/mesh/ZMesh"
 import {ZVertexBuffer} from "../zernikalos/mesh/ZVertexBuffer";
 import { isNil } from "lodash";
@@ -7,6 +7,7 @@ import { Zko } from "../proto";
 import { ZBufferKey } from "../zernikalos/mesh/ZBufferKey";
 import { ATTRS } from "../constants";
 import _ from "lodash";
+import {ZIndexBuffer} from "../zernikalos/mesh/ZIndexBuffer";
 
 /**
  * Filters only recognized attributes by the parser
@@ -89,14 +90,22 @@ export function parseAttributeKeys(geometry: BufferGeometry): Map<string, ZBuffe
  * Parses a three geometry and converts it into a {ZMesh}
  * @param geometry
  */
-export function parseMesh(geometry: BufferGeometry): ZMesh {
+export function parseMesh(inputGeometry: BufferGeometry): ZMesh {
     // const b = BufferGeometryUtils
     // BufferGeometryUtils.mergeBufferAttributes(geometry.attributes)
 
+    let geometry = inputGeometry
     const mesh = new ZMesh()
+
+    // TODO: Make this optional with a flag
+    // In case no index is reported create it
+    if (_.isNil(geometry.index)) {
+        geometry = BufferGeometryUtils.mergeVertices(geometry)
+    }
 
     mesh.setBufferKeys(parseAttributeKeys(geometry))
 
+    mesh.indices = new ZIndexBuffer()
     // @ts-ignore
     mesh.indices.dataArray = geometry.index?.array.length > 0 ? new Int8Array(geometry.index?.array.buffer) : new Int8Array([])
     mesh.indices.size = geometry.index?.itemSize
