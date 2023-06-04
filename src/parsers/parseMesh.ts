@@ -4,7 +4,7 @@ import {ZMesh} from "../zernikalos/mesh/ZMesh"
 import {ZVertexBuffer} from "../zernikalos/mesh/ZVertexBuffer";
 import { isNil } from "lodash";
 import { Zko } from "../proto";
-import { ZAttributeKey } from "../zernikalos/mesh/ZAttributeKey";
+import { ZBufferKey } from "../zernikalos/mesh/ZBufferKey";
 import { ATTRS } from "../constants";
 import _ from "lodash";
 
@@ -47,11 +47,11 @@ function detectDataType(attr: BufferAttribute | InterleavedBufferAttribute): Zko
  * @param attr
  * @param attrCounter
  */
-function parseAttributeKey(attr: BufferAttribute | InterleavedBufferAttribute, attrCounter: number): ZAttributeKey {
+function parseAttributeKey(attr: BufferAttribute | InterleavedBufferAttribute, attrCounter: number): ZBufferKey {
     if (isNil(attr)) {
         throw new Error("Attributes must be defined when exported")
     }
-    const attribute = new ZAttributeKey(attrCounter)
+    const attribute = new ZBufferKey(attrCounter)
     attribute.dataType = detectDataType(attr)
     attribute.size = attr.itemSize
     attribute.count = attr.count
@@ -65,10 +65,16 @@ function parseAttributeKey(attr: BufferAttribute | InterleavedBufferAttribute, a
  * Given a three geometry they are transformed into a map of name {string} <-> {ZAttributeKey}
  * @param geometry
  */
-export function parseAttributeKeys(geometry: BufferGeometry): Map<string, ZAttributeKey> {
-    const keys: Map<string, ZAttributeKey> = new Map()
-
+export function parseAttributeKeys(geometry: BufferGeometry): Map<string, ZBufferKey> {
+    const keys: Map<string, ZBufferKey> = new Map()
     let attrCounter = 0
+
+    // if (!_.isNil(geometry.index)) {
+    //     const indicesKey = parseAttributeKey(geometry.index, attrCounter)
+    //     keys.set("indices", indicesKey)
+    //     attrCounter++
+    // }
+
     const filteredAttributes = filterAttributes(geometry)
     for (const [key, attr] of filteredAttributes) {
         if (attr instanceof BufferAttribute || attr instanceof InterleavedBufferAttribute) {
@@ -89,11 +95,11 @@ export function parseMesh(geometry: BufferGeometry): ZMesh {
 
     const mesh = new ZMesh()
 
-    mesh.setAttributeKeys(parseAttributeKeys(geometry))
+    mesh.setBufferKeys(parseAttributeKeys(geometry))
 
     // @ts-ignore
     mesh.indices.dataArray = geometry.index?.array.length > 0 ? new Int8Array(geometry.index?.array.buffer) : new Int8Array([])
-    mesh.indices.itemSize = geometry.index?.itemSize
+    mesh.indices.size = geometry.index?.itemSize
     mesh.indices.count = geometry.index?.count
 
     const filteredAttributes = filterAttributes(geometry)
@@ -102,8 +108,6 @@ export function parseMesh(geometry: BufferGeometry): ZMesh {
         const data = new Uint8Array(attr.array.buffer)
         const vertexBuffer = new ZVertexBuffer()
         vertexBuffer.dataArray = data
-        vertexBuffer.itemSize = attr.itemSize
-        vertexBuffer.count = attr.count
         mesh.setVertexBuffer(key, vertexBuffer)
     }
 

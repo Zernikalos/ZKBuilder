@@ -15,9 +15,9 @@ message ZkModel {
 }
 
 message ZkMesh {
-  map<string, ZkAttributeKey> attributeKeys = 1;
+  map<string, ZBufferKey> bufferKeys = 1;
   required ZkIndexBuffer indices = 2;
-  map<string, ZkVertexBuffer> vertices = 3;
+  map<string, ZkVertexBuffer> buffers = 3;
 }
 
 enum DataType {
@@ -31,8 +31,8 @@ enum DataType {
   DOUBLE = 7;
 }
 
-message ZkAttributeKey {
-  required uint32 index = 1;
+message ZBufferKey {
+  required uint32 id = 1;
   required DataType dataType = 2;
   required uint32 size = 3;
   required uint32 count = 4;
@@ -41,27 +41,14 @@ message ZkAttributeKey {
   required uint32 stride = 7;
 }
 
-enum BufferTargetType {
-  ARRAY_BUFFER = 0;
-  ELEMENT_ARRAY_BUFFER = 1;
-}
-
-enum BufferUsageType {
-  STATIC_DRAW = 0;
-}
-
 message ZkIndexBuffer {
-  required BufferTargetType targetBuffer = 1;
-  required BufferUsageType usage = 2;
-  required uint32 itemSize = 3;
+  required bool isIndexBuffer = 1;
+  required uint32 size = 3;
   required uint32 count = 4;
   required bytes dataArray = 5;
 }
 
 message ZkVertexBuffer {
-  required BufferTargetType targetBuffer = 1;
-  required BufferUsageType usage = 2;
-  required uint32 itemSize = 3;
-  required uint32 count = 4;
+  required bool isIndexBuffer = 1;
   required bytes dataArray = 5;
 }

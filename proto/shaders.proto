@@ -16,7 +16,7 @@ message ZkShader {
 }
 
 message ZkShaderAttribute {
-  required uint32 index = 1;
+  required uint32 id = 1;
   required string attributeName = 2;
 }
 

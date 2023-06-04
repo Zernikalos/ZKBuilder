@@ -1,5 +1,5 @@
 import {ZModel} from "../../zernikalos/ZModel";
-import {ZAttributeKey} from "../../zernikalos/mesh/ZAttributeKey";
+import {ZBufferKey} from "../../zernikalos/mesh/ZBufferKey";
 import {BR, buildSource, CLOSE_MAIN, FLOAT_PRECISSION, HEADER, OPEN_MAIN} from "./shadersourcecommon";
 import {ATTR_COLOR} from "../../constants";
 
@@ -9,18 +9,18 @@ export function generateFragmentShaderSource(obj: ZModel) {
         BR,
         FLOAT_PRECISSION,
         BR,
-        ...genInAttributes(obj.mesh.attributeKeysMap),
-        genOutAttributes(obj.mesh.attributeKeysMap),
+        ...genInAttributes(obj.mesh.bufferKeysMap),
+        genOutAttributes(obj.mesh.bufferKeysMap),
         BR,
         OPEN_MAIN,
-        genOutColor(obj.mesh.attributeKeysMap),
+        genOutColor(obj.mesh.bufferKeysMap),
         CLOSE_MAIN
     ]
 
     return buildSource(source)
 }
 
-function genInAttributes(attributes: Map<string, ZAttributeKey>): string[] {
+function genInAttributes(bufferKeys: Map<string, ZBufferKey>): string[] {
     function genAttribute(name: string): string {
         switch (name) {
             case ATTR_COLOR.name:
@@ -28,14 +28,14 @@ function genInAttributes(attributes: Map<string, ZAttributeKey>): string[] {
         }
     }
 
-    return [...attributes.entries()].map(([name, _]) => genAttribute(name))
+    return [...bufferKeys.entries()].map(([name, _]) => genAttribute(name))
 }
 
-function genOutAttributes(_attributes: Map<string, ZAttributeKey>) {
+function genOutAttributes(_bufferKeys: Map<string, ZBufferKey>) {
     return `out vec4 ${ATTR_COLOR.outShader};`
 }
 
-function genOutColor(attributes: Map<string, ZAttributeKey>) {
+function genOutColor(attributes: Map<string, ZBufferKey>) {
     if (attributes.has(ATTR_COLOR.name)) {
         return `${ATTR_COLOR.outShader} = vec4(${ATTR_COLOR.varShader}.xyz, 1);`
     }

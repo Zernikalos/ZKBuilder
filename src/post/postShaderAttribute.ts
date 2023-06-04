@@ -1,10 +1,10 @@
 import {ZShaderAttribute} from "../zernikalos/shader/ZShaderAttribute"
-import {ZAttributeKey} from "../zernikalos/mesh/ZAttributeKey";
+import {ZBufferKey} from "../zernikalos/mesh/ZBufferKey";
 import {ATTRS} from "../constants";
 
-export function postShaderAttribute(name: string, attrKey: ZAttributeKey): ZShaderAttribute {
+export function postShaderAttribute(name: string, bufferKey: ZBufferKey): ZShaderAttribute {
     const shaderAttrib = new ZShaderAttribute()
-    shaderAttrib.index = attrKey.index
+    shaderAttrib.id = bufferKey.id
     shaderAttrib.attributeName = ATTRS.findByName(name).inShader
     return shaderAttrib
 }
