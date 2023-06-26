@@ -1,5 +1,4 @@
 import * as $protobuf from "protobufjs";
-import Long = require("long");
 export namespace Zko {
 
     interface IProtoZkObject {
@@ -77,7 +76,7 @@ export namespace Zko {
         id: string;
         name: string;
         transform: Zko.ZkTransform;
-        clearColor: Zko.ZkColor;
+        clearColor?: (Zko.ZkColor|null);
     }
 
     class ZkScene implements IZkScene {
@@ -85,7 +84,7 @@ export namespace Zko {
         public id: string;
         public name: string;
         public transform: Zko.ZkTransform;
-        public clearColor: Zko.ZkColor;
+        public clearColor?: (Zko.ZkColor|null);
         public static create(properties?: Zko.IZkScene): Zko.ZkScene;
         public static encode(message: Zko.ZkScene, writer?: $protobuf.Writer): $protobuf.Writer;
         public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkScene;
@@ -210,16 +209,16 @@ export namespace Zko {
     }
 
     interface IZkMesh {
-        attributeKeys?: ({ [k: string]: Zko.ZkAttributeKey }|null);
-        indices: Zko.ZkIndexBuffer;
-        vertices?: ({ [k: string]: Zko.ZkVertexBuffer }|null);
+        bufferKeys?: ({ [k: string]: Zko.ZBufferKey }|null);
+        indices?: (Zko.ZkIndexBuffer|null);
+        buffers?: ({ [k: string]: Zko.ZkVertexBuffer }|null);
     }
 
     class ZkMesh implements IZkMesh {
         constructor(properties?: Zko.IZkMesh);
-        public attributeKeys: { [k: string]: Zko.ZkAttributeKey };
-        public indices: Zko.ZkIndexBuffer;
-        public vertices: { [k: string]: Zko.ZkVertexBuffer };
+        public bufferKeys: { [k: string]: Zko.ZBufferKey };
+        public indices?: (Zko.ZkIndexBuffer|null);
+        public buffers: { [k: string]: Zko.ZkVertexBuffer };
         public static create(properties?: Zko.IZkMesh): Zko.ZkMesh;
         public static encode(message: Zko.ZkMesh, writer?: $protobuf.Writer): $protobuf.Writer;
         public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkMesh;
@@ -230,8 +229,20 @@ export namespace Zko {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
-    interface IZkAttributeKey {
-        index: number;
+    enum DataType {
+        BYTE = 0,
+        UBYTE = 1,
+        SHORT = 2,
+        USHORT = 3,
+        INT = 4,
+        UINT = 5,
+        FLOAT = 6,
+        DOUBLE = 7
+    }
+
+    interface IZBufferKey {
+        id: number;
+        dataType: Zko.DataType;
         size: number;
         count: number;
         normalized: boolean;
@@ -239,46 +250,36 @@ export namespace Zko {
         stride: number;
     }
 
-    class ZkAttributeKey implements IZkAttributeKey {
-        constructor(properties?: Zko.IZkAttributeKey);
-        public index: number;
+    class ZBufferKey implements IZBufferKey {
+        constructor(properties?: Zko.IZBufferKey);
+        public id: number;
+        public dataType: Zko.DataType;
         public size: number;
         public count: number;
         public normalized: boolean;
         public offset: number;
         public stride: number;
-        public static create(properties?: Zko.IZkAttributeKey): Zko.ZkAttributeKey;
-        public static encode(message: Zko.ZkAttributeKey, writer?: $protobuf.Writer): $protobuf.Writer;
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkAttributeKey;
+        public static create(properties?: Zko.IZBufferKey): Zko.ZBufferKey;
+        public static encode(message: Zko.ZBufferKey, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZBufferKey;
         public static verify(message: { [k: string]: any }): (string|null);
-        public static fromObject(object: { [k: string]: any }): Zko.ZkAttributeKey;
-        public static toObject(message: Zko.ZkAttributeKey, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public static fromObject(object: { [k: string]: any }): Zko.ZBufferKey;
+        public static toObject(message: Zko.ZBufferKey, options?: $protobuf.IConversionOptions): { [k: string]: any };
         public toJSON(): { [k: string]: any };
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
-    enum BufferTargetType {
-        ARRAY_BUFFER = 0,
-        ELEMENT_ARRAY_BUFFER = 1
-    }
-
-    enum BufferUsageType {
-        STATIC_DRAW = 0
-    }
-
     interface IZkIndexBuffer {
-        targetBuffer: Zko.BufferTargetType;
-        usage: Zko.BufferUsageType;
-        itemSize: number;
+        isIndexBuffer: boolean;
+        size: number;
         count: number;
         dataArray: Uint8Array;
     }
 
     class ZkIndexBuffer implements IZkIndexBuffer {
         constructor(properties?: Zko.IZkIndexBuffer);
-        public targetBuffer: Zko.BufferTargetType;
-        public usage: Zko.BufferUsageType;
-        public itemSize: number;
+        public isIndexBuffer: boolean;
+        public size: number;
         public count: number;
         public dataArray: Uint8Array;
         public static create(properties?: Zko.IZkIndexBuffer): Zko.ZkIndexBuffer;
@@ -292,19 +293,13 @@ export namespace Zko {
     }
 
     interface IZkVertexBuffer {
-        targetBuffer: Zko.BufferTargetType;
-        usage: Zko.BufferUsageType;
-        itemSize: number;
-        count: number;
+        isIndexBuffer: boolean;
         dataArray: Uint8Array;
     }
 
     class ZkVertexBuffer implements IZkVertexBuffer {
         constructor(properties?: Zko.IZkVertexBuffer);
-        public targetBuffer: Zko.BufferTargetType;
-        public usage: Zko.BufferUsageType;
-        public itemSize: number;
-        public count: number;
+        public isIndexBuffer: boolean;
         public dataArray: Uint8Array;
         public static create(properties?: Zko.IZkVertexBuffer): Zko.ZkVertexBuffer;
         public static encode(message: Zko.ZkVertexBuffer, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -359,13 +354,13 @@ export namespace Zko {
     }
 
     interface IZkShaderAttribute {
-        index: number;
+        id: number;
         attributeName: string;
     }
 
     class ZkShaderAttribute implements IZkShaderAttribute {
         constructor(properties?: Zko.IZkShaderAttribute);
-        public index: number;
+        public id: number;
         public attributeName: string;
         public static create(properties?: Zko.IZkShaderAttribute): Zko.ZkShaderAttribute;
         public static encode(message: Zko.ZkShaderAttribute, writer?: $protobuf.Writer): $protobuf.Writer;

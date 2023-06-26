@@ -1,7 +1,7 @@
 const { merge } = require('webpack-merge');
 const {buildBaseConfig} = require('./webpack.base')
 
-const baseConfig = buildBaseConfig({entryName: 'zernikalos-exporter'})
+const baseConfig = buildBaseConfig()
 
 const prodConfig = {
     mode: 'production',

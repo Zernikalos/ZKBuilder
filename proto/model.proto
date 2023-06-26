@@ -15,41 +15,40 @@ message ZkModel {
 }
 
 message ZkMesh {
-  map<string, ZkAttributeKey> attributeKeys = 1;
-  required ZkIndexBuffer indices = 2;
-  map<string, ZkVertexBuffer> vertices = 3;
+  map<string, ZBufferKey> bufferKeys = 1;
+  optional ZkIndexBuffer indices = 2;
+  map<string, ZkVertexBuffer> buffers = 3;
 }
 
-message ZkAttributeKey {
-  required uint32 index = 1;
-  required uint32 size = 2;
-  required uint32 count = 3;
-  required bool normalized = 4;
-  required uint32 offset = 5;
-  required uint32 stride = 6;
+enum DataType {
+  BYTE = 0;
+  UBYTE = 1;
+  SHORT = 2;
+  USHORT = 3;
+  INT = 4;
+  UINT = 5;
+  FLOAT = 6;
+  DOUBLE = 7;
 }
 
-enum BufferTargetType {
-  ARRAY_BUFFER = 0;
-  ELEMENT_ARRAY_BUFFER = 1;
-}
-
-enum BufferUsageType {
-  STATIC_DRAW = 0;
+message ZBufferKey {
+  required uint32 id = 1;
+  required DataType dataType = 2;
+  required uint32 size = 3;
+  required uint32 count = 4;
+  required bool normalized = 5;
+  required uint32 offset = 6;
+  required uint32 stride = 7;
 }
 
 message ZkIndexBuffer {
-  required BufferTargetType targetBuffer = 1;
-  required BufferUsageType usage = 2;
-  required uint32 itemSize = 3;
+  required bool isIndexBuffer = 1;
+  required uint32 size = 3;
   required uint32 count = 4;
   required bytes dataArray = 5;
 }
 
 message ZkVertexBuffer {
-  required BufferTargetType targetBuffer = 1;
-  required BufferUsageType usage = 2;
-  required uint32 itemSize = 3;
-  required uint32 count = 4;
+  required bool isIndexBuffer = 1;
   required bytes dataArray = 5;
 }

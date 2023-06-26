@@ -1,40 +1,40 @@
-import {ZAttributeKey} from "./ZAttributeKey";
+import {ZBufferKey} from "./ZBufferKey";
 import {ZIndexBuffer} from "./ZIndexBuffer";
 import {ZVertexBuffer} from "./ZVertexBuffer";
 
 export class ZMesh {
-    indices: ZIndexBuffer = new ZIndexBuffer()
+    indices: ZIndexBuffer | undefined
 
-    private _attributeKeys: Map<string, ZAttributeKey> = new Map()
-    private _vertices: Map<string, ZVertexBuffer> = new Map()
+    private _bufferKeys: Map<string, ZBufferKey> = new Map()
+    private _buffers: Map<string, ZVertexBuffer> = new Map()
 
-    public get attributeKeys(): {[key: string]: ZAttributeKey} {
-        return Object.fromEntries(this._attributeKeys)
+    public get bufferKeys(): {[key: string]: ZBufferKey} {
+        return Object.fromEntries(this._bufferKeys)
     }
 
-    public get vertices(): {[key: string]: ZVertexBuffer} {
-        return Object.fromEntries(this._vertices)
+    public get buffers(): {[key: string]: ZVertexBuffer} {
+        return Object.fromEntries(this._buffers)
     }
 
-    public get attributeKeysMap() {
-        return this._attributeKeys
+    public get bufferKeysMap() {
+        return this._bufferKeys
     }
 
-    public get verticesMap() {
-        return this._vertices
+    public get buffersMap() {
+        return this._buffers
     }
 
-    public setAttributeKey(key: string, attr: ZAttributeKey) {
-        this._attributeKeys.set(key, attr)
+    public setBufferKey(key: string, attr: ZBufferKey) {
+        this._bufferKeys.set(key, attr)
     }
 
-    public setAttributeKeys(keys: Map<string, ZAttributeKey>) {
+    public setBufferKeys(keys: Map<string, ZBufferKey>) {
         for (const [key, attr] of keys.entries()) {
-            this.setAttributeKey(key, attr)
+            this.setBufferKey(key, attr)
         }
     }
 
     public setVertexBuffer(key: string, buffer: ZVertexBuffer) {
-        this._vertices.set(key, buffer)
+        this._buffers.set(key, buffer)
     }
 }

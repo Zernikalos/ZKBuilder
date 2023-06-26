@@ -1,6 +1,6 @@
 
 export class ZShaderAttribute {
-    index = -1
+    id = -1
     attributeName = ""
 }
 
