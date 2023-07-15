@@ -3,10 +3,10 @@ import {ZObject} from "../zernikalos/ZObject"
 import {parseGroup} from "./parseGroup"
 import {parseModel} from "./parseModel"
 import {isNil} from "lodash"
-import {Camera, Group, Mesh, Object3D, Scene} from "three";
-import {parseTransform} from "./parseTransform";
-import {parseScene} from "./parseScene";
-import {parseCamera} from "./parseCamera";
+import {Camera, Group, Mesh, Object3D, Scene} from "three"
+import {parseTransform} from "./parseTransform"
+import {parseScene} from "./parseScene"
+import {parseCamera} from "./parseCamera"
 
 export function parseObject(threeObj: Object3D): ZObject | undefined {
     let zObject: ZObject
