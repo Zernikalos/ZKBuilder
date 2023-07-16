@@ -2,6 +2,7 @@ syntax = "proto2";
 
 package Zko;
 
+import "./commons.proto";
 import "./math.proto";
 import "./model.proto";
 import "./camera.proto";

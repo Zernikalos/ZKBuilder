@@ -1,5 +1,4 @@
 import * as $protobuf from "protobufjs";
-import Long = require("long");
 export namespace Zko {
 
     interface IProtoZkObject {
@@ -94,6 +93,23 @@ export namespace Zko {
         public static toObject(message: Zko.ZkScene, options?: $protobuf.IConversionOptions): { [k: string]: any };
         public toJSON(): { [k: string]: any };
         public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    enum ZDataType {
+        BYTE = 0,
+        UBYTE = 1,
+        SHORT = 2,
+        USHORT = 3,
+        INT = 4,
+        UINT = 5,
+        FLOAT = 6,
+        DOUBLE = 7,
+        VEC2F = 8,
+        VEC3F = 9,
+        VEC4F = 10,
+        MAT2F = 11,
+        MAT3F = 12,
+        MAT4F = 13
     }
 
     interface IZkTransform {
@@ -230,20 +246,9 @@ export namespace Zko {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
-    enum DataType {
-        BYTE = 0,
-        UBYTE = 1,
-        SHORT = 2,
-        USHORT = 3,
-        INT = 4,
-        UINT = 5,
-        FLOAT = 6,
-        DOUBLE = 7
-    }
-
     interface IZBufferKey {
         id: number;
-        dataType: Zko.DataType;
+        dataType: Zko.ZDataType;
         size: number;
         count: number;
         normalized: boolean;
@@ -254,7 +259,7 @@ export namespace Zko {
     class ZBufferKey implements IZBufferKey {
         constructor(properties?: Zko.IZBufferKey);
         public id: number;
-        public dataType: Zko.DataType;
+        public dataType: Zko.ZDataType;
         public size: number;
         public count: number;
         public normalized: boolean;
@@ -376,14 +381,14 @@ export namespace Zko {
     interface IZkShaderUniform {
         uniformName: string;
         count: number;
-        type: Zko.ZkUniformType;
+        type: Zko.ZDataType;
     }
 
     class ZkShaderUniform implements IZkShaderUniform {
         constructor(properties?: Zko.IZkShaderUniform);
         public uniformName: string;
         public count: number;
-        public type: Zko.ZkUniformType;
+        public type: Zko.ZDataType;
         public static create(properties?: Zko.IZkShaderUniform): Zko.ZkShaderUniform;
         public static encode(message: Zko.ZkShaderUniform, writer?: $protobuf.Writer): $protobuf.Writer;
         public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkShaderUniform;
@@ -392,16 +397,6 @@ export namespace Zko {
         public static toObject(message: Zko.ZkShaderUniform, options?: $protobuf.IConversionOptions): { [k: string]: any };
         public toJSON(): { [k: string]: any };
         public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
-    enum ZkUniformType {
-        SCALAR = 0,
-        VEC2 = 1,
-        VEC3 = 2,
-        VEC4 = 3,
-        MAT2 = 4,
-        MAT3 = 5,
-        MAT4 = 6
     }
 
     interface IZkCamera {

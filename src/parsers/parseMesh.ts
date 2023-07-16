@@ -21,25 +21,25 @@ export function filterAttributes(geometry: BufferGeometry) {
  * Detects the appropiate data type for a buffer attribute
  * @param attr
  */
-function detectDataType(attr: BufferAttribute | InterleavedBufferAttribute): Zko.DataType {
+function detectDataType(attr: BufferAttribute | InterleavedBufferAttribute): Zko.ZDataType {
     const array = attr.array
     if (array instanceof Int16Array) {
-        return Zko.DataType.SHORT
+        return Zko.ZDataType.SHORT
     }
     if (array instanceof Uint16Array) {
-        return Zko.DataType.USHORT
+        return Zko.ZDataType.USHORT
     }
     if (array instanceof Int32Array) {
-        return Zko.DataType.INT
+        return Zko.ZDataType.INT
     }
     if (array instanceof Uint32Array) {
-        return Zko.DataType.UINT
+        return Zko.ZDataType.UINT
     }
     if (array instanceof Float32Array) {
-        return Zko.DataType.FLOAT
+        return Zko.ZDataType.FLOAT
     }
     if (array instanceof Float64Array) {
-        return Zko.DataType.DOUBLE
+        return Zko.ZDataType.DOUBLE
     }
 }
 

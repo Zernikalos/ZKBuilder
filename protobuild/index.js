@@ -1074,6 +1074,44 @@ export const Zko = $root.Zko = (() => {
         return ZkScene;
     })();
 
+    /**
+     * ZDataType enum.
+     * @name Zko.ZDataType
+     * @enum {number}
+     * @property {number} BYTE=0 BYTE value
+     * @property {number} UBYTE=1 UBYTE value
+     * @property {number} SHORT=2 SHORT value
+     * @property {number} USHORT=3 USHORT value
+     * @property {number} INT=4 INT value
+     * @property {number} UINT=5 UINT value
+     * @property {number} FLOAT=6 FLOAT value
+     * @property {number} DOUBLE=7 DOUBLE value
+     * @property {number} VEC2F=8 VEC2F value
+     * @property {number} VEC3F=9 VEC3F value
+     * @property {number} VEC4F=10 VEC4F value
+     * @property {number} MAT2F=11 MAT2F value
+     * @property {number} MAT3F=12 MAT3F value
+     * @property {number} MAT4F=13 MAT4F value
+     */
+    Zko.ZDataType = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "BYTE"] = 0;
+        values[valuesById[1] = "UBYTE"] = 1;
+        values[valuesById[2] = "SHORT"] = 2;
+        values[valuesById[3] = "USHORT"] = 3;
+        values[valuesById[4] = "INT"] = 4;
+        values[valuesById[5] = "UINT"] = 5;
+        values[valuesById[6] = "FLOAT"] = 6;
+        values[valuesById[7] = "DOUBLE"] = 7;
+        values[valuesById[8] = "VEC2F"] = 8;
+        values[valuesById[9] = "VEC3F"] = 9;
+        values[valuesById[10] = "VEC4F"] = 10;
+        values[valuesById[11] = "MAT2F"] = 11;
+        values[valuesById[12] = "MAT3F"] = 12;
+        values[valuesById[13] = "MAT4F"] = 13;
+        return values;
+    })();
+
     Zko.ZkTransform = (function() {
 
         /**
@@ -2617,32 +2655,6 @@ export const Zko = $root.Zko = (() => {
         return ZkMesh;
     })();
 
-    /**
-     * DataType enum.
-     * @name Zko.DataType
-     * @enum {number}
-     * @property {number} BYTE=0 BYTE value
-     * @property {number} UBYTE=1 UBYTE value
-     * @property {number} SHORT=2 SHORT value
-     * @property {number} USHORT=3 USHORT value
-     * @property {number} INT=4 INT value
-     * @property {number} UINT=5 UINT value
-     * @property {number} FLOAT=6 FLOAT value
-     * @property {number} DOUBLE=7 DOUBLE value
-     */
-    Zko.DataType = (function() {
-        const valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "BYTE"] = 0;
-        values[valuesById[1] = "UBYTE"] = 1;
-        values[valuesById[2] = "SHORT"] = 2;
-        values[valuesById[3] = "USHORT"] = 3;
-        values[valuesById[4] = "INT"] = 4;
-        values[valuesById[5] = "UINT"] = 5;
-        values[valuesById[6] = "FLOAT"] = 6;
-        values[valuesById[7] = "DOUBLE"] = 7;
-        return values;
-    })();
-
     Zko.ZBufferKey = (function() {
 
         /**
@@ -2650,7 +2662,7 @@ export const Zko = $root.Zko = (() => {
          * @memberof Zko
          * @interface IZBufferKey
          * @property {number} id ZBufferKey id
-         * @property {Zko.DataType} dataType ZBufferKey dataType
+         * @property {Zko.ZDataType} dataType ZBufferKey dataType
          * @property {number} size ZBufferKey size
          * @property {number} count ZBufferKey count
          * @property {boolean} normalized ZBufferKey normalized
@@ -2683,7 +2695,7 @@ export const Zko = $root.Zko = (() => {
 
         /**
          * ZBufferKey dataType.
-         * @member {Zko.DataType} dataType
+         * @member {Zko.ZDataType} dataType
          * @memberof Zko.ZBufferKey
          * @instance
          */
@@ -2855,6 +2867,12 @@ export const Zko = $root.Zko = (() => {
             case 5:
             case 6:
             case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
                 break;
             }
             if (!$util.isInteger(message.size))
@@ -2923,6 +2941,30 @@ export const Zko = $root.Zko = (() => {
             case 7:
                 message.dataType = 7;
                 break;
+            case "VEC2F":
+            case 8:
+                message.dataType = 8;
+                break;
+            case "VEC3F":
+            case 9:
+                message.dataType = 9;
+                break;
+            case "VEC4F":
+            case 10:
+                message.dataType = 10;
+                break;
+            case "MAT2F":
+            case 11:
+                message.dataType = 11;
+                break;
+            case "MAT3F":
+            case 12:
+                message.dataType = 12;
+                break;
+            case "MAT4F":
+            case 13:
+                message.dataType = 13;
+                break;
             }
             if (object.size != null)
                 message.size = object.size >>> 0;
@@ -2962,7 +3004,7 @@ export const Zko = $root.Zko = (() => {
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
             if (message.dataType != null && message.hasOwnProperty("dataType"))
-                object.dataType = options.enums === String ? $root.Zko.DataType[message.dataType] === undefined ? message.dataType : $root.Zko.DataType[message.dataType] : message.dataType;
+                object.dataType = options.enums === String ? $root.Zko.ZDataType[message.dataType] === undefined ? message.dataType : $root.Zko.ZDataType[message.dataType] : message.dataType;
             if (message.size != null && message.hasOwnProperty("size"))
                 object.size = message.size;
             if (message.count != null && message.hasOwnProperty("count"))
@@ -4210,7 +4252,7 @@ export const Zko = $root.Zko = (() => {
          * @interface IZkShaderUniform
          * @property {string} uniformName ZkShaderUniform uniformName
          * @property {number} count ZkShaderUniform count
-         * @property {Zko.ZkUniformType} type ZkShaderUniform type
+         * @property {Zko.ZDataType} type ZkShaderUniform type
          */
 
         /**
@@ -4246,7 +4288,7 @@ export const Zko = $root.Zko = (() => {
 
         /**
          * ZkShaderUniform type.
-         * @member {Zko.ZkUniformType} type
+         * @member {Zko.ZDataType} type
          * @memberof Zko.ZkShaderUniform
          * @instance
          */
@@ -4351,6 +4393,13 @@ export const Zko = $root.Zko = (() => {
             case 4:
             case 5:
             case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
                 break;
             }
             return null;
@@ -4379,33 +4428,61 @@ export const Zko = $root.Zko = (() => {
                     break;
                 }
                 break;
-            case "SCALAR":
+            case "BYTE":
             case 0:
                 message.type = 0;
                 break;
-            case "VEC2":
+            case "UBYTE":
             case 1:
                 message.type = 1;
                 break;
-            case "VEC3":
+            case "SHORT":
             case 2:
                 message.type = 2;
                 break;
-            case "VEC4":
+            case "USHORT":
             case 3:
                 message.type = 3;
                 break;
-            case "MAT2":
+            case "INT":
             case 4:
                 message.type = 4;
                 break;
-            case "MAT3":
+            case "UINT":
             case 5:
                 message.type = 5;
                 break;
-            case "MAT4":
+            case "FLOAT":
             case 6:
                 message.type = 6;
+                break;
+            case "DOUBLE":
+            case 7:
+                message.type = 7;
+                break;
+            case "VEC2F":
+            case 8:
+                message.type = 8;
+                break;
+            case "VEC3F":
+            case 9:
+                message.type = 9;
+                break;
+            case "VEC4F":
+            case 10:
+                message.type = 10;
+                break;
+            case "MAT2F":
+            case 11:
+                message.type = 11;
+                break;
+            case "MAT3F":
+            case 12:
+                message.type = 12;
+                break;
+            case "MAT4F":
+            case 13:
+                message.type = 13;
                 break;
             }
             return message;
@@ -4427,14 +4504,14 @@ export const Zko = $root.Zko = (() => {
             if (options.defaults) {
                 object.uniformName = "";
                 object.count = 0;
-                object.type = options.enums === String ? "SCALAR" : 0;
+                object.type = options.enums === String ? "BYTE" : 0;
             }
             if (message.uniformName != null && message.hasOwnProperty("uniformName"))
                 object.uniformName = message.uniformName;
             if (message.count != null && message.hasOwnProperty("count"))
                 object.count = message.count;
             if (message.type != null && message.hasOwnProperty("type"))
-                object.type = options.enums === String ? $root.Zko.ZkUniformType[message.type] === undefined ? message.type : $root.Zko.ZkUniformType[message.type] : message.type;
+                object.type = options.enums === String ? $root.Zko.ZDataType[message.type] === undefined ? message.type : $root.Zko.ZDataType[message.type] : message.type;
             return object;
         };
 
@@ -4465,30 +4542,6 @@ export const Zko = $root.Zko = (() => {
         };
 
         return ZkShaderUniform;
-    })();
-
-    /**
-     * ZkUniformType enum.
-     * @name Zko.ZkUniformType
-     * @enum {number}
-     * @property {number} SCALAR=0 SCALAR value
-     * @property {number} VEC2=1 VEC2 value
-     * @property {number} VEC3=2 VEC3 value
-     * @property {number} VEC4=3 VEC4 value
-     * @property {number} MAT2=4 MAT2 value
-     * @property {number} MAT3=5 MAT3 value
-     * @property {number} MAT4=6 MAT4 value
-     */
-    Zko.ZkUniformType = (function() {
-        const valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "SCALAR"] = 0;
-        values[valuesById[1] = "VEC2"] = 1;
-        values[valuesById[2] = "VEC3"] = 2;
-        values[valuesById[3] = "VEC4"] = 3;
-        values[valuesById[4] = "MAT2"] = 4;
-        values[valuesById[5] = "MAT3"] = 5;
-        values[valuesById[6] = "MAT4"] = 6;
-        return values;
     })();
 
     Zko.ZkCamera = (function() {

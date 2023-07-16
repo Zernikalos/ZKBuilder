@@ -1,0 +1,22 @@
+syntax = "proto2";
+
+package Zko;
+
+enum ZDataType {
+  BYTE = 0;
+  UBYTE = 1;
+  SHORT = 2;
+  USHORT = 3;
+  INT = 4;
+  UINT = 5;
+  FLOAT = 6;
+  DOUBLE = 7;
+
+  VEC2F = 8;
+  VEC3F = 9;
+  VEC4F = 10;
+
+  MAT2F = 11;
+  MAT3F = 12;
+  MAT4F = 13;
+}

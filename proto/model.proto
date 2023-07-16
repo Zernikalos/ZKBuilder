@@ -20,20 +20,9 @@ message ZkMesh {
   map<string, ZkVertexBuffer> buffers = 3;
 }
 
-enum DataType {
-  BYTE = 0;
-  UBYTE = 1;
-  SHORT = 2;
-  USHORT = 3;
-  INT = 4;
-  UINT = 5;
-  FLOAT = 6;
-  DOUBLE = 7;
-}
-
 message ZBufferKey {
   required uint32 id = 1;
-  required DataType dataType = 2;
+  required ZDataType dataType = 2;
   required uint32 size = 3;
   required uint32 count = 4;
   required bool normalized = 5;
