@@ -1,18 +1,16 @@
 import {ZBufferKey} from "./ZBufferKey";
-import {ZIndexBuffer} from "./ZIndexBuffer";
-import {ZVertexBuffer} from "./ZVertexBuffer";
+import {ZBuffer} from "./ZBuffer";
 
 export class ZMesh {
-    indices: ZIndexBuffer | undefined
 
     private _bufferKeys: Map<string, ZBufferKey> = new Map()
-    private _buffers: Map<string, ZVertexBuffer> = new Map()
+    private _buffers: Map<string, ZBuffer> = new Map()
 
     public get bufferKeys(): {[key: string]: ZBufferKey} {
         return Object.fromEntries(this._bufferKeys)
     }
 
-    public get buffers(): {[key: string]: ZVertexBuffer} {
+    public get buffers(): {[key: string]: ZBuffer} {
         return Object.fromEntries(this._buffers)
     }
 
@@ -34,7 +32,13 @@ export class ZMesh {
         }
     }
 
-    public setVertexBuffer(key: string, buffer: ZVertexBuffer) {
+    public setBuffers(buffers: Map<string, ZBuffer>) {
+        for (const [key, buff] of buffers.entries()) {
+            this.setBuffer(key, buff)
+        }
+    }
+
+    public setBuffer(key: string, buffer: ZBuffer) {
         this._buffers.set(key, buffer)
     }
 }

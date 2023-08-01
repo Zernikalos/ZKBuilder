@@ -1,5 +1,5 @@
 
 export class ZBuffer {
-    isIndexBuffer: boolean = false
+    id: number
     dataArray: Uint8Array
 }

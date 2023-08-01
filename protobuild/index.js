@@ -2351,9 +2351,8 @@ export const Zko = $root.Zko = (() => {
          * Properties of a ZkMesh.
          * @memberof Zko
          * @interface IZkMesh
-         * @property {Object.<string,Zko.ZBufferKey>|null} [bufferKeys] ZkMesh bufferKeys
-         * @property {Zko.ZkIndexBuffer|null} [indices] ZkMesh indices
-         * @property {Object.<string,Zko.ZkVertexBuffer>|null} [buffers] ZkMesh buffers
+         * @property {Object.<string,Zko.ZkBufferKey>|null} [bufferKeys] ZkMesh bufferKeys
+         * @property {Object.<string,Zko.ZkBuffer>|null} [buffers] ZkMesh buffers
          */
 
         /**
@@ -2375,23 +2374,15 @@ export const Zko = $root.Zko = (() => {
 
         /**
          * ZkMesh bufferKeys.
-         * @member {Object.<string,Zko.ZBufferKey>} bufferKeys
+         * @member {Object.<string,Zko.ZkBufferKey>} bufferKeys
          * @memberof Zko.ZkMesh
          * @instance
          */
         ZkMesh.prototype.bufferKeys = $util.emptyObject;
 
         /**
-         * ZkMesh indices.
-         * @member {Zko.ZkIndexBuffer|null|undefined} indices
-         * @memberof Zko.ZkMesh
-         * @instance
-         */
-        ZkMesh.prototype.indices = null;
-
-        /**
          * ZkMesh buffers.
-         * @member {Object.<string,Zko.ZkVertexBuffer>} buffers
+         * @member {Object.<string,Zko.ZkBuffer>} buffers
          * @memberof Zko.ZkMesh
          * @instance
          */
@@ -2424,14 +2415,12 @@ export const Zko = $root.Zko = (() => {
             if (message.bufferKeys != null && Object.hasOwnProperty.call(message, "bufferKeys"))
                 for (let keys = Object.keys(message.bufferKeys), i = 0; i < keys.length; ++i) {
                     writer.uint32(/* id 1, wireType 2 =*/10).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
-                    $root.Zko.ZBufferKey.encode(message.bufferKeys[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
+                    $root.Zko.ZkBufferKey.encode(message.bufferKeys[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
                 }
-            if (message.indices != null && Object.hasOwnProperty.call(message, "indices"))
-                $root.Zko.ZkIndexBuffer.encode(message.indices, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             if (message.buffers != null && Object.hasOwnProperty.call(message, "buffers"))
                 for (let keys = Object.keys(message.buffers), i = 0; i < keys.length; ++i) {
-                    writer.uint32(/* id 3, wireType 2 =*/26).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
-                    $root.Zko.ZkVertexBuffer.encode(message.buffers[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
+                    writer.uint32(/* id 2, wireType 2 =*/18).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
+                    $root.Zko.ZkBuffer.encode(message.buffers[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
                 }
             return writer;
         };
@@ -2467,7 +2456,7 @@ export const Zko = $root.Zko = (() => {
                                 key = reader.string();
                                 break;
                             case 2:
-                                value = $root.Zko.ZBufferKey.decode(reader, reader.uint32());
+                                value = $root.Zko.ZkBufferKey.decode(reader, reader.uint32());
                                 break;
                             default:
                                 reader.skipType(tag2 & 7);
@@ -2478,10 +2467,6 @@ export const Zko = $root.Zko = (() => {
                         break;
                     }
                 case 2: {
-                        message.indices = $root.Zko.ZkIndexBuffer.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 3: {
                         if (message.buffers === $util.emptyObject)
                             message.buffers = {};
                         let end2 = reader.uint32() + reader.pos;
@@ -2494,7 +2479,7 @@ export const Zko = $root.Zko = (() => {
                                 key = reader.string();
                                 break;
                             case 2:
-                                value = $root.Zko.ZkVertexBuffer.decode(reader, reader.uint32());
+                                value = $root.Zko.ZkBuffer.decode(reader, reader.uint32());
                                 break;
                             default:
                                 reader.skipType(tag2 & 7);
@@ -2528,22 +2513,17 @@ export const Zko = $root.Zko = (() => {
                     return "bufferKeys: object expected";
                 let key = Object.keys(message.bufferKeys);
                 for (let i = 0; i < key.length; ++i) {
-                    let error = $root.Zko.ZBufferKey.verify(message.bufferKeys[key[i]]);
+                    let error = $root.Zko.ZkBufferKey.verify(message.bufferKeys[key[i]]);
                     if (error)
                         return "bufferKeys." + error;
                 }
-            }
-            if (message.indices != null && message.hasOwnProperty("indices")) {
-                let error = $root.Zko.ZkIndexBuffer.verify(message.indices);
-                if (error)
-                    return "indices." + error;
             }
             if (message.buffers != null && message.hasOwnProperty("buffers")) {
                 if (!$util.isObject(message.buffers))
                     return "buffers: object expected";
                 let key = Object.keys(message.buffers);
                 for (let i = 0; i < key.length; ++i) {
-                    let error = $root.Zko.ZkVertexBuffer.verify(message.buffers[key[i]]);
+                    let error = $root.Zko.ZkBuffer.verify(message.buffers[key[i]]);
                     if (error)
                         return "buffers." + error;
                 }
@@ -2570,13 +2550,8 @@ export const Zko = $root.Zko = (() => {
                 for (let keys = Object.keys(object.bufferKeys), i = 0; i < keys.length; ++i) {
                     if (typeof object.bufferKeys[keys[i]] !== "object")
                         throw TypeError(".Zko.ZkMesh.bufferKeys: object expected");
-                    message.bufferKeys[keys[i]] = $root.Zko.ZBufferKey.fromObject(object.bufferKeys[keys[i]]);
+                    message.bufferKeys[keys[i]] = $root.Zko.ZkBufferKey.fromObject(object.bufferKeys[keys[i]]);
                 }
-            }
-            if (object.indices != null) {
-                if (typeof object.indices !== "object")
-                    throw TypeError(".Zko.ZkMesh.indices: object expected");
-                message.indices = $root.Zko.ZkIndexBuffer.fromObject(object.indices);
             }
             if (object.buffers) {
                 if (typeof object.buffers !== "object")
@@ -2585,7 +2560,7 @@ export const Zko = $root.Zko = (() => {
                 for (let keys = Object.keys(object.buffers), i = 0; i < keys.length; ++i) {
                     if (typeof object.buffers[keys[i]] !== "object")
                         throw TypeError(".Zko.ZkMesh.buffers: object expected");
-                    message.buffers[keys[i]] = $root.Zko.ZkVertexBuffer.fromObject(object.buffers[keys[i]]);
+                    message.buffers[keys[i]] = $root.Zko.ZkBuffer.fromObject(object.buffers[keys[i]]);
                 }
             }
             return message;
@@ -2608,20 +2583,16 @@ export const Zko = $root.Zko = (() => {
                 object.bufferKeys = {};
                 object.buffers = {};
             }
-            if (options.defaults)
-                object.indices = null;
             let keys2;
             if (message.bufferKeys && (keys2 = Object.keys(message.bufferKeys)).length) {
                 object.bufferKeys = {};
                 for (let j = 0; j < keys2.length; ++j)
-                    object.bufferKeys[keys2[j]] = $root.Zko.ZBufferKey.toObject(message.bufferKeys[keys2[j]], options);
+                    object.bufferKeys[keys2[j]] = $root.Zko.ZkBufferKey.toObject(message.bufferKeys[keys2[j]], options);
             }
-            if (message.indices != null && message.hasOwnProperty("indices"))
-                object.indices = $root.Zko.ZkIndexBuffer.toObject(message.indices, options);
             if (message.buffers && (keys2 = Object.keys(message.buffers)).length) {
                 object.buffers = {};
                 for (let j = 0; j < keys2.length; ++j)
-                    object.buffers[keys2[j]] = $root.Zko.ZkVertexBuffer.toObject(message.buffers[keys2[j]], options);
+                    object.buffers[keys2[j]] = $root.Zko.ZkBuffer.toObject(message.buffers[keys2[j]], options);
             }
             return object;
         };
@@ -2655,30 +2626,32 @@ export const Zko = $root.Zko = (() => {
         return ZkMesh;
     })();
 
-    Zko.ZBufferKey = (function() {
+    Zko.ZkBufferKey = (function() {
 
         /**
-         * Properties of a ZBufferKey.
+         * Properties of a ZkBufferKey.
          * @memberof Zko
-         * @interface IZBufferKey
-         * @property {number} id ZBufferKey id
-         * @property {Zko.ZDataType} dataType ZBufferKey dataType
-         * @property {number} size ZBufferKey size
-         * @property {number} count ZBufferKey count
-         * @property {boolean} normalized ZBufferKey normalized
-         * @property {number} offset ZBufferKey offset
-         * @property {number} stride ZBufferKey stride
+         * @interface IZkBufferKey
+         * @property {number} id ZkBufferKey id
+         * @property {Zko.ZDataType} dataType ZkBufferKey dataType
+         * @property {number} size ZkBufferKey size
+         * @property {number} count ZkBufferKey count
+         * @property {boolean} normalized ZkBufferKey normalized
+         * @property {number} offset ZkBufferKey offset
+         * @property {number} stride ZkBufferKey stride
+         * @property {boolean} isIndexBuffer ZkBufferKey isIndexBuffer
+         * @property {number} bufferId ZkBufferKey bufferId
          */
 
         /**
-         * Constructs a new ZBufferKey.
+         * Constructs a new ZkBufferKey.
          * @memberof Zko
-         * @classdesc Represents a ZBufferKey.
-         * @implements IZBufferKey
+         * @classdesc Represents a ZkBufferKey.
+         * @implements IZkBufferKey
          * @constructor
-         * @param {Zko.IZBufferKey=} [properties] Properties to set
+         * @param {Zko.IZkBufferKey=} [properties] Properties to set
          */
-        function ZBufferKey(properties) {
+        function ZkBufferKey(properties) {
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -2686,83 +2659,99 @@ export const Zko = $root.Zko = (() => {
         }
 
         /**
-         * ZBufferKey id.
+         * ZkBufferKey id.
          * @member {number} id
-         * @memberof Zko.ZBufferKey
+         * @memberof Zko.ZkBufferKey
          * @instance
          */
-        ZBufferKey.prototype.id = 0;
+        ZkBufferKey.prototype.id = 0;
 
         /**
-         * ZBufferKey dataType.
+         * ZkBufferKey dataType.
          * @member {Zko.ZDataType} dataType
-         * @memberof Zko.ZBufferKey
+         * @memberof Zko.ZkBufferKey
          * @instance
          */
-        ZBufferKey.prototype.dataType = 0;
+        ZkBufferKey.prototype.dataType = 0;
 
         /**
-         * ZBufferKey size.
+         * ZkBufferKey size.
          * @member {number} size
-         * @memberof Zko.ZBufferKey
+         * @memberof Zko.ZkBufferKey
          * @instance
          */
-        ZBufferKey.prototype.size = 0;
+        ZkBufferKey.prototype.size = 0;
 
         /**
-         * ZBufferKey count.
+         * ZkBufferKey count.
          * @member {number} count
-         * @memberof Zko.ZBufferKey
+         * @memberof Zko.ZkBufferKey
          * @instance
          */
-        ZBufferKey.prototype.count = 0;
+        ZkBufferKey.prototype.count = 0;
 
         /**
-         * ZBufferKey normalized.
+         * ZkBufferKey normalized.
          * @member {boolean} normalized
-         * @memberof Zko.ZBufferKey
+         * @memberof Zko.ZkBufferKey
          * @instance
          */
-        ZBufferKey.prototype.normalized = false;
+        ZkBufferKey.prototype.normalized = false;
 
         /**
-         * ZBufferKey offset.
+         * ZkBufferKey offset.
          * @member {number} offset
-         * @memberof Zko.ZBufferKey
+         * @memberof Zko.ZkBufferKey
          * @instance
          */
-        ZBufferKey.prototype.offset = 0;
+        ZkBufferKey.prototype.offset = 0;
 
         /**
-         * ZBufferKey stride.
+         * ZkBufferKey stride.
          * @member {number} stride
-         * @memberof Zko.ZBufferKey
+         * @memberof Zko.ZkBufferKey
          * @instance
          */
-        ZBufferKey.prototype.stride = 0;
+        ZkBufferKey.prototype.stride = 0;
 
         /**
-         * Creates a new ZBufferKey instance using the specified properties.
-         * @function create
-         * @memberof Zko.ZBufferKey
-         * @static
-         * @param {Zko.IZBufferKey=} [properties] Properties to set
-         * @returns {Zko.ZBufferKey} ZBufferKey instance
+         * ZkBufferKey isIndexBuffer.
+         * @member {boolean} isIndexBuffer
+         * @memberof Zko.ZkBufferKey
+         * @instance
          */
-        ZBufferKey.create = function create(properties) {
-            return new ZBufferKey(properties);
+        ZkBufferKey.prototype.isIndexBuffer = false;
+
+        /**
+         * ZkBufferKey bufferId.
+         * @member {number} bufferId
+         * @memberof Zko.ZkBufferKey
+         * @instance
+         */
+        ZkBufferKey.prototype.bufferId = 0;
+
+        /**
+         * Creates a new ZkBufferKey instance using the specified properties.
+         * @function create
+         * @memberof Zko.ZkBufferKey
+         * @static
+         * @param {Zko.IZkBufferKey=} [properties] Properties to set
+         * @returns {Zko.ZkBufferKey} ZkBufferKey instance
+         */
+        ZkBufferKey.create = function create(properties) {
+            return new ZkBufferKey(properties);
         };
 
         /**
-         * Encodes the specified ZBufferKey message. Does not implicitly {@link Zko.ZBufferKey.verify|verify} messages.
+         * Encodes the specified ZkBufferKey message. Does not implicitly {@link Zko.ZkBufferKey.verify|verify} messages.
          * @function encode
-         * @memberof Zko.ZBufferKey
+         * @memberof Zko.ZkBufferKey
          * @static
-         * @param {Zko.ZBufferKey} message ZBufferKey message or plain object to encode
+         * @param {Zko.ZkBufferKey} message ZkBufferKey message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        ZBufferKey.encode = function encode(message, writer) {
+        ZkBufferKey.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
             writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.id);
@@ -2772,24 +2761,26 @@ export const Zko = $root.Zko = (() => {
             writer.uint32(/* id 5, wireType 0 =*/40).bool(message.normalized);
             writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.offset);
             writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.stride);
+            writer.uint32(/* id 8, wireType 0 =*/64).bool(message.isIndexBuffer);
+            writer.uint32(/* id 9, wireType 0 =*/72).uint32(message.bufferId);
             return writer;
         };
 
         /**
-         * Decodes a ZBufferKey message from the specified reader or buffer.
+         * Decodes a ZkBufferKey message from the specified reader or buffer.
          * @function decode
-         * @memberof Zko.ZBufferKey
+         * @memberof Zko.ZkBufferKey
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {Zko.ZBufferKey} ZBufferKey
+         * @returns {Zko.ZkBufferKey} ZkBufferKey
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        ZBufferKey.decode = function decode(reader, length) {
+        ZkBufferKey.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZBufferKey();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkBufferKey();
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
@@ -2821,6 +2812,14 @@ export const Zko = $root.Zko = (() => {
                         message.stride = reader.uint32();
                         break;
                     }
+                case 8: {
+                        message.isIndexBuffer = reader.bool();
+                        break;
+                    }
+                case 9: {
+                        message.bufferId = reader.uint32();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2840,18 +2839,22 @@ export const Zko = $root.Zko = (() => {
                 throw $util.ProtocolError("missing required 'offset'", { instance: message });
             if (!message.hasOwnProperty("stride"))
                 throw $util.ProtocolError("missing required 'stride'", { instance: message });
+            if (!message.hasOwnProperty("isIndexBuffer"))
+                throw $util.ProtocolError("missing required 'isIndexBuffer'", { instance: message });
+            if (!message.hasOwnProperty("bufferId"))
+                throw $util.ProtocolError("missing required 'bufferId'", { instance: message });
             return message;
         };
 
         /**
-         * Verifies a ZBufferKey message.
+         * Verifies a ZkBufferKey message.
          * @function verify
-         * @memberof Zko.ZBufferKey
+         * @memberof Zko.ZkBufferKey
          * @static
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
-        ZBufferKey.verify = function verify(message) {
+        ZkBufferKey.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
             if (!$util.isInteger(message.id))
@@ -2885,21 +2888,25 @@ export const Zko = $root.Zko = (() => {
                 return "offset: integer expected";
             if (!$util.isInteger(message.stride))
                 return "stride: integer expected";
+            if (typeof message.isIndexBuffer !== "boolean")
+                return "isIndexBuffer: boolean expected";
+            if (!$util.isInteger(message.bufferId))
+                return "bufferId: integer expected";
             return null;
         };
 
         /**
-         * Creates a ZBufferKey message from a plain object. Also converts values to their respective internal types.
+         * Creates a ZkBufferKey message from a plain object. Also converts values to their respective internal types.
          * @function fromObject
-         * @memberof Zko.ZBufferKey
+         * @memberof Zko.ZkBufferKey
          * @static
          * @param {Object.<string,*>} object Plain object
-         * @returns {Zko.ZBufferKey} ZBufferKey
+         * @returns {Zko.ZkBufferKey} ZkBufferKey
          */
-        ZBufferKey.fromObject = function fromObject(object) {
-            if (object instanceof $root.Zko.ZBufferKey)
+        ZkBufferKey.fromObject = function fromObject(object) {
+            if (object instanceof $root.Zko.ZkBufferKey)
                 return object;
-            let message = new $root.Zko.ZBufferKey();
+            let message = new $root.Zko.ZkBufferKey();
             if (object.id != null)
                 message.id = object.id >>> 0;
             switch (object.dataType) {
@@ -2976,19 +2983,23 @@ export const Zko = $root.Zko = (() => {
                 message.offset = object.offset >>> 0;
             if (object.stride != null)
                 message.stride = object.stride >>> 0;
+            if (object.isIndexBuffer != null)
+                message.isIndexBuffer = Boolean(object.isIndexBuffer);
+            if (object.bufferId != null)
+                message.bufferId = object.bufferId >>> 0;
             return message;
         };
 
         /**
-         * Creates a plain object from a ZBufferKey message. Also converts values to other types if specified.
+         * Creates a plain object from a ZkBufferKey message. Also converts values to other types if specified.
          * @function toObject
-         * @memberof Zko.ZBufferKey
+         * @memberof Zko.ZkBufferKey
          * @static
-         * @param {Zko.ZBufferKey} message ZBufferKey
+         * @param {Zko.ZkBufferKey} message ZkBufferKey
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        ZBufferKey.toObject = function toObject(message, options) {
+        ZkBufferKey.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
             let object = {};
@@ -3000,6 +3011,8 @@ export const Zko = $root.Zko = (() => {
                 object.normalized = false;
                 object.offset = 0;
                 object.stride = 0;
+                object.isIndexBuffer = false;
+                object.bufferId = 0;
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
@@ -3015,59 +3028,61 @@ export const Zko = $root.Zko = (() => {
                 object.offset = message.offset;
             if (message.stride != null && message.hasOwnProperty("stride"))
                 object.stride = message.stride;
+            if (message.isIndexBuffer != null && message.hasOwnProperty("isIndexBuffer"))
+                object.isIndexBuffer = message.isIndexBuffer;
+            if (message.bufferId != null && message.hasOwnProperty("bufferId"))
+                object.bufferId = message.bufferId;
             return object;
         };
 
         /**
-         * Converts this ZBufferKey to JSON.
+         * Converts this ZkBufferKey to JSON.
          * @function toJSON
-         * @memberof Zko.ZBufferKey
+         * @memberof Zko.ZkBufferKey
          * @instance
          * @returns {Object.<string,*>} JSON object
          */
-        ZBufferKey.prototype.toJSON = function toJSON() {
+        ZkBufferKey.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
         /**
-         * Gets the default type url for ZBufferKey
+         * Gets the default type url for ZkBufferKey
          * @function getTypeUrl
-         * @memberof Zko.ZBufferKey
+         * @memberof Zko.ZkBufferKey
          * @static
          * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns {string} The default type url
          */
-        ZBufferKey.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        ZkBufferKey.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
             if (typeUrlPrefix === undefined) {
                 typeUrlPrefix = "type.googleapis.com";
             }
-            return typeUrlPrefix + "/Zko.ZBufferKey";
+            return typeUrlPrefix + "/Zko.ZkBufferKey";
         };
 
-        return ZBufferKey;
+        return ZkBufferKey;
     })();
 
-    Zko.ZkIndexBuffer = (function() {
+    Zko.ZkBuffer = (function() {
 
         /**
-         * Properties of a ZkIndexBuffer.
+         * Properties of a ZkBuffer.
          * @memberof Zko
-         * @interface IZkIndexBuffer
-         * @property {boolean} isIndexBuffer ZkIndexBuffer isIndexBuffer
-         * @property {number} size ZkIndexBuffer size
-         * @property {number} count ZkIndexBuffer count
-         * @property {Uint8Array} dataArray ZkIndexBuffer dataArray
+         * @interface IZkBuffer
+         * @property {number} id ZkBuffer id
+         * @property {Uint8Array} dataArray ZkBuffer dataArray
          */
 
         /**
-         * Constructs a new ZkIndexBuffer.
+         * Constructs a new ZkBuffer.
          * @memberof Zko
-         * @classdesc Represents a ZkIndexBuffer.
-         * @implements IZkIndexBuffer
+         * @classdesc Represents a ZkBuffer.
+         * @implements IZkBuffer
          * @constructor
-         * @param {Zko.IZkIndexBuffer=} [properties] Properties to set
+         * @param {Zko.IZkBuffer=} [properties] Properties to set
          */
-        function ZkIndexBuffer(properties) {
+        function ZkBuffer(properties) {
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -3075,99 +3090,73 @@ export const Zko = $root.Zko = (() => {
         }
 
         /**
-         * ZkIndexBuffer isIndexBuffer.
-         * @member {boolean} isIndexBuffer
-         * @memberof Zko.ZkIndexBuffer
+         * ZkBuffer id.
+         * @member {number} id
+         * @memberof Zko.ZkBuffer
          * @instance
          */
-        ZkIndexBuffer.prototype.isIndexBuffer = false;
+        ZkBuffer.prototype.id = 0;
 
         /**
-         * ZkIndexBuffer size.
-         * @member {number} size
-         * @memberof Zko.ZkIndexBuffer
-         * @instance
-         */
-        ZkIndexBuffer.prototype.size = 0;
-
-        /**
-         * ZkIndexBuffer count.
-         * @member {number} count
-         * @memberof Zko.ZkIndexBuffer
-         * @instance
-         */
-        ZkIndexBuffer.prototype.count = 0;
-
-        /**
-         * ZkIndexBuffer dataArray.
+         * ZkBuffer dataArray.
          * @member {Uint8Array} dataArray
-         * @memberof Zko.ZkIndexBuffer
+         * @memberof Zko.ZkBuffer
          * @instance
          */
-        ZkIndexBuffer.prototype.dataArray = $util.newBuffer([]);
+        ZkBuffer.prototype.dataArray = $util.newBuffer([]);
 
         /**
-         * Creates a new ZkIndexBuffer instance using the specified properties.
+         * Creates a new ZkBuffer instance using the specified properties.
          * @function create
-         * @memberof Zko.ZkIndexBuffer
+         * @memberof Zko.ZkBuffer
          * @static
-         * @param {Zko.IZkIndexBuffer=} [properties] Properties to set
-         * @returns {Zko.ZkIndexBuffer} ZkIndexBuffer instance
+         * @param {Zko.IZkBuffer=} [properties] Properties to set
+         * @returns {Zko.ZkBuffer} ZkBuffer instance
          */
-        ZkIndexBuffer.create = function create(properties) {
-            return new ZkIndexBuffer(properties);
+        ZkBuffer.create = function create(properties) {
+            return new ZkBuffer(properties);
         };
 
         /**
-         * Encodes the specified ZkIndexBuffer message. Does not implicitly {@link Zko.ZkIndexBuffer.verify|verify} messages.
+         * Encodes the specified ZkBuffer message. Does not implicitly {@link Zko.ZkBuffer.verify|verify} messages.
          * @function encode
-         * @memberof Zko.ZkIndexBuffer
+         * @memberof Zko.ZkBuffer
          * @static
-         * @param {Zko.ZkIndexBuffer} message ZkIndexBuffer message or plain object to encode
+         * @param {Zko.ZkBuffer} message ZkBuffer message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        ZkIndexBuffer.encode = function encode(message, writer) {
+        ZkBuffer.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).bool(message.isIndexBuffer);
-            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.size);
-            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.count);
-            writer.uint32(/* id 5, wireType 2 =*/42).bytes(message.dataArray);
+            writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.id);
+            writer.uint32(/* id 2, wireType 2 =*/18).bytes(message.dataArray);
             return writer;
         };
 
         /**
-         * Decodes a ZkIndexBuffer message from the specified reader or buffer.
+         * Decodes a ZkBuffer message from the specified reader or buffer.
          * @function decode
-         * @memberof Zko.ZkIndexBuffer
+         * @memberof Zko.ZkBuffer
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {Zko.ZkIndexBuffer} ZkIndexBuffer
+         * @returns {Zko.ZkBuffer} ZkBuffer
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        ZkIndexBuffer.decode = function decode(reader, length) {
+        ZkBuffer.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkIndexBuffer();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkBuffer();
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1: {
-                        message.isIndexBuffer = reader.bool();
+                        message.id = reader.uint32();
                         break;
                     }
-                case 3: {
-                        message.size = reader.uint32();
-                        break;
-                    }
-                case 4: {
-                        message.count = reader.uint32();
-                        break;
-                    }
-                case 5: {
+                case 2: {
                         message.dataArray = reader.bytes();
                         break;
                     }
@@ -3176,57 +3165,45 @@ export const Zko = $root.Zko = (() => {
                     break;
                 }
             }
-            if (!message.hasOwnProperty("isIndexBuffer"))
-                throw $util.ProtocolError("missing required 'isIndexBuffer'", { instance: message });
-            if (!message.hasOwnProperty("size"))
-                throw $util.ProtocolError("missing required 'size'", { instance: message });
-            if (!message.hasOwnProperty("count"))
-                throw $util.ProtocolError("missing required 'count'", { instance: message });
+            if (!message.hasOwnProperty("id"))
+                throw $util.ProtocolError("missing required 'id'", { instance: message });
             if (!message.hasOwnProperty("dataArray"))
                 throw $util.ProtocolError("missing required 'dataArray'", { instance: message });
             return message;
         };
 
         /**
-         * Verifies a ZkIndexBuffer message.
+         * Verifies a ZkBuffer message.
          * @function verify
-         * @memberof Zko.ZkIndexBuffer
+         * @memberof Zko.ZkBuffer
          * @static
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
-        ZkIndexBuffer.verify = function verify(message) {
+        ZkBuffer.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (typeof message.isIndexBuffer !== "boolean")
-                return "isIndexBuffer: boolean expected";
-            if (!$util.isInteger(message.size))
-                return "size: integer expected";
-            if (!$util.isInteger(message.count))
-                return "count: integer expected";
+            if (!$util.isInteger(message.id))
+                return "id: integer expected";
             if (!(message.dataArray && typeof message.dataArray.length === "number" || $util.isString(message.dataArray)))
                 return "dataArray: buffer expected";
             return null;
         };
 
         /**
-         * Creates a ZkIndexBuffer message from a plain object. Also converts values to their respective internal types.
+         * Creates a ZkBuffer message from a plain object. Also converts values to their respective internal types.
          * @function fromObject
-         * @memberof Zko.ZkIndexBuffer
+         * @memberof Zko.ZkBuffer
          * @static
          * @param {Object.<string,*>} object Plain object
-         * @returns {Zko.ZkIndexBuffer} ZkIndexBuffer
+         * @returns {Zko.ZkBuffer} ZkBuffer
          */
-        ZkIndexBuffer.fromObject = function fromObject(object) {
-            if (object instanceof $root.Zko.ZkIndexBuffer)
+        ZkBuffer.fromObject = function fromObject(object) {
+            if (object instanceof $root.Zko.ZkBuffer)
                 return object;
-            let message = new $root.Zko.ZkIndexBuffer();
-            if (object.isIndexBuffer != null)
-                message.isIndexBuffer = Boolean(object.isIndexBuffer);
-            if (object.size != null)
-                message.size = object.size >>> 0;
-            if (object.count != null)
-                message.count = object.count >>> 0;
+            let message = new $root.Zko.ZkBuffer();
+            if (object.id != null)
+                message.id = object.id >>> 0;
             if (object.dataArray != null)
                 if (typeof object.dataArray === "string")
                     $util.base64.decode(object.dataArray, message.dataArray = $util.newBuffer($util.base64.length(object.dataArray)), 0);
@@ -3236,22 +3213,20 @@ export const Zko = $root.Zko = (() => {
         };
 
         /**
-         * Creates a plain object from a ZkIndexBuffer message. Also converts values to other types if specified.
+         * Creates a plain object from a ZkBuffer message. Also converts values to other types if specified.
          * @function toObject
-         * @memberof Zko.ZkIndexBuffer
+         * @memberof Zko.ZkBuffer
          * @static
-         * @param {Zko.ZkIndexBuffer} message ZkIndexBuffer
+         * @param {Zko.ZkBuffer} message ZkBuffer
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        ZkIndexBuffer.toObject = function toObject(message, options) {
+        ZkBuffer.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
             let object = {};
             if (options.defaults) {
-                object.isIndexBuffer = false;
-                object.size = 0;
-                object.count = 0;
+                object.id = 0;
                 if (options.bytes === String)
                     object.dataArray = "";
                 else {
@@ -3260,251 +3235,40 @@ export const Zko = $root.Zko = (() => {
                         object.dataArray = $util.newBuffer(object.dataArray);
                 }
             }
-            if (message.isIndexBuffer != null && message.hasOwnProperty("isIndexBuffer"))
-                object.isIndexBuffer = message.isIndexBuffer;
-            if (message.size != null && message.hasOwnProperty("size"))
-                object.size = message.size;
-            if (message.count != null && message.hasOwnProperty("count"))
-                object.count = message.count;
+            if (message.id != null && message.hasOwnProperty("id"))
+                object.id = message.id;
             if (message.dataArray != null && message.hasOwnProperty("dataArray"))
                 object.dataArray = options.bytes === String ? $util.base64.encode(message.dataArray, 0, message.dataArray.length) : options.bytes === Array ? Array.prototype.slice.call(message.dataArray) : message.dataArray;
             return object;
         };
 
         /**
-         * Converts this ZkIndexBuffer to JSON.
+         * Converts this ZkBuffer to JSON.
          * @function toJSON
-         * @memberof Zko.ZkIndexBuffer
+         * @memberof Zko.ZkBuffer
          * @instance
          * @returns {Object.<string,*>} JSON object
          */
-        ZkIndexBuffer.prototype.toJSON = function toJSON() {
+        ZkBuffer.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
         /**
-         * Gets the default type url for ZkIndexBuffer
+         * Gets the default type url for ZkBuffer
          * @function getTypeUrl
-         * @memberof Zko.ZkIndexBuffer
+         * @memberof Zko.ZkBuffer
          * @static
          * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns {string} The default type url
          */
-        ZkIndexBuffer.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        ZkBuffer.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
             if (typeUrlPrefix === undefined) {
                 typeUrlPrefix = "type.googleapis.com";
             }
-            return typeUrlPrefix + "/Zko.ZkIndexBuffer";
+            return typeUrlPrefix + "/Zko.ZkBuffer";
         };
 
-        return ZkIndexBuffer;
-    })();
-
-    Zko.ZkVertexBuffer = (function() {
-
-        /**
-         * Properties of a ZkVertexBuffer.
-         * @memberof Zko
-         * @interface IZkVertexBuffer
-         * @property {boolean} isIndexBuffer ZkVertexBuffer isIndexBuffer
-         * @property {Uint8Array} dataArray ZkVertexBuffer dataArray
-         */
-
-        /**
-         * Constructs a new ZkVertexBuffer.
-         * @memberof Zko
-         * @classdesc Represents a ZkVertexBuffer.
-         * @implements IZkVertexBuffer
-         * @constructor
-         * @param {Zko.IZkVertexBuffer=} [properties] Properties to set
-         */
-        function ZkVertexBuffer(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * ZkVertexBuffer isIndexBuffer.
-         * @member {boolean} isIndexBuffer
-         * @memberof Zko.ZkVertexBuffer
-         * @instance
-         */
-        ZkVertexBuffer.prototype.isIndexBuffer = false;
-
-        /**
-         * ZkVertexBuffer dataArray.
-         * @member {Uint8Array} dataArray
-         * @memberof Zko.ZkVertexBuffer
-         * @instance
-         */
-        ZkVertexBuffer.prototype.dataArray = $util.newBuffer([]);
-
-        /**
-         * Creates a new ZkVertexBuffer instance using the specified properties.
-         * @function create
-         * @memberof Zko.ZkVertexBuffer
-         * @static
-         * @param {Zko.IZkVertexBuffer=} [properties] Properties to set
-         * @returns {Zko.ZkVertexBuffer} ZkVertexBuffer instance
-         */
-        ZkVertexBuffer.create = function create(properties) {
-            return new ZkVertexBuffer(properties);
-        };
-
-        /**
-         * Encodes the specified ZkVertexBuffer message. Does not implicitly {@link Zko.ZkVertexBuffer.verify|verify} messages.
-         * @function encode
-         * @memberof Zko.ZkVertexBuffer
-         * @static
-         * @param {Zko.ZkVertexBuffer} message ZkVertexBuffer message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ZkVertexBuffer.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).bool(message.isIndexBuffer);
-            writer.uint32(/* id 5, wireType 2 =*/42).bytes(message.dataArray);
-            return writer;
-        };
-
-        /**
-         * Decodes a ZkVertexBuffer message from the specified reader or buffer.
-         * @function decode
-         * @memberof Zko.ZkVertexBuffer
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Zko.ZkVertexBuffer} ZkVertexBuffer
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ZkVertexBuffer.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkVertexBuffer();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1: {
-                        message.isIndexBuffer = reader.bool();
-                        break;
-                    }
-                case 5: {
-                        message.dataArray = reader.bytes();
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("isIndexBuffer"))
-                throw $util.ProtocolError("missing required 'isIndexBuffer'", { instance: message });
-            if (!message.hasOwnProperty("dataArray"))
-                throw $util.ProtocolError("missing required 'dataArray'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Verifies a ZkVertexBuffer message.
-         * @function verify
-         * @memberof Zko.ZkVertexBuffer
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ZkVertexBuffer.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (typeof message.isIndexBuffer !== "boolean")
-                return "isIndexBuffer: boolean expected";
-            if (!(message.dataArray && typeof message.dataArray.length === "number" || $util.isString(message.dataArray)))
-                return "dataArray: buffer expected";
-            return null;
-        };
-
-        /**
-         * Creates a ZkVertexBuffer message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Zko.ZkVertexBuffer
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Zko.ZkVertexBuffer} ZkVertexBuffer
-         */
-        ZkVertexBuffer.fromObject = function fromObject(object) {
-            if (object instanceof $root.Zko.ZkVertexBuffer)
-                return object;
-            let message = new $root.Zko.ZkVertexBuffer();
-            if (object.isIndexBuffer != null)
-                message.isIndexBuffer = Boolean(object.isIndexBuffer);
-            if (object.dataArray != null)
-                if (typeof object.dataArray === "string")
-                    $util.base64.decode(object.dataArray, message.dataArray = $util.newBuffer($util.base64.length(object.dataArray)), 0);
-                else if (object.dataArray.length >= 0)
-                    message.dataArray = object.dataArray;
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a ZkVertexBuffer message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Zko.ZkVertexBuffer
-         * @static
-         * @param {Zko.ZkVertexBuffer} message ZkVertexBuffer
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ZkVertexBuffer.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults) {
-                object.isIndexBuffer = false;
-                if (options.bytes === String)
-                    object.dataArray = "";
-                else {
-                    object.dataArray = [];
-                    if (options.bytes !== Array)
-                        object.dataArray = $util.newBuffer(object.dataArray);
-                }
-            }
-            if (message.isIndexBuffer != null && message.hasOwnProperty("isIndexBuffer"))
-                object.isIndexBuffer = message.isIndexBuffer;
-            if (message.dataArray != null && message.hasOwnProperty("dataArray"))
-                object.dataArray = options.bytes === String ? $util.base64.encode(message.dataArray, 0, message.dataArray.length) : options.bytes === Array ? Array.prototype.slice.call(message.dataArray) : message.dataArray;
-            return object;
-        };
-
-        /**
-         * Converts this ZkVertexBuffer to JSON.
-         * @function toJSON
-         * @memberof Zko.ZkVertexBuffer
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ZkVertexBuffer.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for ZkVertexBuffer
-         * @function getTypeUrl
-         * @memberof Zko.ZkVertexBuffer
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        ZkVertexBuffer.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/Zko.ZkVertexBuffer";
-        };
-
-        return ZkVertexBuffer;
+        return ZkBuffer;
     })();
 
     Zko.ZkShaderProgram = (function() {

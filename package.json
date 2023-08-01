@@ -1,7 +1,7 @@
 {
   "name": "@zernikalos/zkbuilder",
   "version": "0.0.1",
-  "license": "MIT",
+  "license": "MPL 2.0",
   "author": "Aaron Negrin",
   "main": "dist/zkbuilder.js",
   "browser": "dist/zkbuilder.js",
