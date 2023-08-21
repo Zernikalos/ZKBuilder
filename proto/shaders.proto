@@ -23,6 +23,6 @@ message ZkShaderAttribute {
 message ZkShaderUniform {
   required string uniformName = 1;
   required uint32 count = 2;
-  required ZDataType type = 3;
+  required ZDataType dataType = 3;
 }
 

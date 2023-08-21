@@ -1,1 +1,5 @@
-export {Zko} from "../protobuild"
+import {Zko} from "../protobuild"
+export {Zko}
+
+export type ProtoZObject = Zko.ProtoZkObject
+

@@ -8,6 +8,8 @@ export class ZBufferKey {
     normalized: boolean = false
     offset: number = 0
     stride: number = 0
+    isIndexBuffer: boolean = false
+    bufferId: number = -1
 
     constructor(attrCounter: number) {
         this.id = attrCounter

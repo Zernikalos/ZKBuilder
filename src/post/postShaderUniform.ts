@@ -4,7 +4,7 @@ import {Zko} from "../proto";
 export function postShaderUniform(uniformName: string) {
     const uniform = new ZShaderUniform()
     uniform.uniformName = uniformName
-    uniform.type = Zko.ZDataType.MAT4F
+    uniform.dataType = Zko.ZDataType.MAT4F
     uniform.count = 1
     return uniform
 }
