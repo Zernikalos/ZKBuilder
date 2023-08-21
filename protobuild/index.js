@@ -4016,7 +4016,7 @@ export const Zko = $root.Zko = (() => {
          * @interface IZkShaderUniform
          * @property {string} uniformName ZkShaderUniform uniformName
          * @property {number} count ZkShaderUniform count
-         * @property {Zko.ZDataType} type ZkShaderUniform type
+         * @property {Zko.ZDataType} dataType ZkShaderUniform dataType
          */
 
         /**
@@ -4051,12 +4051,12 @@ export const Zko = $root.Zko = (() => {
         ZkShaderUniform.prototype.count = 0;
 
         /**
-         * ZkShaderUniform type.
-         * @member {Zko.ZDataType} type
+         * ZkShaderUniform dataType.
+         * @member {Zko.ZDataType} dataType
          * @memberof Zko.ZkShaderUniform
          * @instance
          */
-        ZkShaderUniform.prototype.type = 0;
+        ZkShaderUniform.prototype.dataType = 0;
 
         /**
          * Creates a new ZkShaderUniform instance using the specified properties.
@@ -4084,7 +4084,7 @@ export const Zko = $root.Zko = (() => {
                 writer = $Writer.create();
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.uniformName);
             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.count);
-            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.type);
+            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.dataType);
             return writer;
         };
 
@@ -4115,7 +4115,7 @@ export const Zko = $root.Zko = (() => {
                         break;
                     }
                 case 3: {
-                        message.type = reader.int32();
+                        message.dataType = reader.int32();
                         break;
                     }
                 default:
@@ -4127,8 +4127,8 @@ export const Zko = $root.Zko = (() => {
                 throw $util.ProtocolError("missing required 'uniformName'", { instance: message });
             if (!message.hasOwnProperty("count"))
                 throw $util.ProtocolError("missing required 'count'", { instance: message });
-            if (!message.hasOwnProperty("type"))
-                throw $util.ProtocolError("missing required 'type'", { instance: message });
+            if (!message.hasOwnProperty("dataType"))
+                throw $util.ProtocolError("missing required 'dataType'", { instance: message });
             return message;
         };
 
@@ -4147,9 +4147,9 @@ export const Zko = $root.Zko = (() => {
                 return "uniformName: string expected";
             if (!$util.isInteger(message.count))
                 return "count: integer expected";
-            switch (message.type) {
+            switch (message.dataType) {
             default:
-                return "type: enum value expected";
+                return "dataType: enum value expected";
             case 0:
             case 1:
             case 2:
@@ -4185,68 +4185,68 @@ export const Zko = $root.Zko = (() => {
                 message.uniformName = String(object.uniformName);
             if (object.count != null)
                 message.count = object.count >>> 0;
-            switch (object.type) {
+            switch (object.dataType) {
             default:
-                if (typeof object.type === "number") {
-                    message.type = object.type;
+                if (typeof object.dataType === "number") {
+                    message.dataType = object.dataType;
                     break;
                 }
                 break;
             case "BYTE":
             case 0:
-                message.type = 0;
+                message.dataType = 0;
                 break;
             case "UBYTE":
             case 1:
-                message.type = 1;
+                message.dataType = 1;
                 break;
             case "SHORT":
             case 2:
-                message.type = 2;
+                message.dataType = 2;
                 break;
             case "USHORT":
             case 3:
-                message.type = 3;
+                message.dataType = 3;
                 break;
             case "INT":
             case 4:
-                message.type = 4;
+                message.dataType = 4;
                 break;
             case "UINT":
             case 5:
-                message.type = 5;
+                message.dataType = 5;
                 break;
             case "FLOAT":
             case 6:
-                message.type = 6;
+                message.dataType = 6;
                 break;
             case "DOUBLE":
             case 7:
-                message.type = 7;
+                message.dataType = 7;
                 break;
             case "VEC2F":
             case 8:
-                message.type = 8;
+                message.dataType = 8;
                 break;
             case "VEC3F":
             case 9:
-                message.type = 9;
+                message.dataType = 9;
                 break;
             case "VEC4F":
             case 10:
-                message.type = 10;
+                message.dataType = 10;
                 break;
             case "MAT2F":
             case 11:
-                message.type = 11;
+                message.dataType = 11;
                 break;
             case "MAT3F":
             case 12:
-                message.type = 12;
+                message.dataType = 12;
                 break;
             case "MAT4F":
             case 13:
-                message.type = 13;
+                message.dataType = 13;
                 break;
             }
             return message;
@@ -4268,14 +4268,14 @@ export const Zko = $root.Zko = (() => {
             if (options.defaults) {
                 object.uniformName = "";
                 object.count = 0;
-                object.type = options.enums === String ? "BYTE" : 0;
+                object.dataType = options.enums === String ? "BYTE" : 0;
             }
             if (message.uniformName != null && message.hasOwnProperty("uniformName"))
                 object.uniformName = message.uniformName;
             if (message.count != null && message.hasOwnProperty("count"))
                 object.count = message.count;
-            if (message.type != null && message.hasOwnProperty("type"))
-                object.type = options.enums === String ? $root.Zko.ZDataType[message.type] === undefined ? message.type : $root.Zko.ZDataType[message.type] : message.type;
+            if (message.dataType != null && message.hasOwnProperty("dataType"))
+                object.dataType = options.enums === String ? $root.Zko.ZDataType[message.dataType] === undefined ? message.dataType : $root.Zko.ZDataType[message.dataType] : message.dataType;
             return object;
         };
 

@@ -1,7 +1,7 @@
 import stringifyObject from '../utils/stringifyObject';
 
 import {ZObject} from "../zernikalos/ZObject"
-import {protoTree} from "./protoWriter";
+import {writeTree} from "./baseWriter";
 
 function jsonReplacer(_key: string, value: any) {
     if (value instanceof Map) {
@@ -16,7 +16,7 @@ function jsonReplacer(_key: string, value: any) {
 
 export async function jsonWrite(node: ZObject, {beauty}: {beauty?: boolean}): Promise<string> {
     if (beauty) {
-        return stringifyObject(await protoTree(node))
+        return stringifyObject(await writeTree(node))
     }
     return JSON.stringify(node, jsonReplacer)
 }

@@ -360,14 +360,14 @@ export namespace Zko {
     interface IZkShaderUniform {
         uniformName: string;
         count: number;
-        type: Zko.ZDataType;
+        dataType: Zko.ZDataType;
     }
 
     class ZkShaderUniform implements IZkShaderUniform {
         constructor(properties?: Zko.IZkShaderUniform);
         public uniformName: string;
         public count: number;
-        public type: Zko.ZDataType;
+        public dataType: Zko.ZDataType;
         public static create(properties?: Zko.IZkShaderUniform): Zko.ZkShaderUniform;
         public static encode(message: Zko.ZkShaderUniform, writer?: $protobuf.Writer): $protobuf.Writer;
         public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkShaderUniform;
