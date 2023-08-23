@@ -8,7 +8,7 @@ import {parseTransform} from "./parseTransform"
 import {parseScene} from "./parseScene"
 import {parseCamera} from "./parseCamera"
 
-export function parseObject(threeObj: Object3D): ZObject | undefined {
+export async function parseObject(threeObj: Object3D): Promise<ZObject | undefined> {
     let zObject: ZObject
 
     switch (threeObj.type) {
@@ -17,7 +17,7 @@ export function parseObject(threeObj: Object3D): ZObject | undefined {
             break
         case "Mesh":
         case "SkinnedMesh":
-            zObject = parseModel(threeObj as Mesh)
+            zObject = await parseModel(threeObj as Mesh)
             break
         case "PerspectiveCamera":
         case "OrthographicCamera":
@@ -36,8 +36,11 @@ export function parseObject(threeObj: Object3D): ZObject | undefined {
     zObject.name = threeObj.name
     zObject.transform = parseTransform(threeObj)
 
-    zObject.children = threeObj.children
-        .map((child: Object3D)=> parseObject(child))
-        .filter((child: ZObject) => !isNil(child))
+    const parsedChildren = await Promise.all(
+        threeObj.children
+        .map(async (child: Object3D)=> await parseObject(child))
+    )
+
+    zObject.children = parsedChildren.filter((child: ZObject) => !isNil(child))
     return zObject
 }

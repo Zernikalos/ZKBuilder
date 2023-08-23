@@ -13,7 +13,7 @@ export interface ExportOptions {
 }
 
 export const DEFAULT_EXPORT_OPTIONS: ExportOptions = {
-    format: "json",
+    format: "proto",
     beauty: false,
     stringify: false
 }
@@ -22,10 +22,10 @@ export async function zkExport(zkObj: ZObject, options: ExportOptions = DEFAULT_
     let result
 
     const mergedOptions = merge({}, DEFAULT_EXPORT_OPTIONS, options)
-    const {format, beauty} = mergedOptions
+    const {format} = mergedOptions
     switch (format) {
         case "json":
-            result = await jsonWrite(zkObj, {beauty})
+            result = await jsonWrite(zkObj, mergedOptions)
             break
         case "proto":
             result = await protoWrite(zkObj)

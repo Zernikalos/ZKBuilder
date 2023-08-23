@@ -1,0 +1,9 @@
+
+message ZkMaterial {
+  optional ZkTexture texture = 1;
+}
+
+message ZkTexture {
+  required string id = 1;
+  required bytes dataArray = 2;
+}

@@ -4,6 +4,11 @@ import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader"
 //var helper = new SkeletonHelper( mesh.skeleton.bones[ 0 ] );
 
 export async function gltfLoader(filePath: string): Promise<ZkoParseableObject> {
+
+    // Disables this in order to skip the use of createImageBitmap function
+    const originalCreateImageBitmap = window.createImageBitmap
+    window.createImageBitmap = undefined
+
     const loader = new GLTFLoader()
 
     const threeObj = await loader.loadAsync(filePath)
@@ -16,5 +21,6 @@ export async function gltfLoader(filePath: string): Promise<ZkoParseableObject> 
     //     }
     // }
 
+    window.createImageBitmap = originalCreateImageBitmap
     return new ZkoParseableObject(threeObj.scene)
 }
