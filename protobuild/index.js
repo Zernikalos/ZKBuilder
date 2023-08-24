@@ -1092,6 +1092,7 @@ export const Zko = $root.Zko = (() => {
      * @property {number} MAT2F=11 MAT2F value
      * @property {number} MAT3F=12 MAT3F value
      * @property {number} MAT4F=13 MAT4F value
+     * @property {number} TEXTURE=14 TEXTURE value
      */
     Zko.ZDataType = (function() {
         const valuesById = {}, values = Object.create(valuesById);
@@ -1109,6 +1110,7 @@ export const Zko = $root.Zko = (() => {
         values[valuesById[11] = "MAT2F"] = 11;
         values[valuesById[12] = "MAT3F"] = 12;
         values[valuesById[13] = "MAT4F"] = 13;
+        values[valuesById[14] = "TEXTURE"] = 14;
         return values;
     })();
 
@@ -2904,6 +2906,7 @@ export const Zko = $root.Zko = (() => {
             case 11:
             case 12:
             case 13:
+            case 14:
                 break;
             }
             if (!$util.isInteger(message.size))
@@ -2999,6 +3002,10 @@ export const Zko = $root.Zko = (() => {
             case "MAT4F":
             case 13:
                 message.dataType = 13;
+                break;
+            case "TEXTURE":
+            case 14:
+                message.dataType = 14;
                 break;
             }
             if (object.size != null)
@@ -4192,6 +4199,7 @@ export const Zko = $root.Zko = (() => {
             case 11:
             case 12:
             case 13:
+            case 14:
                 break;
             }
             return null;
@@ -4275,6 +4283,10 @@ export const Zko = $root.Zko = (() => {
             case "MAT4F":
             case 13:
                 message.dataType = 13;
+                break;
+            case "TEXTURE":
+            case 14:
+                message.dataType = 14;
                 break;
             }
             return message;

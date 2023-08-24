@@ -1,43 +1,75 @@
 import {ZModel} from "../../zernikalos/ZModel";
+import {ZShaderUniform} from "../../zernikalos/shader/ZShaderUniform";
 import {ZBufferKey} from "../../zernikalos/mesh/ZBufferKey";
 import {BR, buildSource, CLOSE_MAIN, FLOAT_PRECISSION, HEADER, OPEN_MAIN} from "./shadersourcecommon";
-import {ATTR_COLOR} from "../../constants";
+import {
+    ATTR_COLOR,
+    ATTR_UV,
+    UNIF_TEXTURE
+} from "../../constants";
+import _ from "lodash";
 
 export function generateFragmentShaderSource(obj: ZModel) {
+
+    const HAS_TEXTURES = !_.isNil(obj.material?.texture)
+    const uniforms: Map<string, ZShaderUniform> = obj.shaderProgram.uniformsMap
+    const bufferKeys: Map<string, ZBufferKey> = obj.mesh.bufferKeysMap
+
     const source: string[] = [
         HEADER,
         BR,
         FLOAT_PRECISSION,
         BR,
-        ...genInAttributes(obj.mesh.bufferKeysMap),
-        genOutAttributes(obj.mesh.bufferKeysMap),
+        ...genUniforms(),
+        ...genInAttributes(),
+        genOutAttributes(),
         BR,
         OPEN_MAIN,
-        genOutColor(obj.mesh.bufferKeysMap),
+        genOutColor(),
         CLOSE_MAIN
     ]
 
     return buildSource(source)
-}
 
-function genInAttributes(bufferKeys: Map<string, ZBufferKey>): string[] {
-    function genAttribute(name: string): string {
-        switch (name) {
-            case ATTR_COLOR.name:
-                return `smooth in vec3 ${ATTR_COLOR.varShader};`
+    function genUniforms(): string[] {
+        function genUniform(name: string): string {
+            switch (name) {
+                case UNIF_TEXTURE.name:
+                    return `uniform sampler2D ${UNIF_TEXTURE.uniformName};`
+            }
         }
+        return [...uniforms.keys()].map(genUniform)
     }
 
-    return [...bufferKeys.entries()].map(([name, _]) => genAttribute(name))
-}
+    function genInAttributes(): string[] {
+        function genAttribute(name: string): string {
+            switch (name) {
+                case ATTR_COLOR.name:
+                    return `smooth in vec3 ${ATTR_COLOR.variantName};`
+                case ATTR_UV.name:
+                    if (!HAS_TEXTURES) {
+                        return ""
+                    }
+                    return `smooth in vec2 ${ATTR_UV.variantName};`
+            }
+        }
 
-function genOutAttributes(_bufferKeys: Map<string, ZBufferKey>) {
-    return `out vec4 ${ATTR_COLOR.outShader};`
-}
-
-function genOutColor(attributes: Map<string, ZBufferKey>) {
-    if (attributes.has(ATTR_COLOR.name)) {
-        return `${ATTR_COLOR.outShader} = vec4(${ATTR_COLOR.varShader}.xyz, 1);`
+        return [...bufferKeys.entries()].map(([name, _]) => genAttribute(name))
     }
-    return `${ATTR_COLOR.outShader} = vec4(0.5, 0.5, 0.5, 1.0);`
+
+    function genOutAttributes() {
+        return `out vec4 ${ATTR_COLOR.fragName};`
+    }
+
+    function genOutColor() {
+        if (bufferKeys.has(ATTR_UV.name) && HAS_TEXTURES) {
+            return `${ATTR_COLOR.fragName} = texture(${UNIF_TEXTURE.uniformName}, ${ATTR_UV.variantName});`
+        }
+        if (bufferKeys.has(ATTR_COLOR.name)) {
+            return `${ATTR_COLOR.fragName} = vec4(${ATTR_COLOR.variantName}.xyz, 1);`
+        }
+        return `${ATTR_COLOR.fragName} = vec4(0.5, 0.5, 0.5, 1.0);`
+    }
 }
+
+

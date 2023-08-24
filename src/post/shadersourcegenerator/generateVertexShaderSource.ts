@@ -10,69 +10,96 @@ import {
 import {ATTR_COLOR, ATTR_NORMAL, ATTR_POSITION, ATTR_UV, UNIF_MODELVIEWPROJECTION} from "../../constants";
 import {UNIF_MODELVIEW, UNIF_PROJECTION} from "../../constants";
 import {ZShaderUniform} from "../../zernikalos/shader/ZShaderUniform";
+import _ from "lodash";
 
 export function generateVertexShaderSource(obj: ZModel): string {
+
+    const HAS_TEXTURES = !_.isNil(obj.material?.texture)
+    const uniforms: Map<string, ZShaderUniform> = obj.shaderProgram.uniformsMap
+    const bufferKeys: Map<string, ZBufferKey> = obj.mesh.bufferKeysMap
+
     const source: (string | string[])[] = [
         HEADER,
         BR,
-        ...genUniforms(obj.shaderProgram.uniformsMap),
-        ...genInAttributes(obj.mesh.bufferKeysMap),
-        genOutAttributes(obj.mesh.bufferKeysMap),
+        ...genUniforms(),
+        ...genInAttributes(),
+        genOutAttributes(),
         BR,
         OPEN_MAIN,
         [T, genOutPosition()],
-        [T, genOutColor(obj.mesh.bufferKeysMap)],
+        [T, genOutColor()],
+        [T, genOutUv()],
         CLOSE_MAIN
     ]
 
     return buildSource(source)
-}
 
-function genInAttributes(attributes: Map<string, ZBufferKey>): string[] {
-    function genAttribute(name: string): string {
-        switch (name) {
-            case ATTR_POSITION.name:
-                return `in vec3 ${ATTR_POSITION.inShader};`
-            case ATTR_NORMAL.name:
-                return `in vec3 ${ATTR_NORMAL.inShader};`
-            case ATTR_UV.name:
-                return `in vec2 ${ATTR_UV.inShader};`
-            case ATTR_COLOR.name:
-                return `in vec3 ${ATTR_COLOR.inShader};`
+    function genInAttributes(): string[] {
+        function genAttribute(name: string): string {
+            switch (name) {
+                case ATTR_POSITION.name:
+                    return `in vec3 ${ATTR_POSITION.attribName};`
+                case ATTR_NORMAL.name:
+                    return `in vec3 ${ATTR_NORMAL.attribName};`
+                case ATTR_UV.name:
+                    if (!HAS_TEXTURES) {
+                        return ""
+                    }
+                    return `in vec2 ${ATTR_UV.attribName};`
+                case ATTR_COLOR.name:
+                    return `in vec3 ${ATTR_COLOR.attribName};`
+            }
         }
+
+        return [...bufferKeys.entries()].map(([name, _]) => genAttribute(name))
     }
 
-    return [...attributes.entries()].map(([name, _]) => genAttribute(name))
-}
-
-function genOutAttributes(attributes: Map<string, ZBufferKey>) {
-    if (!attributes.has("color")) {
-        return ""
-    }
-    return `out vec3 ${ATTR_COLOR.varShader};`
-}
-
-function genOutColor(attributes: Map<string, ZBufferKey>) {
-    if (!attributes.has(ATTR_COLOR.name)) {
-        return ""
-    }
-    return `${ATTR_COLOR.varShader} = ${ATTR_COLOR.inShader};`
-}
-
-function genUniforms(uniforms: Map<string, ZShaderUniform>): string[] {
-    function genUniform(name: string): string {
-        switch (name) {
-            case UNIF_MODELVIEW.name:
-                return `uniform mat4 ${UNIF_MODELVIEW.shader};`
-            case UNIF_PROJECTION.name:
-                return `uniform mat4 ${UNIF_PROJECTION.shader};`
-            case UNIF_MODELVIEWPROJECTION.name:
-                return `uniform mat4 ${UNIF_MODELVIEWPROJECTION.shader};`
+    function genOutAttributes() {
+        function genAttribute(name: string): string {
+            switch (name) {
+                case ATTR_COLOR.name:
+                    return `out vec3 ${ATTR_COLOR.variantName};`
+                case ATTR_UV.name:
+                    if (!HAS_TEXTURES){
+                        return ""
+                    }
+                    return `out vec2 ${ATTR_UV.variantName};`
+            }
         }
+        return [...bufferKeys.entries()].map(([name, _]) => genAttribute(name))
     }
-    return [...uniforms.keys()].map(genUniform)
+
+    function genOutColor() {
+        if (!bufferKeys.has(ATTR_COLOR.name)) {
+            return ""
+        }
+        return `${ATTR_COLOR.variantName} = ${ATTR_COLOR.attribName};`
+    }
+
+    function genOutUv() {
+        if (!bufferKeys.has(ATTR_UV.name) || !HAS_TEXTURES) {
+            return ""
+        }
+        return `${ATTR_UV.variantName} = ${ATTR_UV.attribName};`
+    }
+
+    function genUniforms(): string[] {
+        function genUniform(name: string): string {
+            switch (name) {
+                case UNIF_MODELVIEW.name:
+                    return `uniform mat4 ${UNIF_MODELVIEW.uniformName};`
+                case UNIF_PROJECTION.name:
+                    return `uniform mat4 ${UNIF_PROJECTION.uniformName};`
+                case UNIF_MODELVIEWPROJECTION.name:
+                    return `uniform mat4 ${UNIF_MODELVIEWPROJECTION.uniformName};`
+            }
+        }
+        return [...uniforms.keys()].map(genUniform)
+    }
+
+    function genOutPosition() {
+        return `gl_Position = ${UNIF_MODELVIEWPROJECTION.uniformName} * vec4(${ATTR_POSITION.attribName},1);`
+    }
 }
 
-function genOutPosition() {
-    return `gl_Position = ${UNIF_MODELVIEWPROJECTION.shader} * vec4(${ATTR_POSITION.inShader},1);`
-}
+

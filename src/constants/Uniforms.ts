@@ -1,10 +1,17 @@
+import {Zko} from "../proto";
 
 export class Uniform {
     name: string
-    shader: string
+    shaderName: string
+    dataType: Zko.ZDataType
 
-    constructor({name, shader}: {name: string, shader: string}) {
+    constructor({name, shaderName, dataType}: {name: string, shaderName: string, dataType: Zko.ZDataType}) {
         this.name = name
-        this.shader = shader
+        this.shaderName = shaderName
+        this.dataType = dataType
+    }
+
+    get uniformName() {
+        return `u_${this.shaderName}`
     }
 }

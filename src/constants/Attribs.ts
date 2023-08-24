@@ -3,18 +3,24 @@ import _ from "lodash";
 export class Attrib {
     name: string
     three: string
-    inShader: string
-    outShader = ""
-    varShader = ""
+    shaderName: string
 
-    constructor({name, three, shader, outFragShader, varShader}: {name: string, three: string, shader: string, outFragShader?: string, varShader?: string}) {
+    constructor({name, three, shaderName}: {name: string, three: string, shaderName: string}) {
         this.name = name
-        this.inShader = shader
+        this.shaderName = shaderName
         this.three = three
-        if (!_.isNil(outFragShader) || !_.isNil(varShader)) {
-            this.outShader = outFragShader
-            this.varShader = varShader
-        }
+    }
+
+    get attribName() {
+        return `a_${this.shaderName}`
+    }
+
+    get fragName() {
+        return `f_${this.shaderName}`
+    }
+
+    get variantName() {
+        return `v_${this.shaderName}`
     }
 }
 
@@ -30,7 +36,7 @@ export class AttribList {
     }
 
     findByShader(name: string) {
-        return _.find(this.list, (attr) => attr.inShader === name)
+        return _.find(this.list, (attr) => attr.shaderName === name)
     }
 
     findByThreeName(name: string) {

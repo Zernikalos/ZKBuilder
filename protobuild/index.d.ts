@@ -109,7 +109,8 @@ export namespace Zko {
         VEC4F = 10,
         MAT2F = 11,
         MAT3F = 12,
-        MAT4F = 13
+        MAT4F = 13,
+        TEXTURE = 14
     }
 
     interface IZkTransform {

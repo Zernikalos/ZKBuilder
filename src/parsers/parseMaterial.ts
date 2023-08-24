@@ -2,6 +2,7 @@ import {ZMaterial} from "../zernikalos/material/ZMaterial";
 import {Material, Texture} from "three";
 import _ from "lodash";
 import {ZTexture} from "../zernikalos/material/ZTexture";
+import hash from "hash-it";
 
 export async function parseMaterial(mat: Material): Promise<ZMaterial | undefined> {
     if (_.isNil(mat)) {
@@ -25,8 +26,8 @@ async function parseTexture(tex: Texture): Promise<ZTexture> {
     const data = await response.arrayBuffer()
 
     const texture = new ZTexture()
-    texture.id = "aux"
     texture.dataArray = new Uint8Array(data)
+    texture.id = `${hash(texture.dataArray)}`
 
     return texture
 }
