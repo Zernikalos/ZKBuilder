@@ -1,4 +1,4 @@
-import objectHash from "object-hash"
+import hash from "hash-it"
 import {ZTransform} from "./ZTransform";
 import {IdGenerator} from "../utils/IdGenerator";
 
@@ -21,7 +21,7 @@ export class ZObject {
 
     public get id(): string {
         if (!this._id) {
-            this._id = objectHash(this)
+            this._id = `${hash(this)}`
         }
         return this._id
     }

@@ -1092,6 +1092,7 @@ export const Zko = $root.Zko = (() => {
      * @property {number} MAT2F=11 MAT2F value
      * @property {number} MAT3F=12 MAT3F value
      * @property {number} MAT4F=13 MAT4F value
+     * @property {number} TEXTURE=14 TEXTURE value
      */
     Zko.ZDataType = (function() {
         const valuesById = {}, values = Object.create(valuesById);
@@ -1109,6 +1110,7 @@ export const Zko = $root.Zko = (() => {
         values[valuesById[11] = "MAT2F"] = 11;
         values[valuesById[12] = "MAT3F"] = 12;
         values[valuesById[13] = "MAT4F"] = 13;
+        values[valuesById[14] = "TEXTURE"] = 14;
         return values;
     })();
 
@@ -2071,6 +2073,7 @@ export const Zko = $root.Zko = (() => {
          * @property {Zko.ZkTransform} transform ZkModel transform
          * @property {Zko.ZkShaderProgram} shaderProgram ZkModel shaderProgram
          * @property {Zko.ZkMesh} mesh ZkModel mesh
+         * @property {ZkMaterial|null} [material] ZkModel material
          */
 
         /**
@@ -2129,6 +2132,14 @@ export const Zko = $root.Zko = (() => {
         ZkModel.prototype.mesh = null;
 
         /**
+         * ZkModel material.
+         * @member {ZkMaterial|null|undefined} material
+         * @memberof Zko.ZkModel
+         * @instance
+         */
+        ZkModel.prototype.material = null;
+
+        /**
          * Creates a new ZkModel instance using the specified properties.
          * @function create
          * @memberof Zko.ZkModel
@@ -2157,6 +2168,8 @@ export const Zko = $root.Zko = (() => {
             $root.Zko.ZkTransform.encode(message.transform, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             $root.Zko.ZkShaderProgram.encode(message.shaderProgram, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
             $root.Zko.ZkMesh.encode(message.mesh, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            if (message.material != null && Object.hasOwnProperty.call(message, "material"))
+                $root.ZkMaterial.encode(message.material, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
             return writer;
         };
 
@@ -2196,6 +2209,10 @@ export const Zko = $root.Zko = (() => {
                     }
                 case 5: {
                         message.mesh = $root.Zko.ZkMesh.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 6: {
+                        message.material = $root.ZkMaterial.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -2246,6 +2263,11 @@ export const Zko = $root.Zko = (() => {
                 if (error)
                     return "mesh." + error;
             }
+            if (message.material != null && message.hasOwnProperty("material")) {
+                let error = $root.ZkMaterial.verify(message.material);
+                if (error)
+                    return "material." + error;
+            }
             return null;
         };
 
@@ -2280,6 +2302,11 @@ export const Zko = $root.Zko = (() => {
                     throw TypeError(".Zko.ZkModel.mesh: object expected");
                 message.mesh = $root.Zko.ZkMesh.fromObject(object.mesh);
             }
+            if (object.material != null) {
+                if (typeof object.material !== "object")
+                    throw TypeError(".Zko.ZkModel.material: object expected");
+                message.material = $root.ZkMaterial.fromObject(object.material);
+            }
             return message;
         };
 
@@ -2302,6 +2329,7 @@ export const Zko = $root.Zko = (() => {
                 object.transform = null;
                 object.shaderProgram = null;
                 object.mesh = null;
+                object.material = null;
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
@@ -2313,6 +2341,8 @@ export const Zko = $root.Zko = (() => {
                 object.shaderProgram = $root.Zko.ZkShaderProgram.toObject(message.shaderProgram, options);
             if (message.mesh != null && message.hasOwnProperty("mesh"))
                 object.mesh = $root.Zko.ZkMesh.toObject(message.mesh, options);
+            if (message.material != null && message.hasOwnProperty("material"))
+                object.material = $root.ZkMaterial.toObject(message.material, options);
             return object;
         };
 
@@ -2876,6 +2906,7 @@ export const Zko = $root.Zko = (() => {
             case 11:
             case 12:
             case 13:
+            case 14:
                 break;
             }
             if (!$util.isInteger(message.size))
@@ -2971,6 +3002,10 @@ export const Zko = $root.Zko = (() => {
             case "MAT4F":
             case 13:
                 message.dataType = 13;
+                break;
+            case "TEXTURE":
+            case 14:
+                message.dataType = 14;
                 break;
             }
             if (object.size != null)
@@ -4164,6 +4199,7 @@ export const Zko = $root.Zko = (() => {
             case 11:
             case 12:
             case 13:
+            case 14:
                 break;
             }
             return null;
@@ -4247,6 +4283,10 @@ export const Zko = $root.Zko = (() => {
             case "MAT4F":
             case 13:
                 message.dataType = 13;
+                break;
+            case "TEXTURE":
+            case 14:
+                message.dataType = 14;
                 break;
             }
             return message;
@@ -4809,6 +4849,392 @@ export const Zko = $root.Zko = (() => {
     })();
 
     return Zko;
+})();
+
+export const ZkMaterial = $root.ZkMaterial = (() => {
+
+    /**
+     * Properties of a ZkMaterial.
+     * @exports IZkMaterial
+     * @interface IZkMaterial
+     * @property {ZkTexture|null} [texture] ZkMaterial texture
+     */
+
+    /**
+     * Constructs a new ZkMaterial.
+     * @exports ZkMaterial
+     * @classdesc Represents a ZkMaterial.
+     * @implements IZkMaterial
+     * @constructor
+     * @param {IZkMaterial=} [properties] Properties to set
+     */
+    function ZkMaterial(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ZkMaterial texture.
+     * @member {ZkTexture|null|undefined} texture
+     * @memberof ZkMaterial
+     * @instance
+     */
+    ZkMaterial.prototype.texture = null;
+
+    /**
+     * Creates a new ZkMaterial instance using the specified properties.
+     * @function create
+     * @memberof ZkMaterial
+     * @static
+     * @param {IZkMaterial=} [properties] Properties to set
+     * @returns {ZkMaterial} ZkMaterial instance
+     */
+    ZkMaterial.create = function create(properties) {
+        return new ZkMaterial(properties);
+    };
+
+    /**
+     * Encodes the specified ZkMaterial message. Does not implicitly {@link ZkMaterial.verify|verify} messages.
+     * @function encode
+     * @memberof ZkMaterial
+     * @static
+     * @param {ZkMaterial} message ZkMaterial message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ZkMaterial.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.texture != null && Object.hasOwnProperty.call(message, "texture"))
+            $root.ZkTexture.encode(message.texture, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Decodes a ZkMaterial message from the specified reader or buffer.
+     * @function decode
+     * @memberof ZkMaterial
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ZkMaterial} ZkMaterial
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ZkMaterial.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ZkMaterial();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1: {
+                    message.texture = $root.ZkTexture.decode(reader, reader.uint32());
+                    break;
+                }
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Verifies a ZkMaterial message.
+     * @function verify
+     * @memberof ZkMaterial
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ZkMaterial.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.texture != null && message.hasOwnProperty("texture")) {
+            let error = $root.ZkTexture.verify(message.texture);
+            if (error)
+                return "texture." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a ZkMaterial message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ZkMaterial
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ZkMaterial} ZkMaterial
+     */
+    ZkMaterial.fromObject = function fromObject(object) {
+        if (object instanceof $root.ZkMaterial)
+            return object;
+        let message = new $root.ZkMaterial();
+        if (object.texture != null) {
+            if (typeof object.texture !== "object")
+                throw TypeError(".ZkMaterial.texture: object expected");
+            message.texture = $root.ZkTexture.fromObject(object.texture);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ZkMaterial message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ZkMaterial
+     * @static
+     * @param {ZkMaterial} message ZkMaterial
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ZkMaterial.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults)
+            object.texture = null;
+        if (message.texture != null && message.hasOwnProperty("texture"))
+            object.texture = $root.ZkTexture.toObject(message.texture, options);
+        return object;
+    };
+
+    /**
+     * Converts this ZkMaterial to JSON.
+     * @function toJSON
+     * @memberof ZkMaterial
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ZkMaterial.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for ZkMaterial
+     * @function getTypeUrl
+     * @memberof ZkMaterial
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    ZkMaterial.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/ZkMaterial";
+    };
+
+    return ZkMaterial;
+})();
+
+export const ZkTexture = $root.ZkTexture = (() => {
+
+    /**
+     * Properties of a ZkTexture.
+     * @exports IZkTexture
+     * @interface IZkTexture
+     * @property {string} id ZkTexture id
+     * @property {Uint8Array} dataArray ZkTexture dataArray
+     */
+
+    /**
+     * Constructs a new ZkTexture.
+     * @exports ZkTexture
+     * @classdesc Represents a ZkTexture.
+     * @implements IZkTexture
+     * @constructor
+     * @param {IZkTexture=} [properties] Properties to set
+     */
+    function ZkTexture(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ZkTexture id.
+     * @member {string} id
+     * @memberof ZkTexture
+     * @instance
+     */
+    ZkTexture.prototype.id = "";
+
+    /**
+     * ZkTexture dataArray.
+     * @member {Uint8Array} dataArray
+     * @memberof ZkTexture
+     * @instance
+     */
+    ZkTexture.prototype.dataArray = $util.newBuffer([]);
+
+    /**
+     * Creates a new ZkTexture instance using the specified properties.
+     * @function create
+     * @memberof ZkTexture
+     * @static
+     * @param {IZkTexture=} [properties] Properties to set
+     * @returns {ZkTexture} ZkTexture instance
+     */
+    ZkTexture.create = function create(properties) {
+        return new ZkTexture(properties);
+    };
+
+    /**
+     * Encodes the specified ZkTexture message. Does not implicitly {@link ZkTexture.verify|verify} messages.
+     * @function encode
+     * @memberof ZkTexture
+     * @static
+     * @param {ZkTexture} message ZkTexture message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ZkTexture.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        writer.uint32(/* id 2, wireType 2 =*/18).bytes(message.dataArray);
+        return writer;
+    };
+
+    /**
+     * Decodes a ZkTexture message from the specified reader or buffer.
+     * @function decode
+     * @memberof ZkTexture
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ZkTexture} ZkTexture
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ZkTexture.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ZkTexture();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1: {
+                    message.id = reader.string();
+                    break;
+                }
+            case 2: {
+                    message.dataArray = reader.bytes();
+                    break;
+                }
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        if (!message.hasOwnProperty("id"))
+            throw $util.ProtocolError("missing required 'id'", { instance: message });
+        if (!message.hasOwnProperty("dataArray"))
+            throw $util.ProtocolError("missing required 'dataArray'", { instance: message });
+        return message;
+    };
+
+    /**
+     * Verifies a ZkTexture message.
+     * @function verify
+     * @memberof ZkTexture
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ZkTexture.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (!$util.isString(message.id))
+            return "id: string expected";
+        if (!(message.dataArray && typeof message.dataArray.length === "number" || $util.isString(message.dataArray)))
+            return "dataArray: buffer expected";
+        return null;
+    };
+
+    /**
+     * Creates a ZkTexture message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ZkTexture
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ZkTexture} ZkTexture
+     */
+    ZkTexture.fromObject = function fromObject(object) {
+        if (object instanceof $root.ZkTexture)
+            return object;
+        let message = new $root.ZkTexture();
+        if (object.id != null)
+            message.id = String(object.id);
+        if (object.dataArray != null)
+            if (typeof object.dataArray === "string")
+                $util.base64.decode(object.dataArray, message.dataArray = $util.newBuffer($util.base64.length(object.dataArray)), 0);
+            else if (object.dataArray.length >= 0)
+                message.dataArray = object.dataArray;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ZkTexture message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ZkTexture
+     * @static
+     * @param {ZkTexture} message ZkTexture
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ZkTexture.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults) {
+            object.id = "";
+            if (options.bytes === String)
+                object.dataArray = "";
+            else {
+                object.dataArray = [];
+                if (options.bytes !== Array)
+                    object.dataArray = $util.newBuffer(object.dataArray);
+            }
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.dataArray != null && message.hasOwnProperty("dataArray"))
+            object.dataArray = options.bytes === String ? $util.base64.encode(message.dataArray, 0, message.dataArray.length) : options.bytes === Array ? Array.prototype.slice.call(message.dataArray) : message.dataArray;
+        return object;
+    };
+
+    /**
+     * Converts this ZkTexture to JSON.
+     * @function toJSON
+     * @memberof ZkTexture
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ZkTexture.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for ZkTexture
+     * @function getTypeUrl
+     * @memberof ZkTexture
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    ZkTexture.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/ZkTexture";
+    };
+
+    return ZkTexture;
 })();
 
 export { $root as default };

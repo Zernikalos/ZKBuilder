@@ -109,7 +109,8 @@ export namespace Zko {
         VEC4F = 10,
         MAT2F = 11,
         MAT3F = 12,
-        MAT4F = 13
+        MAT4F = 13,
+        TEXTURE = 14
     }
 
     interface IZkTransform {
@@ -206,6 +207,7 @@ export namespace Zko {
         transform: Zko.ZkTransform;
         shaderProgram: Zko.ZkShaderProgram;
         mesh: Zko.ZkMesh;
+        material?: (ZkMaterial|null);
     }
 
     class ZkModel implements IZkModel {
@@ -215,6 +217,7 @@ export namespace Zko {
         public transform: Zko.ZkTransform;
         public shaderProgram: Zko.ZkShaderProgram;
         public mesh: Zko.ZkMesh;
+        public material?: (ZkMaterial|null);
         public static create(properties?: Zko.IZkModel): Zko.ZkModel;
         public static encode(message: Zko.ZkModel, writer?: $protobuf.Writer): $protobuf.Writer;
         public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkModel;
@@ -423,4 +426,40 @@ export namespace Zko {
         public toJSON(): { [k: string]: any };
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
+}
+
+export interface IZkMaterial {
+    texture?: (ZkTexture|null);
+}
+
+export class ZkMaterial implements IZkMaterial {
+    constructor(properties?: IZkMaterial);
+    public texture?: (ZkTexture|null);
+    public static create(properties?: IZkMaterial): ZkMaterial;
+    public static encode(message: ZkMaterial, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ZkMaterial;
+    public static verify(message: { [k: string]: any }): (string|null);
+    public static fromObject(object: { [k: string]: any }): ZkMaterial;
+    public static toObject(message: ZkMaterial, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public toJSON(): { [k: string]: any };
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
+export interface IZkTexture {
+    id: string;
+    dataArray: Uint8Array;
+}
+
+export class ZkTexture implements IZkTexture {
+    constructor(properties?: IZkTexture);
+    public id: string;
+    public dataArray: Uint8Array;
+    public static create(properties?: IZkTexture): ZkTexture;
+    public static encode(message: ZkTexture, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ZkTexture;
+    public static verify(message: { [k: string]: any }): (string|null);
+    public static fromObject(object: { [k: string]: any }): ZkTexture;
+    public static toObject(message: ZkTexture, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public toJSON(): { [k: string]: any };
+    public static getTypeUrl(typeUrlPrefix?: string): string;
 }

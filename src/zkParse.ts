@@ -17,7 +17,7 @@ export const DEFAULT_PARSE_OPTIONS: ParseOptions = {
     defaultCamera: false
 }
 
-export function zkParse(parseableObject: ZkoParseableObject, options: ParseOptions): ZObject {
+export async function zkParse(parseableObject: ZkoParseableObject, options: ParseOptions): Promise<ZObject> {
 
     // @ts-ignore
     const mergedOptions = _.merge({}, DEFAULT_PARSE_OPTIONS, options)
@@ -25,7 +25,7 @@ export function zkParse(parseableObject: ZkoParseableObject, options: ParseOptio
     IdGenerator.parseBegin()
 
     const threeObj = preProcess(parseableObject._threeObj, mergedOptions)
-    let zObj = parseObject(threeObj)
+    let zObj = await parseObject(threeObj)
     zObj = postProcess(zObj)
 
     IdGenerator.reset()
