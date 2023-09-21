@@ -2,7 +2,7 @@ syntax = "proto2";
 
 package Zko;
 
-enum ZDataType {
+enum ZkBaseType {
   BYTE = 0;
   UBYTE = 1;
   SHORT = 2;
@@ -11,14 +11,30 @@ enum ZDataType {
   UINT = 5;
   FLOAT = 6;
   DOUBLE = 7;
+  TEXTURE = 8;
+}
 
-  VEC2F = 8;
-  VEC3F = 9;
-  VEC4F = 10;
+enum ZkFormatType {
+  SCALAR = 0;
 
-  MAT2F = 11;
-  MAT3F = 12;
-  MAT4F = 13;
+  VEC2 = 1;
+  VEC3 = 2;
+  VEC4 = 3;
 
-  TEXTURE = 14;
+  MAT2 = 4;
+  MAT3 = 5;
+  MAT4 = 6;
+
+  TEXTURE = 7;
+}
+
+/**
+This type will merge two concepts, the base type used
+and the format provided by that type
+This will be useful for scenarios where we need to handle the base type
+but we don't need to know how it is expressed
+ */
+message ZkDataType {
+  required ZkBaseType type = 1;
+  required ZkFormatType format = 2;
 }

@@ -1,4 +1,5 @@
 import * as $protobuf from "protobufjs";
+import Long = require("long");
 export namespace Zko {
 
     interface IProtoZkObject {
@@ -95,7 +96,7 @@ export namespace Zko {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
-    enum ZDataType {
+    enum ZkBaseType {
         BYTE = 0,
         UBYTE = 1,
         SHORT = 2,
@@ -104,13 +105,37 @@ export namespace Zko {
         UINT = 5,
         FLOAT = 6,
         DOUBLE = 7,
-        VEC2F = 8,
-        VEC3F = 9,
-        VEC4F = 10,
-        MAT2F = 11,
-        MAT3F = 12,
-        MAT4F = 13,
-        TEXTURE = 14
+        TEXTURE = 8
+    }
+
+    enum ZkFormatType {
+        SCALAR = 0,
+        VEC2 = 1,
+        VEC3 = 2,
+        VEC4 = 3,
+        MAT2 = 4,
+        MAT3 = 5,
+        MAT4 = 6,
+        TEXTURE = 7
+    }
+
+    interface IZkDataType {
+        type: Zko.ZkBaseType;
+        format: Zko.ZkFormatType;
+    }
+
+    class ZkDataType implements IZkDataType {
+        constructor(properties?: Zko.IZkDataType);
+        public type: Zko.ZkBaseType;
+        public format: Zko.ZkFormatType;
+        public static create(properties?: Zko.IZkDataType): Zko.ZkDataType;
+        public static encode(message: Zko.ZkDataType, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkDataType;
+        public static verify(message: { [k: string]: any }): (string|null);
+        public static fromObject(object: { [k: string]: any }): Zko.ZkDataType;
+        public static toObject(message: Zko.ZkDataType, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public toJSON(): { [k: string]: any };
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     interface IZkTransform {
@@ -249,7 +274,7 @@ export namespace Zko {
 
     interface IZkBufferKey {
         id: number;
-        dataType: Zko.ZDataType;
+        dataType: Zko.ZkDataType;
         size: number;
         count: number;
         normalized: boolean;
@@ -262,7 +287,7 @@ export namespace Zko {
     class ZkBufferKey implements IZkBufferKey {
         constructor(properties?: Zko.IZkBufferKey);
         public id: number;
-        public dataType: Zko.ZDataType;
+        public dataType: Zko.ZkDataType;
         public size: number;
         public count: number;
         public normalized: boolean;
@@ -363,14 +388,14 @@ export namespace Zko {
     interface IZkShaderUniform {
         uniformName: string;
         count: number;
-        dataType: Zko.ZDataType;
+        dataType: Zko.ZkDataType;
     }
 
     class ZkShaderUniform implements IZkShaderUniform {
         constructor(properties?: Zko.IZkShaderUniform);
         public uniformName: string;
         public count: number;
-        public dataType: Zko.ZDataType;
+        public dataType: Zko.ZkDataType;
         public static create(properties?: Zko.IZkShaderUniform): Zko.ZkShaderUniform;
         public static encode(message: Zko.ZkShaderUniform, writer?: $protobuf.Writer): $protobuf.Writer;
         public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkShaderUniform;

@@ -1075,8 +1075,8 @@ export const Zko = $root.Zko = (() => {
     })();
 
     /**
-     * ZDataType enum.
-     * @name Zko.ZDataType
+     * ZkBaseType enum.
+     * @name Zko.ZkBaseType
      * @enum {number}
      * @property {number} BYTE=0 BYTE value
      * @property {number} UBYTE=1 UBYTE value
@@ -1086,15 +1086,9 @@ export const Zko = $root.Zko = (() => {
      * @property {number} UINT=5 UINT value
      * @property {number} FLOAT=6 FLOAT value
      * @property {number} DOUBLE=7 DOUBLE value
-     * @property {number} VEC2F=8 VEC2F value
-     * @property {number} VEC3F=9 VEC3F value
-     * @property {number} VEC4F=10 VEC4F value
-     * @property {number} MAT2F=11 MAT2F value
-     * @property {number} MAT3F=12 MAT3F value
-     * @property {number} MAT4F=13 MAT4F value
-     * @property {number} TEXTURE=14 TEXTURE value
+     * @property {number} TEXTURE=8 TEXTURE value
      */
-    Zko.ZDataType = (function() {
+    Zko.ZkBaseType = (function() {
         const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "BYTE"] = 0;
         values[valuesById[1] = "UBYTE"] = 1;
@@ -1104,14 +1098,335 @@ export const Zko = $root.Zko = (() => {
         values[valuesById[5] = "UINT"] = 5;
         values[valuesById[6] = "FLOAT"] = 6;
         values[valuesById[7] = "DOUBLE"] = 7;
-        values[valuesById[8] = "VEC2F"] = 8;
-        values[valuesById[9] = "VEC3F"] = 9;
-        values[valuesById[10] = "VEC4F"] = 10;
-        values[valuesById[11] = "MAT2F"] = 11;
-        values[valuesById[12] = "MAT3F"] = 12;
-        values[valuesById[13] = "MAT4F"] = 13;
-        values[valuesById[14] = "TEXTURE"] = 14;
+        values[valuesById[8] = "TEXTURE"] = 8;
         return values;
+    })();
+
+    /**
+     * ZkFormatType enum.
+     * @name Zko.ZkFormatType
+     * @enum {number}
+     * @property {number} SCALAR=0 SCALAR value
+     * @property {number} VEC2=1 VEC2 value
+     * @property {number} VEC3=2 VEC3 value
+     * @property {number} VEC4=3 VEC4 value
+     * @property {number} MAT2=4 MAT2 value
+     * @property {number} MAT3=5 MAT3 value
+     * @property {number} MAT4=6 MAT4 value
+     * @property {number} TEXTURE=7 TEXTURE value
+     */
+    Zko.ZkFormatType = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "SCALAR"] = 0;
+        values[valuesById[1] = "VEC2"] = 1;
+        values[valuesById[2] = "VEC3"] = 2;
+        values[valuesById[3] = "VEC4"] = 3;
+        values[valuesById[4] = "MAT2"] = 4;
+        values[valuesById[5] = "MAT3"] = 5;
+        values[valuesById[6] = "MAT4"] = 6;
+        values[valuesById[7] = "TEXTURE"] = 7;
+        return values;
+    })();
+
+    Zko.ZkDataType = (function() {
+
+        /**
+         * Properties of a ZkDataType.
+         * @memberof Zko
+         * @interface IZkDataType
+         * @property {Zko.ZkBaseType} type ZkDataType type
+         * @property {Zko.ZkFormatType} format ZkDataType format
+         */
+
+        /**
+         * Constructs a new ZkDataType.
+         * @memberof Zko
+         * @classdesc Represents a ZkDataType.
+         * @implements IZkDataType
+         * @constructor
+         * @param {Zko.IZkDataType=} [properties] Properties to set
+         */
+        function ZkDataType(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ZkDataType type.
+         * @member {Zko.ZkBaseType} type
+         * @memberof Zko.ZkDataType
+         * @instance
+         */
+        ZkDataType.prototype.type = 0;
+
+        /**
+         * ZkDataType format.
+         * @member {Zko.ZkFormatType} format
+         * @memberof Zko.ZkDataType
+         * @instance
+         */
+        ZkDataType.prototype.format = 0;
+
+        /**
+         * Creates a new ZkDataType instance using the specified properties.
+         * @function create
+         * @memberof Zko.ZkDataType
+         * @static
+         * @param {Zko.IZkDataType=} [properties] Properties to set
+         * @returns {Zko.ZkDataType} ZkDataType instance
+         */
+        ZkDataType.create = function create(properties) {
+            return new ZkDataType(properties);
+        };
+
+        /**
+         * Encodes the specified ZkDataType message. Does not implicitly {@link Zko.ZkDataType.verify|verify} messages.
+         * @function encode
+         * @memberof Zko.ZkDataType
+         * @static
+         * @param {Zko.ZkDataType} message ZkDataType message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ZkDataType.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.format);
+            return writer;
+        };
+
+        /**
+         * Decodes a ZkDataType message from the specified reader or buffer.
+         * @function decode
+         * @memberof Zko.ZkDataType
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Zko.ZkDataType} ZkDataType
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ZkDataType.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkDataType();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.type = reader.int32();
+                        break;
+                    }
+                case 2: {
+                        message.format = reader.int32();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("type"))
+                throw $util.ProtocolError("missing required 'type'", { instance: message });
+            if (!message.hasOwnProperty("format"))
+                throw $util.ProtocolError("missing required 'format'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Verifies a ZkDataType message.
+         * @function verify
+         * @memberof Zko.ZkDataType
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ZkDataType.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            switch (message.type) {
+            default:
+                return "type: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+                break;
+            }
+            switch (message.format) {
+            default:
+                return "format: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+                break;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a ZkDataType message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Zko.ZkDataType
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Zko.ZkDataType} ZkDataType
+         */
+        ZkDataType.fromObject = function fromObject(object) {
+            if (object instanceof $root.Zko.ZkDataType)
+                return object;
+            let message = new $root.Zko.ZkDataType();
+            switch (object.type) {
+            default:
+                if (typeof object.type === "number") {
+                    message.type = object.type;
+                    break;
+                }
+                break;
+            case "BYTE":
+            case 0:
+                message.type = 0;
+                break;
+            case "UBYTE":
+            case 1:
+                message.type = 1;
+                break;
+            case "SHORT":
+            case 2:
+                message.type = 2;
+                break;
+            case "USHORT":
+            case 3:
+                message.type = 3;
+                break;
+            case "INT":
+            case 4:
+                message.type = 4;
+                break;
+            case "UINT":
+            case 5:
+                message.type = 5;
+                break;
+            case "FLOAT":
+            case 6:
+                message.type = 6;
+                break;
+            case "DOUBLE":
+            case 7:
+                message.type = 7;
+                break;
+            case "TEXTURE":
+            case 8:
+                message.type = 8;
+                break;
+            }
+            switch (object.format) {
+            default:
+                if (typeof object.format === "number") {
+                    message.format = object.format;
+                    break;
+                }
+                break;
+            case "SCALAR":
+            case 0:
+                message.format = 0;
+                break;
+            case "VEC2":
+            case 1:
+                message.format = 1;
+                break;
+            case "VEC3":
+            case 2:
+                message.format = 2;
+                break;
+            case "VEC4":
+            case 3:
+                message.format = 3;
+                break;
+            case "MAT2":
+            case 4:
+                message.format = 4;
+                break;
+            case "MAT3":
+            case 5:
+                message.format = 5;
+                break;
+            case "MAT4":
+            case 6:
+                message.format = 6;
+                break;
+            case "TEXTURE":
+            case 7:
+                message.format = 7;
+                break;
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ZkDataType message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Zko.ZkDataType
+         * @static
+         * @param {Zko.ZkDataType} message ZkDataType
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ZkDataType.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.type = options.enums === String ? "BYTE" : 0;
+                object.format = options.enums === String ? "SCALAR" : 0;
+            }
+            if (message.type != null && message.hasOwnProperty("type"))
+                object.type = options.enums === String ? $root.Zko.ZkBaseType[message.type] === undefined ? message.type : $root.Zko.ZkBaseType[message.type] : message.type;
+            if (message.format != null && message.hasOwnProperty("format"))
+                object.format = options.enums === String ? $root.Zko.ZkFormatType[message.format] === undefined ? message.format : $root.Zko.ZkFormatType[message.format] : message.format;
+            return object;
+        };
+
+        /**
+         * Converts this ZkDataType to JSON.
+         * @function toJSON
+         * @memberof Zko.ZkDataType
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ZkDataType.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ZkDataType
+         * @function getTypeUrl
+         * @memberof Zko.ZkDataType
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ZkDataType.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/Zko.ZkDataType";
+        };
+
+        return ZkDataType;
     })();
 
     Zko.ZkTransform = (function() {
@@ -2663,7 +2978,7 @@ export const Zko = $root.Zko = (() => {
          * @memberof Zko
          * @interface IZkBufferKey
          * @property {number} id ZkBufferKey id
-         * @property {Zko.ZDataType} dataType ZkBufferKey dataType
+         * @property {Zko.ZkDataType} dataType ZkBufferKey dataType
          * @property {number} size ZkBufferKey size
          * @property {number} count ZkBufferKey count
          * @property {boolean} normalized ZkBufferKey normalized
@@ -2698,11 +3013,11 @@ export const Zko = $root.Zko = (() => {
 
         /**
          * ZkBufferKey dataType.
-         * @member {Zko.ZDataType} dataType
+         * @member {Zko.ZkDataType} dataType
          * @memberof Zko.ZkBufferKey
          * @instance
          */
-        ZkBufferKey.prototype.dataType = 0;
+        ZkBufferKey.prototype.dataType = null;
 
         /**
          * ZkBufferKey size.
@@ -2785,7 +3100,7 @@ export const Zko = $root.Zko = (() => {
             if (!writer)
                 writer = $Writer.create();
             writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.id);
-            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.dataType);
+            $root.Zko.ZkDataType.encode(message.dataType, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.size);
             writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.count);
             writer.uint32(/* id 5, wireType 0 =*/40).bool(message.normalized);
@@ -2819,7 +3134,7 @@ export const Zko = $root.Zko = (() => {
                         break;
                     }
                 case 2: {
-                        message.dataType = reader.int32();
+                        message.dataType = $root.Zko.ZkDataType.decode(reader, reader.uint32());
                         break;
                     }
                 case 3: {
@@ -2889,25 +3204,10 @@ export const Zko = $root.Zko = (() => {
                 return "object expected";
             if (!$util.isInteger(message.id))
                 return "id: integer expected";
-            switch (message.dataType) {
-            default:
-                return "dataType: enum value expected";
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-                break;
+            {
+                let error = $root.Zko.ZkDataType.verify(message.dataType);
+                if (error)
+                    return "dataType." + error;
             }
             if (!$util.isInteger(message.size))
                 return "size: integer expected";
@@ -2940,73 +3240,10 @@ export const Zko = $root.Zko = (() => {
             let message = new $root.Zko.ZkBufferKey();
             if (object.id != null)
                 message.id = object.id >>> 0;
-            switch (object.dataType) {
-            default:
-                if (typeof object.dataType === "number") {
-                    message.dataType = object.dataType;
-                    break;
-                }
-                break;
-            case "BYTE":
-            case 0:
-                message.dataType = 0;
-                break;
-            case "UBYTE":
-            case 1:
-                message.dataType = 1;
-                break;
-            case "SHORT":
-            case 2:
-                message.dataType = 2;
-                break;
-            case "USHORT":
-            case 3:
-                message.dataType = 3;
-                break;
-            case "INT":
-            case 4:
-                message.dataType = 4;
-                break;
-            case "UINT":
-            case 5:
-                message.dataType = 5;
-                break;
-            case "FLOAT":
-            case 6:
-                message.dataType = 6;
-                break;
-            case "DOUBLE":
-            case 7:
-                message.dataType = 7;
-                break;
-            case "VEC2F":
-            case 8:
-                message.dataType = 8;
-                break;
-            case "VEC3F":
-            case 9:
-                message.dataType = 9;
-                break;
-            case "VEC4F":
-            case 10:
-                message.dataType = 10;
-                break;
-            case "MAT2F":
-            case 11:
-                message.dataType = 11;
-                break;
-            case "MAT3F":
-            case 12:
-                message.dataType = 12;
-                break;
-            case "MAT4F":
-            case 13:
-                message.dataType = 13;
-                break;
-            case "TEXTURE":
-            case 14:
-                message.dataType = 14;
-                break;
+            if (object.dataType != null) {
+                if (typeof object.dataType !== "object")
+                    throw TypeError(".Zko.ZkBufferKey.dataType: object expected");
+                message.dataType = $root.Zko.ZkDataType.fromObject(object.dataType);
             }
             if (object.size != null)
                 message.size = object.size >>> 0;
@@ -3040,7 +3277,7 @@ export const Zko = $root.Zko = (() => {
             let object = {};
             if (options.defaults) {
                 object.id = 0;
-                object.dataType = options.enums === String ? "BYTE" : 0;
+                object.dataType = null;
                 object.size = 0;
                 object.count = 0;
                 object.normalized = false;
@@ -3052,7 +3289,7 @@ export const Zko = $root.Zko = (() => {
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
             if (message.dataType != null && message.hasOwnProperty("dataType"))
-                object.dataType = options.enums === String ? $root.Zko.ZDataType[message.dataType] === undefined ? message.dataType : $root.Zko.ZDataType[message.dataType] : message.dataType;
+                object.dataType = $root.Zko.ZkDataType.toObject(message.dataType, options);
             if (message.size != null && message.hasOwnProperty("size"))
                 object.size = message.size;
             if (message.count != null && message.hasOwnProperty("count"))
@@ -4051,7 +4288,7 @@ export const Zko = $root.Zko = (() => {
          * @interface IZkShaderUniform
          * @property {string} uniformName ZkShaderUniform uniformName
          * @property {number} count ZkShaderUniform count
-         * @property {Zko.ZDataType} dataType ZkShaderUniform dataType
+         * @property {Zko.ZkDataType} dataType ZkShaderUniform dataType
          */
 
         /**
@@ -4087,11 +4324,11 @@ export const Zko = $root.Zko = (() => {
 
         /**
          * ZkShaderUniform dataType.
-         * @member {Zko.ZDataType} dataType
+         * @member {Zko.ZkDataType} dataType
          * @memberof Zko.ZkShaderUniform
          * @instance
          */
-        ZkShaderUniform.prototype.dataType = 0;
+        ZkShaderUniform.prototype.dataType = null;
 
         /**
          * Creates a new ZkShaderUniform instance using the specified properties.
@@ -4119,7 +4356,7 @@ export const Zko = $root.Zko = (() => {
                 writer = $Writer.create();
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.uniformName);
             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.count);
-            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.dataType);
+            $root.Zko.ZkDataType.encode(message.dataType, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
 
@@ -4150,7 +4387,7 @@ export const Zko = $root.Zko = (() => {
                         break;
                     }
                 case 3: {
-                        message.dataType = reader.int32();
+                        message.dataType = $root.Zko.ZkDataType.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -4182,25 +4419,10 @@ export const Zko = $root.Zko = (() => {
                 return "uniformName: string expected";
             if (!$util.isInteger(message.count))
                 return "count: integer expected";
-            switch (message.dataType) {
-            default:
-                return "dataType: enum value expected";
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-                break;
+            {
+                let error = $root.Zko.ZkDataType.verify(message.dataType);
+                if (error)
+                    return "dataType." + error;
             }
             return null;
         };
@@ -4221,73 +4443,10 @@ export const Zko = $root.Zko = (() => {
                 message.uniformName = String(object.uniformName);
             if (object.count != null)
                 message.count = object.count >>> 0;
-            switch (object.dataType) {
-            default:
-                if (typeof object.dataType === "number") {
-                    message.dataType = object.dataType;
-                    break;
-                }
-                break;
-            case "BYTE":
-            case 0:
-                message.dataType = 0;
-                break;
-            case "UBYTE":
-            case 1:
-                message.dataType = 1;
-                break;
-            case "SHORT":
-            case 2:
-                message.dataType = 2;
-                break;
-            case "USHORT":
-            case 3:
-                message.dataType = 3;
-                break;
-            case "INT":
-            case 4:
-                message.dataType = 4;
-                break;
-            case "UINT":
-            case 5:
-                message.dataType = 5;
-                break;
-            case "FLOAT":
-            case 6:
-                message.dataType = 6;
-                break;
-            case "DOUBLE":
-            case 7:
-                message.dataType = 7;
-                break;
-            case "VEC2F":
-            case 8:
-                message.dataType = 8;
-                break;
-            case "VEC3F":
-            case 9:
-                message.dataType = 9;
-                break;
-            case "VEC4F":
-            case 10:
-                message.dataType = 10;
-                break;
-            case "MAT2F":
-            case 11:
-                message.dataType = 11;
-                break;
-            case "MAT3F":
-            case 12:
-                message.dataType = 12;
-                break;
-            case "MAT4F":
-            case 13:
-                message.dataType = 13;
-                break;
-            case "TEXTURE":
-            case 14:
-                message.dataType = 14;
-                break;
+            if (object.dataType != null) {
+                if (typeof object.dataType !== "object")
+                    throw TypeError(".Zko.ZkShaderUniform.dataType: object expected");
+                message.dataType = $root.Zko.ZkDataType.fromObject(object.dataType);
             }
             return message;
         };
@@ -4308,14 +4467,14 @@ export const Zko = $root.Zko = (() => {
             if (options.defaults) {
                 object.uniformName = "";
                 object.count = 0;
-                object.dataType = options.enums === String ? "BYTE" : 0;
+                object.dataType = null;
             }
             if (message.uniformName != null && message.hasOwnProperty("uniformName"))
                 object.uniformName = message.uniformName;
             if (message.count != null && message.hasOwnProperty("count"))
                 object.count = message.count;
             if (message.dataType != null && message.hasOwnProperty("dataType"))
-                object.dataType = options.enums === String ? $root.Zko.ZDataType[message.dataType] === undefined ? message.dataType : $root.Zko.ZDataType[message.dataType] : message.dataType;
+                object.dataType = $root.Zko.ZkDataType.toObject(message.dataType, options);
             return object;
         };
 

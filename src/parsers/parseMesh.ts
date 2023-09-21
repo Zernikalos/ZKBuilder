@@ -2,11 +2,10 @@ import {BufferAttribute, BufferGeometry, InterleavedBufferAttribute} from "three
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils"
 import {ZMesh} from "../zernikalos/mesh/ZMesh"
 import {ZBuffer} from "../zernikalos/mesh/ZBuffer";
-import { isNil } from "lodash";
-import { Zko } from "../proto";
-import { ZBufferKey } from "../zernikalos/mesh/ZBufferKey";
-import { ATTRS } from "../constants";
-import _ from "lodash";
+import _, {isNil} from "lodash";
+import {Zko} from "../proto";
+import {ZBufferKey} from "../zernikalos/mesh/ZBufferKey";
+import {ATTRS} from "../constants";
 
 /**
  * Filters only recognized attributes by the parser
@@ -17,29 +16,57 @@ export function filterAttributes(geometry: BufferGeometry) {
 }
 
 /**
- * Detects the appropiate data type for a buffer attribute
+ * Detects the appropriate base data type for a buffer key attribute
  * @param attr
  */
-function detectDataType(attr: BufferAttribute | InterleavedBufferAttribute): Zko.ZDataType {
+function detectBaseType(attr: BufferAttribute | InterleavedBufferAttribute): Zko.ZkBaseType {
     const array = attr.array
     if (array instanceof Int16Array) {
-        return Zko.ZDataType.SHORT
+        return Zko.ZkBaseType.SHORT
     }
     if (array instanceof Uint16Array) {
-        return Zko.ZDataType.USHORT
+        return Zko.ZkBaseType.USHORT
     }
     if (array instanceof Int32Array) {
-        return Zko.ZDataType.INT
+        return Zko.ZkBaseType.INT
     }
     if (array instanceof Uint32Array) {
-        return Zko.ZDataType.UINT
+        return Zko.ZkBaseType.UINT
     }
     if (array instanceof Float32Array) {
-        return Zko.ZDataType.FLOAT
+        return Zko.ZkBaseType.FLOAT
     }
     if (array instanceof Float64Array) {
-        return Zko.ZDataType.DOUBLE
+        return Zko.ZkBaseType.DOUBLE
     }
+}
+
+/**
+ * Detects the appropriate base data type for a buffer key attribute
+ * @param attr
+ */
+function detectFormatType(attr: BufferAttribute | InterleavedBufferAttribute): Zko.ZkFormatType {
+    const itemSize = attr.itemSize
+    switch (itemSize) {
+        case 1:
+            return Zko.ZkFormatType.SCALAR
+        case 2:
+            return Zko.ZkFormatType.VEC2
+        case 3:
+            return Zko.ZkFormatType.VEC3
+        case 4:
+            return Zko.ZkFormatType.VEC4
+    }
+}
+
+/**
+ * Detects the appropriate data type for a buffer key attribute
+ * @param attr
+ */
+function detectDataType(attr: BufferAttribute | InterleavedBufferAttribute) {
+    const baseType = detectBaseType(attr)
+    const formatType = detectFormatType(attr)
+    return Zko.ZkDataType.create({type: baseType, format: formatType})
 }
 
 /**
