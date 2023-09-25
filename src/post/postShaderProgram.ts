@@ -12,7 +12,7 @@ export function postShaderProgram(obj: ZModel): ZShaderProgram {
     const shaderProgram = new ZShaderProgram()
 
     ATTRS.list.forEach((attr: Attrib) => {
-        const bufferKey = obj.mesh.bufferKeysMap.get(attr.name)
+        const bufferKey = obj.mesh.bufferKeys.find((key: ZBufferKey) => key.name === attr.name)
         if (!_.isNil(bufferKey)) {
             addAttribute(shaderProgram, attr, bufferKey)
         }

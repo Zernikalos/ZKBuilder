@@ -21,8 +21,8 @@ Mesh will provide:
 A relationship between the BufferKey and its Buffers
  */
 message ZkMesh {
-  map<string, ZkBufferKey> bufferKeys = 1;
-  map<string, ZkBuffer> buffers = 2;
+  repeated ZkBufferKey bufferKeys = 1;
+  repeated ZkRawBuffer rawBuffers = 2;
 }
 
 /**
@@ -39,31 +39,33 @@ message ZkBufferKey {
   Type of data stored
    */
   required ZkDataType dataType = 2;
+
+  required string name = 3;
   /**
   How many elements are stored per data unit.
   Example: a Vec3 will have size equals to 3 in the same way a Scalar will be 1
    */
-  required uint32 size = 3;
+  required uint32 size = 4;
   /**
   How many elements of this type are stored.
   Example: If we store 15 Vec3 elements in the data array the count will have a value of 15.
    */
-  required uint32 count = 4;
-  required bool normalized = 5;
-  required uint32 offset = 6;
+  required uint32 count = 5;
+  required bool normalized = 6;
+  required uint32 offset = 7;
   /**
   If the data is tightly represented within the array how many elements it requires to be jumped to the next one
   Example: We store a Vec3 postion and a Vec3 normal in the very same array, the stride will be 6
    */
-  required uint32 stride = 7;
-  required bool isIndexBuffer = 8;
+  required uint32 stride = 8;
+  required bool isIndexBuffer = 9;
   /**
   Refers to the RawBuffer Id
    */
-  required uint32 bufferId = 9;
+  required uint32 bufferId = 10;
 }
 
-message ZkBuffer {
+message ZkRawBuffer {
   required uint32 id = 1;
   required bytes dataArray = 2;
 }

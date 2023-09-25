@@ -3,6 +3,7 @@ import {Zko} from "../../proto"
 export class ZBufferKey {
     id: number = 0
     dataType: Zko.ZkDataType
+    name: string = ""
     size: number = 0
     count: number = 0
     normalized: boolean = false

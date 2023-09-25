@@ -1,5 +1,4 @@
 import * as $protobuf from "protobufjs";
-import Long = require("long");
 export namespace Zko {
 
     interface IProtoZkObject {
@@ -97,26 +96,28 @@ export namespace Zko {
     }
 
     enum ZkBaseType {
-        BYTE = 0,
-        UBYTE = 1,
-        SHORT = 2,
-        USHORT = 3,
-        INT = 4,
-        UINT = 5,
-        FLOAT = 6,
-        DOUBLE = 7,
-        TEXTURE = 8
+        NONE = 0,
+        BYTE = 1,
+        UBYTE = 2,
+        SHORT = 3,
+        USHORT = 4,
+        INT = 5,
+        UINT = 6,
+        FLOAT = 7,
+        DOUBLE = 8,
+        TEXTURE = 9
     }
 
     enum ZkFormatType {
-        SCALAR = 0,
-        VEC2 = 1,
-        VEC3 = 2,
-        VEC4 = 3,
-        MAT2 = 4,
-        MAT3 = 5,
-        MAT4 = 6,
-        TEXTURE = 7
+        NONE = 0,
+        SCALAR = 1,
+        VEC2 = 2,
+        VEC3 = 3,
+        VEC4 = 4,
+        MAT2 = 5,
+        MAT3 = 6,
+        MAT4 = 7,
+        TEXTURE = 8
     }
 
     interface IZkDataType {
@@ -254,14 +255,14 @@ export namespace Zko {
     }
 
     interface IZkMesh {
-        bufferKeys?: ({ [k: string]: Zko.ZkBufferKey }|null);
-        buffers?: ({ [k: string]: Zko.ZkBuffer }|null);
+        bufferKeys?: (Zko.ZkBufferKey[]|null);
+        rawBuffers?: (Zko.ZkRawBuffer[]|null);
     }
 
     class ZkMesh implements IZkMesh {
         constructor(properties?: Zko.IZkMesh);
-        public bufferKeys: { [k: string]: Zko.ZkBufferKey };
-        public buffers: { [k: string]: Zko.ZkBuffer };
+        public bufferKeys: Zko.ZkBufferKey[];
+        public rawBuffers: Zko.ZkRawBuffer[];
         public static create(properties?: Zko.IZkMesh): Zko.ZkMesh;
         public static encode(message: Zko.ZkMesh, writer?: $protobuf.Writer): $protobuf.Writer;
         public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkMesh;
@@ -275,6 +276,7 @@ export namespace Zko {
     interface IZkBufferKey {
         id: number;
         dataType: Zko.ZkDataType;
+        name: string;
         size: number;
         count: number;
         normalized: boolean;
@@ -288,6 +290,7 @@ export namespace Zko {
         constructor(properties?: Zko.IZkBufferKey);
         public id: number;
         public dataType: Zko.ZkDataType;
+        public name: string;
         public size: number;
         public count: number;
         public normalized: boolean;
@@ -305,21 +308,21 @@ export namespace Zko {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
-    interface IZkBuffer {
+    interface IZkRawBuffer {
         id: number;
         dataArray: Uint8Array;
     }
 
-    class ZkBuffer implements IZkBuffer {
-        constructor(properties?: Zko.IZkBuffer);
+    class ZkRawBuffer implements IZkRawBuffer {
+        constructor(properties?: Zko.IZkRawBuffer);
         public id: number;
         public dataArray: Uint8Array;
-        public static create(properties?: Zko.IZkBuffer): Zko.ZkBuffer;
-        public static encode(message: Zko.ZkBuffer, writer?: $protobuf.Writer): $protobuf.Writer;
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkBuffer;
+        public static create(properties?: Zko.IZkRawBuffer): Zko.ZkRawBuffer;
+        public static encode(message: Zko.ZkRawBuffer, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkRawBuffer;
         public static verify(message: { [k: string]: any }): (string|null);
-        public static fromObject(object: { [k: string]: any }): Zko.ZkBuffer;
-        public static toObject(message: Zko.ZkBuffer, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public static fromObject(object: { [k: string]: any }): Zko.ZkRawBuffer;
+        public static toObject(message: Zko.ZkRawBuffer, options?: $protobuf.IConversionOptions): { [k: string]: any };
         public toJSON(): { [k: string]: any };
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
