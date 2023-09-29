@@ -24,5 +24,6 @@ message ZkShaderUniform {
   required string uniformName = 1;
   required uint32 count = 2;
   required ZkDataType dataType = 3;
+  required uint32 idx = 4;
 }
 

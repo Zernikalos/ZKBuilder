@@ -1,13 +1,13 @@
-import {ZModel} from "../../zernikalos/ZModel";
-import {ZShaderUniform} from "../../zernikalos/shader/ZShaderUniform";
-import {ZBufferKey} from "../../zernikalos/mesh/ZBufferKey";
-import {BR, buildSource, CLOSE_MAIN, FLOAT_PRECISSION, HEADER, OPEN_MAIN} from "./shadersourcecommon";
+import {ZModel} from "../../zernikalos/ZModel"
+import {ZShaderUniform} from "../../zernikalos/shader/ZShaderUniform"
+import {ZBufferKey} from "../../zernikalos/mesh/ZBufferKey"
+import {BR, buildSource, CLOSE_MAIN, FLOAT_PRECISSION, HEADER, OPEN_MAIN} from "./shadersourcecommon"
 import {
     ATTR_COLOR,
     ATTR_UV,
     UNIF_TEXTURE
-} from "../../constants";
-import _ from "lodash";
+} from "../../constants"
+import _ from "lodash"
 
 export function generateFragmentShaderSource(obj: ZModel) {
 

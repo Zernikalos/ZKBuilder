@@ -87,6 +87,7 @@ function parseBufferKey(attr: BufferAttribute | InterleavedBufferAttribute, attr
     zKey.normalized = attr.normalized
     zKey.offset = (attr as BufferAttribute)?.updateRange?.offset ?? 0
     zKey.stride = (attr as InterleavedBufferAttribute)?.data?.stride ?? 0
+    // TODO: This is not correct if there are less buffers, interleaved
     zKey.bufferId = attrCounter
     return zKey
 }

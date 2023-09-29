@@ -4298,6 +4298,7 @@ export const Zko = $root.Zko = (() => {
          * @property {string} uniformName ZkShaderUniform uniformName
          * @property {number} count ZkShaderUniform count
          * @property {Zko.ZkDataType} dataType ZkShaderUniform dataType
+         * @property {number} idx ZkShaderUniform idx
          */
 
         /**
@@ -4340,6 +4341,14 @@ export const Zko = $root.Zko = (() => {
         ZkShaderUniform.prototype.dataType = null;
 
         /**
+         * ZkShaderUniform idx.
+         * @member {number} idx
+         * @memberof Zko.ZkShaderUniform
+         * @instance
+         */
+        ZkShaderUniform.prototype.idx = 0;
+
+        /**
          * Creates a new ZkShaderUniform instance using the specified properties.
          * @function create
          * @memberof Zko.ZkShaderUniform
@@ -4366,6 +4375,7 @@ export const Zko = $root.Zko = (() => {
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.uniformName);
             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.count);
             $root.Zko.ZkDataType.encode(message.dataType, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.idx);
             return writer;
         };
 
@@ -4399,6 +4409,10 @@ export const Zko = $root.Zko = (() => {
                         message.dataType = $root.Zko.ZkDataType.decode(reader, reader.uint32());
                         break;
                     }
+                case 4: {
+                        message.idx = reader.uint32();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -4410,6 +4424,8 @@ export const Zko = $root.Zko = (() => {
                 throw $util.ProtocolError("missing required 'count'", { instance: message });
             if (!message.hasOwnProperty("dataType"))
                 throw $util.ProtocolError("missing required 'dataType'", { instance: message });
+            if (!message.hasOwnProperty("idx"))
+                throw $util.ProtocolError("missing required 'idx'", { instance: message });
             return message;
         };
 
@@ -4433,6 +4449,8 @@ export const Zko = $root.Zko = (() => {
                 if (error)
                     return "dataType." + error;
             }
+            if (!$util.isInteger(message.idx))
+                return "idx: integer expected";
             return null;
         };
 
@@ -4457,6 +4475,8 @@ export const Zko = $root.Zko = (() => {
                     throw TypeError(".Zko.ZkShaderUniform.dataType: object expected");
                 message.dataType = $root.Zko.ZkDataType.fromObject(object.dataType);
             }
+            if (object.idx != null)
+                message.idx = object.idx >>> 0;
             return message;
         };
 
@@ -4477,6 +4497,7 @@ export const Zko = $root.Zko = (() => {
                 object.uniformName = "";
                 object.count = 0;
                 object.dataType = null;
+                object.idx = 0;
             }
             if (message.uniformName != null && message.hasOwnProperty("uniformName"))
                 object.uniformName = message.uniformName;
@@ -4484,6 +4505,8 @@ export const Zko = $root.Zko = (() => {
                 object.count = message.count;
             if (message.dataType != null && message.hasOwnProperty("dataType"))
                 object.dataType = $root.Zko.ZkDataType.toObject(message.dataType, options);
+            if (message.idx != null && message.hasOwnProperty("idx"))
+                object.idx = message.idx;
             return object;
         };
 

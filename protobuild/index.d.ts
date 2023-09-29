@@ -1,4 +1,5 @@
 import * as $protobuf from "protobufjs";
+import Long = require("long");
 export namespace Zko {
 
     interface IProtoZkObject {
@@ -392,6 +393,7 @@ export namespace Zko {
         uniformName: string;
         count: number;
         dataType: Zko.ZkDataType;
+        idx: number;
     }
 
     class ZkShaderUniform implements IZkShaderUniform {
@@ -399,6 +401,7 @@ export namespace Zko {
         public uniformName: string;
         public count: number;
         public dataType: Zko.ZkDataType;
+        public idx: number;
         public static create(properties?: Zko.IZkShaderUniform): Zko.ZkShaderUniform;
         public static encode(message: Zko.ZkShaderUniform, writer?: $protobuf.Writer): $protobuf.Writer;
         public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkShaderUniform;
