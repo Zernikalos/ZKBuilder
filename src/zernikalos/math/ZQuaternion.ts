@@ -1,16 +1,4 @@
+import {zernikalos} from "@zernikalos/zernikalos"
+import ZQuaternion = zernikalos.math.ZQuaternion
 
-export class ZQuaternion {
-    w: number
-    x: number
-    y: number
-    z: number
-
-    constructor(w: number, x: number, y: number, z: number) {
-        this.w = w
-
-        this.x = x
-        this.y = y
-        this.z = z
-    }
-
-}
+export {ZQuaternion}

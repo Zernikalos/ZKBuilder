@@ -9,7 +9,7 @@ export async function parseMaterial(mat: Material): Promise<ZMaterial | undefine
         return
     }
 
-    const material = new ZMaterial()
+    const material = ZMaterial.init()
 
     // @ts-ignore
     const tex = mat?.map
@@ -25,8 +25,8 @@ async function parseTexture(tex: Texture): Promise<ZTexture> {
     const response = await fetch(imgElement.src)
     const data = await response.arrayBuffer()
 
-    const texture = new ZTexture()
-    texture.dataArray = new Uint8Array(data)
+    const texture = ZTexture.init()
+    texture.dataArray = new Int8Array(data)
     texture.id = `${hash(texture.dataArray)}`
 
     return texture

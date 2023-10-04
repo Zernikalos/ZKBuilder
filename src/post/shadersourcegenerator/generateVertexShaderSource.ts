@@ -1,5 +1,4 @@
-import {ZModel} from "../../zernikalos/ZModel";
-import {ZBufferKey} from "../../zernikalos/mesh/ZBufferKey";
+import {ZModel} from "../../zernikalos/ZModel"
 import {
     BR, buildSource,
     CLOSE_MAIN,
@@ -7,16 +6,17 @@ import {
     OPEN_MAIN,
     T,
 } from "./shadersourcecommon"
-import {ATTR_COLOR, ATTR_NORMAL, ATTR_POSITION, ATTR_UV, UNIF_MODELVIEWPROJECTION} from "../../constants";
-import {UNIF_MODELVIEW, UNIF_PROJECTION} from "../../constants";
-import {ZShaderUniform} from "../../zernikalos/shader/ZShaderUniform";
-import _ from "lodash";
+import {ATTR_COLOR, ATTR_NORMAL, ATTR_POSITION, ATTR_UV, UNIF_MODELVIEWPROJECTION} from "../../constants"
+import {UNIF_MODELVIEW, UNIF_PROJECTION} from "../../constants"
+import _ from "lodash"
+import {kotlinMapToJsMap, mapFlatJs} from "../../utils/mapFlatJs";
 
 export function generateVertexShaderSource(obj: ZModel): string {
 
     const HAS_TEXTURES = !_.isNil(obj.material?.texture)
-    const uniforms: Map<string, ZShaderUniform> = obj.shaderProgram.uniformsMap
-    const bufferKeys: ZBufferKey[] = obj.mesh.bufferKeys
+    // const uniforms: Map<string, ZUniform> = obj.shaderProgram.uniformsMap
+    const uniforms = kotlinMapToJsMap(obj.shaderProgram.uniforms)
+    const buffers = mapFlatJs(obj.mesh.buffers)
 
     const source: (string | string[])[] = [
         HEADER,
@@ -51,7 +51,7 @@ export function generateVertexShaderSource(obj: ZModel): string {
             }
         }
 
-        return [...bufferKeys].map((bufferKey: ZBufferKey) => genAttribute(bufferKey.name))
+        return [...buffers].map((buff) => genAttribute(buff.key))
     }
 
     function genOutAttributes() {
@@ -66,18 +66,18 @@ export function generateVertexShaderSource(obj: ZModel): string {
                     return `out vec2 ${ATTR_UV.variantName};`
             }
         }
-        return [...bufferKeys].map((bufferKey: ZBufferKey) => genAttribute(bufferKey.name))
+        return [...buffers].map((buff) => genAttribute(buff.key))
     }
 
     function genOutColor() {
-        if (!bufferKeys.some((key: ZBufferKey) => key.name === ATTR_COLOR.name)) {
+        if (!buffers.some((buff) => buff.key === ATTR_COLOR.name)) {
             return ""
         }
         return `${ATTR_COLOR.variantName} = ${ATTR_COLOR.attribName};`
     }
 
     function genOutUv() {
-        if (!bufferKeys.some((key: ZBufferKey) => key.name === ATTR_UV.name) || !HAS_TEXTURES) {
+        if (!buffers.some((buff) => buff.key === ATTR_UV.name) || !HAS_TEXTURES) {
             return ""
         }
         return `${ATTR_UV.variantName} = ${ATTR_UV.attribName};`

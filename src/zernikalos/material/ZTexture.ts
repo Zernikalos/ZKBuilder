@@ -1,5 +1,4 @@
+import {zernikalos} from "@zernikalos/zernikalos"
+import ZTexture = zernikalos.components.material.ZTexture
 
-export class ZTexture {
-    id: string
-    dataArray: Uint8Array
-}
+export {ZTexture}

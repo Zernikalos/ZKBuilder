@@ -1,5 +1,4 @@
+import {zernikalos} from "@zernikalos/zernikalos"
+import ZRawBuffer = zernikalos.components.mesh.ZRawBuffer
 
-export class ZRawBuffer {
-    id: number
-    dataArray: Uint8Array
-}
+export {ZRawBuffer}

@@ -1,5 +1,4 @@
-import {ZTexture} from "./ZTexture";
+import {zernikalos} from "@zernikalos/zernikalos"
+import ZMaterial = zernikalos.components.material.ZMaterial
 
-export class ZMaterial {
-    texture: ZTexture
-}
+export {ZMaterial}

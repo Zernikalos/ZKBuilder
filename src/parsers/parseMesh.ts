@@ -3,9 +3,9 @@ import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUti
 import {ZMesh} from "../zernikalos/mesh/ZMesh"
 import {ZRawBuffer} from "../zernikalos/mesh/ZRawBuffer";
 import _, {isNil} from "lodash";
-import {Zko} from "../proto";
 import {ZBufferKey} from "../zernikalos/mesh/ZBufferKey";
 import {ATTRS} from "../constants";
+import {ZBaseType, ZDataType, ZFormatType} from "../zernikalos/ZDataType";
 
 /**
  * Filters only recognized attributes by the parser
@@ -19,25 +19,25 @@ export function filterAttributes(geometry: BufferGeometry) {
  * Detects the appropriate base data type for a buffer key attribute
  * @param attr
  */
-function detectBaseType(attr: BufferAttribute | InterleavedBufferAttribute): Zko.ZkBaseType {
+function detectBaseType(attr: BufferAttribute | InterleavedBufferAttribute): ZBaseType {
     const array = attr.array
     if (array instanceof Int16Array) {
-        return Zko.ZkBaseType.SHORT
+        return ZBaseType.SHORT
     }
     if (array instanceof Uint16Array) {
-        return Zko.ZkBaseType.USHORT
+        return ZBaseType.UNSIGNED_SHORT
     }
     if (array instanceof Int32Array) {
-        return Zko.ZkBaseType.INT
+        return ZBaseType.INT
     }
     if (array instanceof Uint32Array) {
-        return Zko.ZkBaseType.UINT
+        return ZBaseType.UNSIGNED_INT
     }
     if (array instanceof Float32Array) {
-        return Zko.ZkBaseType.FLOAT
+        return ZBaseType.FLOAT
     }
     if (array instanceof Float64Array) {
-        return Zko.ZkBaseType.DOUBLE
+        return ZBaseType.DOUBLE
     }
 }
 
@@ -45,17 +45,17 @@ function detectBaseType(attr: BufferAttribute | InterleavedBufferAttribute): Zko
  * Detects the appropriate base data type for a buffer key attribute
  * @param attr
  */
-function detectFormatType(attr: BufferAttribute | InterleavedBufferAttribute): Zko.ZkFormatType {
+function detectFormatType(attr: BufferAttribute | InterleavedBufferAttribute): ZFormatType {
     const itemSize = attr.itemSize
     switch (itemSize) {
         case 1:
-            return Zko.ZkFormatType.SCALAR
+            return ZFormatType.SCALAR
         case 2:
-            return Zko.ZkFormatType.VEC2
+            return ZFormatType.VEC2
         case 3:
-            return Zko.ZkFormatType.VEC3
+            return ZFormatType.VEC3
         case 4:
-            return Zko.ZkFormatType.VEC4
+            return ZFormatType.VEC4
     }
 }
 
@@ -63,10 +63,10 @@ function detectFormatType(attr: BufferAttribute | InterleavedBufferAttribute): Z
  * Detects the appropriate data type for a buffer key attribute
  * @param attr
  */
-function detectDataType(attr: BufferAttribute | InterleavedBufferAttribute) {
+function detectDataType(attr: BufferAttribute | InterleavedBufferAttribute): ZDataType {
     const baseType = detectBaseType(attr)
     const formatType = detectFormatType(attr)
-    return Zko.ZkDataType.create({type: baseType, format: formatType})
+    return new ZDataType(baseType, formatType)
 }
 
 /**
@@ -79,7 +79,8 @@ function parseBufferKey(attr: BufferAttribute | InterleavedBufferAttribute, attr
     if (isNil(attr)) {
         throw new Error("Attributes must be defined when exported")
     }
-    const zKey = new ZBufferKey(attrCounter)
+    const zKey = ZBufferKey.init()
+    zKey.id = attrCounter
     zKey.dataType = detectDataType(attr)
     zKey.name = attrName
     zKey.size = attr.itemSize
@@ -93,8 +94,8 @@ function parseBufferKey(attr: BufferAttribute | InterleavedBufferAttribute, attr
 }
 
 function parseBuffer(buffAttr: BufferAttribute | InterleavedBufferAttribute, attrCounter: number): ZRawBuffer {
-    const data = new Uint8Array(buffAttr.array.buffer)
-    const zBuffer = new ZRawBuffer()
+    const data = new Int8Array(buffAttr.array.buffer)
+    const zBuffer = ZRawBuffer.initWithArgs(attrCounter, data)
     zBuffer.id = attrCounter
     zBuffer.dataArray = data
     return zBuffer
@@ -144,7 +145,7 @@ export function parseMesh(geometry: BufferGeometry): ZMesh {
     // const b = BufferGeometryUtils
     // BufferGeometryUtils.mergeBufferAttributes(geometry.attributes)
 
-    const mesh = new ZMesh()
+    const mesh = ZMesh.init()
 
     // TODO: Make this optional with a flag
     // In case no index is reported create it
@@ -153,8 +154,8 @@ export function parseMesh(geometry: BufferGeometry): ZMesh {
     }
 
     const {keys, rawBuffers} = parseBuffersAndKeys(geometry)
-    mesh.addBufferKeys(keys)
-    mesh.addRawBuffers(rawBuffers)
+    keys.forEach(key => mesh.addBufferKey(key))
+    rawBuffers.forEach(buff => mesh.addRawBuffer(buff))
 
     return mesh
 }

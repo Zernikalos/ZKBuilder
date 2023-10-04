@@ -1,12 +1,4 @@
+import {zernikalos} from "@zernikalos/zernikalos"
+import ZVector3 = zernikalos.math.ZVector3
 
-export class ZVector3 {
-    x: number
-    y: number
-    z: number
-
-    constructor(x: number, y: number, z: number) {
-        this.x = x
-        this.y = y
-        this.z = z
-    }
-}
+export {ZVector3}

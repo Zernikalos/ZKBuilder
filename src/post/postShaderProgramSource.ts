@@ -8,7 +8,7 @@ export function postShaderProgramSource(obj: ZModel): void {
 }
 
 function postShader(type: ShaderType, obj: ZModel): ZShader {
-    const shader = new ZShader()
+    const shader = ZShader.init()
     shader.type = type
     if (type === "vertex") {
         shader.source = generateVertexShaderSource(obj)

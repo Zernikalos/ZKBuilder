@@ -1,28 +1,44 @@
+import {zernikalos} from "@zernikalos/zernikalos"
+import ZMesh = zernikalos.components.mesh.ZMesh
+import {Zko} from "../../../protobuild";
+import {mapFlatJs} from "../../utils/mapFlatJs";
+import ZBuffer = zernikalos.components.mesh.ZBuffer;
 import {ZBufferKey} from "./ZBufferKey";
 import {ZRawBuffer} from "./ZRawBuffer";
 
-export class ZMesh {
+export {ZMesh}
 
-    public bufferKeys: ZBufferKey[] = []
-    public rawBuffers: ZRawBuffer[] = []
+const ogFromObject = Zko.ZkMesh.fromObject
 
-    public addBufferKey(bufferKey: ZBufferKey) {
-        this.bufferKeys.push(bufferKey)
+Zko.ZkMesh.fromObject = (obj: any) => {
+    if (obj instanceof Zko.ZkMesh) {
+        return ogFromObject(obj)
     }
+    const buffers = mapFlatJs(obj.buffers)
+    const bufferKeys = buffers.map((pair) => createTempBufferKey(pair.value))
+    const rawBuffers = buffers.map((pair) => createTempRawBuffer(pair.value))
 
-    public addBufferKeys(bufferKeys: ZBufferKey[]) {
-        for (const key of bufferKeys) {
-            this.addBufferKey(key)
-        }
+    return ogFromObject({bufferKeys, rawBuffers})
+}
+
+function createTempBufferKey(buff: ZBuffer): ZBufferKey {
+    return {
+        bufferId: buff.bufferId,
+        count: buff.count,
+        dataType: buff.dataType,
+        id: buff.id,
+        isIndexBuffer: buff.isIndexBuffer,
+        name: buff.name,
+        normalized: buff.normalized,
+        offset: buff.offset,
+        size: buff.size,
+        stride: buff.stride
     }
+}
 
-    public addRawBuffers(rawBuffers: ZRawBuffer[]) {
-        for (const buff of rawBuffers) {
-            this.addRawBuffer(buff)
-        }
-    }
-
-    public addRawBuffer(rawBuffer: ZRawBuffer) {
-        this.rawBuffers.push(rawBuffer)
+function createTempRawBuffer(buff: ZBuffer): Partial<ZRawBuffer> {
+    return {
+        id: buff.bufferId,
+        dataArray: buff.dataArray,
     }
 }

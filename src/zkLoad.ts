@@ -15,7 +15,7 @@ export const DEFAULT_LOAD_OPTIONS: Partial<LoadOptions> = {
 }
 
 export async function zkLoad(options: LoadOptions): Promise<ZkoParseableObject> {
-    let result
+    let result: ZkoParseableObject
 
     const mergedOptions: LoadOptions = merge({}, DEFAULT_LOAD_OPTIONS, options)
     const {filePath, format} = mergedOptions

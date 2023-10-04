@@ -1,37 +1,18 @@
-import {ZShader} from "./ZShader"
-import {ZShaderAttribute} from "./ZShaderAttribute"
-import {ZShaderUniform} from "./ZShaderUniform";
+import {zernikalos} from "@zernikalos/zernikalos"
+import ZShaderProgram = zernikalos.components.shader.ZShaderProgram
+import {Zko} from "../../proto";
+import {kotlinMapToJsObject} from "../../utils/mapFlatJs";
 
-export class ZShaderProgram {
-    vertexShader: ZShader
-    fragmentShader: ZShader
+export {ZShaderProgram}
 
-    private _attributes: Map<string, ZShaderAttribute> = new Map()
-    private _uniforms: Map<string, ZShaderUniform> = new Map()
+const ogFromObject = Zko.ZkShaderProgram.fromObject
 
-    public get attributesMap(): Map<string, ZShaderAttribute> {
-        return this._attributes
+Zko.ZkShaderProgram.fromObject = (obj: any) => {
+    if (obj instanceof Zko.ZkShaderProgram) {
+        return ogFromObject(obj)
     }
-
-    public get attributes(): {[key: string]: ZShaderAttribute} {
-        return Object.fromEntries(this._attributes)
-    }
-
-    public get uniformsMap(): Map<string, ZShaderUniform> {
-        return this._uniforms
-    }
-
-    public get uniforms(): {[key: string]: ZShaderUniform} {
-        return Object.fromEntries(this._uniforms)
-    }
-
-    public setAttribute(key: string, attr: ZShaderAttribute) {
-        this._attributes.set(key, attr)
-    }
-
-    public setUniform(key: string, unif: ZShaderUniform) {
-        this._uniforms.set(key, unif)
-    }
-
+    const attributes = kotlinMapToJsObject(obj.attributes)
+    const uniforms = kotlinMapToJsObject(obj.uniforms)
+    const newObj = {vertexShader: obj.vertexShader, fragmentShader: obj.fragmentShader, attributes, uniforms}
+    return ogFromObject(newObj)
 }
-
