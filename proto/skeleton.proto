@@ -1,0 +1,32 @@
+syntax = "proto2";
+
+package Zko;
+
+import "./math.proto";
+
+message ZkSkeleton {
+  required string id = 1;
+  required string name = 2;
+
+  required ZkTransform transform = 3;
+
+  required ZkBone root = 4;
+}
+
+message ZkBone {
+  required string id = 1;
+  required string name = 2;
+
+  required ZkTransform transform = 3;
+
+  repeated ZkBone children = 5;
+}
+
+message ZkJoint {
+  required string id = 1;
+  required string name = 2;
+
+  required ZkTransform transform = 3;
+
+  required ZkBone bone = 4;
+}

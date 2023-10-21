@@ -1,5 +1,4 @@
 import * as $protobuf from "protobufjs";
-import Long = require("long");
 export namespace Zko {
 
     interface IProtoZkObject {
@@ -8,6 +7,8 @@ export namespace Zko {
         group?: (Zko.ZkGroup|null);
         model?: (Zko.ZkModel|null);
         camera?: (Zko.ZkCamera|null);
+        skeleton?: (Zko.ZkSkeleton|null);
+        joint?: (Zko.ZkJoint|null);
         children?: (Zko.ProtoZkObject[]|null);
     }
 
@@ -18,6 +19,8 @@ export namespace Zko {
         public group?: (Zko.ZkGroup|null);
         public model?: (Zko.ZkModel|null);
         public camera?: (Zko.ZkCamera|null);
+        public skeleton?: (Zko.ZkSkeleton|null);
+        public joint?: (Zko.ZkJoint|null);
         public children: Zko.ProtoZkObject[];
         public static create(properties?: Zko.IProtoZkObject): Zko.ProtoZkObject;
         public static encode(message: Zko.ProtoZkObject, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -25,73 +28,6 @@ export namespace Zko {
         public static verify(message: { [k: string]: any }): (string|null);
         public static fromObject(object: { [k: string]: any }): Zko.ProtoZkObject;
         public static toObject(message: Zko.ProtoZkObject, options?: $protobuf.IConversionOptions): { [k: string]: any };
-        public toJSON(): { [k: string]: any };
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
-    interface IZkGroup {
-        id: string;
-        name: string;
-        transform: Zko.ZkTransform;
-    }
-
-    class ZkGroup implements IZkGroup {
-        constructor(properties?: Zko.IZkGroup);
-        public id: string;
-        public name: string;
-        public transform: Zko.ZkTransform;
-        public static create(properties?: Zko.IZkGroup): Zko.ZkGroup;
-        public static encode(message: Zko.ZkGroup, writer?: $protobuf.Writer): $protobuf.Writer;
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkGroup;
-        public static verify(message: { [k: string]: any }): (string|null);
-        public static fromObject(object: { [k: string]: any }): Zko.ZkGroup;
-        public static toObject(message: Zko.ZkGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
-        public toJSON(): { [k: string]: any };
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
-    interface IZkColor {
-        r: number;
-        g: number;
-        b: number;
-        a: number;
-    }
-
-    class ZkColor implements IZkColor {
-        constructor(properties?: Zko.IZkColor);
-        public r: number;
-        public g: number;
-        public b: number;
-        public a: number;
-        public static create(properties?: Zko.IZkColor): Zko.ZkColor;
-        public static encode(message: Zko.ZkColor, writer?: $protobuf.Writer): $protobuf.Writer;
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkColor;
-        public static verify(message: { [k: string]: any }): (string|null);
-        public static fromObject(object: { [k: string]: any }): Zko.ZkColor;
-        public static toObject(message: Zko.ZkColor, options?: $protobuf.IConversionOptions): { [k: string]: any };
-        public toJSON(): { [k: string]: any };
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
-    interface IZkScene {
-        id: string;
-        name: string;
-        transform: Zko.ZkTransform;
-        clearColor?: (Zko.ZkColor|null);
-    }
-
-    class ZkScene implements IZkScene {
-        constructor(properties?: Zko.IZkScene);
-        public id: string;
-        public name: string;
-        public transform: Zko.ZkTransform;
-        public clearColor?: (Zko.ZkColor|null);
-        public static create(properties?: Zko.IZkScene): Zko.ZkScene;
-        public static encode(message: Zko.ZkScene, writer?: $protobuf.Writer): $protobuf.Writer;
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkScene;
-        public static verify(message: { [k: string]: any }): (string|null);
-        public static fromObject(object: { [k: string]: any }): Zko.ZkScene;
-        public static toObject(message: Zko.ZkScene, options?: $protobuf.IConversionOptions): { [k: string]: any };
         public toJSON(): { [k: string]: any };
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
@@ -224,6 +160,73 @@ export namespace Zko {
         public static verify(message: { [k: string]: any }): (string|null);
         public static fromObject(object: { [k: string]: any }): Zko.ZkQuaternion;
         public static toObject(message: Zko.ZkQuaternion, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public toJSON(): { [k: string]: any };
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    interface IZkGroup {
+        id: string;
+        name: string;
+        transform: Zko.ZkTransform;
+    }
+
+    class ZkGroup implements IZkGroup {
+        constructor(properties?: Zko.IZkGroup);
+        public id: string;
+        public name: string;
+        public transform: Zko.ZkTransform;
+        public static create(properties?: Zko.IZkGroup): Zko.ZkGroup;
+        public static encode(message: Zko.ZkGroup, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkGroup;
+        public static verify(message: { [k: string]: any }): (string|null);
+        public static fromObject(object: { [k: string]: any }): Zko.ZkGroup;
+        public static toObject(message: Zko.ZkGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public toJSON(): { [k: string]: any };
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    interface IZkScene {
+        id: string;
+        name: string;
+        transform: Zko.ZkTransform;
+        clearColor?: (Zko.ZkColor|null);
+    }
+
+    class ZkScene implements IZkScene {
+        constructor(properties?: Zko.IZkScene);
+        public id: string;
+        public name: string;
+        public transform: Zko.ZkTransform;
+        public clearColor?: (Zko.ZkColor|null);
+        public static create(properties?: Zko.IZkScene): Zko.ZkScene;
+        public static encode(message: Zko.ZkScene, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkScene;
+        public static verify(message: { [k: string]: any }): (string|null);
+        public static fromObject(object: { [k: string]: any }): Zko.ZkScene;
+        public static toObject(message: Zko.ZkScene, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public toJSON(): { [k: string]: any };
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    interface IZkColor {
+        r: number;
+        g: number;
+        b: number;
+        a: number;
+    }
+
+    class ZkColor implements IZkColor {
+        constructor(properties?: Zko.IZkColor);
+        public r: number;
+        public g: number;
+        public b: number;
+        public a: number;
+        public static create(properties?: Zko.IZkColor): Zko.ZkColor;
+        public static encode(message: Zko.ZkColor, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkColor;
+        public static verify(message: { [k: string]: any }): (string|null);
+        public static fromObject(object: { [k: string]: any }): Zko.ZkColor;
+        public static toObject(message: Zko.ZkColor, options?: $protobuf.IConversionOptions): { [k: string]: any };
         public toJSON(): { [k: string]: any };
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
@@ -454,6 +457,75 @@ export namespace Zko {
         public static verify(message: { [k: string]: any }): (string|null);
         public static fromObject(object: { [k: string]: any }): Zko.ZkLens;
         public static toObject(message: Zko.ZkLens, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public toJSON(): { [k: string]: any };
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    interface IZkSkeleton {
+        id: string;
+        name: string;
+        transform: Zko.ZkTransform;
+        root: Zko.ZkBone;
+    }
+
+    class ZkSkeleton implements IZkSkeleton {
+        constructor(properties?: Zko.IZkSkeleton);
+        public id: string;
+        public name: string;
+        public transform: Zko.ZkTransform;
+        public root: Zko.ZkBone;
+        public static create(properties?: Zko.IZkSkeleton): Zko.ZkSkeleton;
+        public static encode(message: Zko.ZkSkeleton, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkSkeleton;
+        public static verify(message: { [k: string]: any }): (string|null);
+        public static fromObject(object: { [k: string]: any }): Zko.ZkSkeleton;
+        public static toObject(message: Zko.ZkSkeleton, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public toJSON(): { [k: string]: any };
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    interface IZkBone {
+        id: string;
+        name: string;
+        transform: Zko.ZkTransform;
+        children?: (Zko.ZkBone[]|null);
+    }
+
+    class ZkBone implements IZkBone {
+        constructor(properties?: Zko.IZkBone);
+        public id: string;
+        public name: string;
+        public transform: Zko.ZkTransform;
+        public children: Zko.ZkBone[];
+        public static create(properties?: Zko.IZkBone): Zko.ZkBone;
+        public static encode(message: Zko.ZkBone, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkBone;
+        public static verify(message: { [k: string]: any }): (string|null);
+        public static fromObject(object: { [k: string]: any }): Zko.ZkBone;
+        public static toObject(message: Zko.ZkBone, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public toJSON(): { [k: string]: any };
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    interface IZkJoint {
+        id: string;
+        name: string;
+        transform: Zko.ZkTransform;
+        bone: Zko.ZkBone;
+    }
+
+    class ZkJoint implements IZkJoint {
+        constructor(properties?: Zko.IZkJoint);
+        public id: string;
+        public name: string;
+        public transform: Zko.ZkTransform;
+        public bone: Zko.ZkBone;
+        public static create(properties?: Zko.IZkJoint): Zko.ZkJoint;
+        public static encode(message: Zko.ZkJoint, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkJoint;
+        public static verify(message: { [k: string]: any }): (string|null);
+        public static fromObject(object: { [k: string]: any }): Zko.ZkJoint;
+        public static toObject(message: Zko.ZkJoint, options?: $protobuf.IConversionOptions): { [k: string]: any };
         public toJSON(): { [k: string]: any };
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }

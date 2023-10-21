@@ -50,6 +50,17 @@ function convertToProto(obj: ZObject) {
                 camera: Zko.ZkCamera.fromObject(obj)
             })
             break
+        case ZObjectType.SKELETON:
+            auxNode = new Zko.ProtoZkObject({
+                type: "Skeleton",
+                skeleton: Zko.ZkSkeleton.fromObject(obj)
+            })
+            break
+        case ZObjectType.JOINT:
+            auxNode = new Zko.ProtoZkObject({
+                type: "Joint",
+                joint: Zko.ZkJoint.fromObject(obj)
+            })
     }
     return auxNode
 }

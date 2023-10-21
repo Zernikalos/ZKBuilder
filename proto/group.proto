@@ -1,0 +1,12 @@
+syntax = "proto2";
+
+package Zko;
+
+import "./math.proto";
+
+message ZkGroup {
+  required string id = 1;
+  required string name = 2;
+
+  required ZkTransform transform = 3;
+}

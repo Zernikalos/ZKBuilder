@@ -1,7 +1,7 @@
-import {Group} from "three"
+import {Group, Object3D} from "three"
 import {ZGroup} from "../zernikalos/ZGroup"
 
-export function parseGroup(_obj: Group) {
+export function parseGroup(threeObj: Group): {group: ZGroup, children: Object3D[]} {
     const group = new ZGroup()
-    return group
+    return {group, children: threeObj.children}
 }
