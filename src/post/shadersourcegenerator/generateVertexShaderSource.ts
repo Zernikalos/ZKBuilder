@@ -16,7 +16,7 @@ export function generateVertexShaderSource(obj: ZModel): string {
 
     const HAS_TEXTURES = !_.isNil(obj.material?.texture)
     const uniforms: Map<string, ZShaderUniform> = obj.shaderProgram.uniformsMap
-    const bufferKeys: Map<string, ZBufferKey> = obj.mesh.bufferKeysMap
+    const bufferKeys: ZBufferKey[] = obj.mesh.bufferKeys
 
     const source: (string | string[])[] = [
         HEADER,
@@ -51,7 +51,7 @@ export function generateVertexShaderSource(obj: ZModel): string {
             }
         }
 
-        return [...bufferKeys.entries()].map(([name, _]) => genAttribute(name))
+        return [...bufferKeys].map((bufferKey: ZBufferKey) => genAttribute(bufferKey.name))
     }
 
     function genOutAttributes() {
@@ -66,18 +66,18 @@ export function generateVertexShaderSource(obj: ZModel): string {
                     return `out vec2 ${ATTR_UV.variantName};`
             }
         }
-        return [...bufferKeys.entries()].map(([name, _]) => genAttribute(name))
+        return [...bufferKeys].map((bufferKey: ZBufferKey) => genAttribute(bufferKey.name))
     }
 
     function genOutColor() {
-        if (!bufferKeys.has(ATTR_COLOR.name)) {
+        if (!bufferKeys.some((key: ZBufferKey) => key.name === ATTR_COLOR.name)) {
             return ""
         }
         return `${ATTR_COLOR.variantName} = ${ATTR_COLOR.attribName};`
     }
 
     function genOutUv() {
-        if (!bufferKeys.has(ATTR_UV.name) || !HAS_TEXTURES) {
+        if (!bufferKeys.some((key: ZBufferKey) => key.name === ATTR_UV.name) || !HAS_TEXTURES) {
             return ""
         }
         return `${ATTR_UV.variantName} = ${ATTR_UV.attribName};`

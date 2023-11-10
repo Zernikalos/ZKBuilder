@@ -1,19 +1,19 @@
-import {ZModel} from "../../zernikalos/ZModel";
-import {ZShaderUniform} from "../../zernikalos/shader/ZShaderUniform";
-import {ZBufferKey} from "../../zernikalos/mesh/ZBufferKey";
-import {BR, buildSource, CLOSE_MAIN, FLOAT_PRECISSION, HEADER, OPEN_MAIN} from "./shadersourcecommon";
+import {ZModel} from "../../zernikalos/ZModel"
+import {ZShaderUniform} from "../../zernikalos/shader/ZShaderUniform"
+import {ZBufferKey} from "../../zernikalos/mesh/ZBufferKey"
+import {BR, buildSource, CLOSE_MAIN, FLOAT_PRECISSION, HEADER, OPEN_MAIN} from "./shadersourcecommon"
 import {
     ATTR_COLOR,
     ATTR_UV,
     UNIF_TEXTURE
-} from "../../constants";
-import _ from "lodash";
+} from "../../constants"
+import _ from "lodash"
 
 export function generateFragmentShaderSource(obj: ZModel) {
 
     const HAS_TEXTURES = !_.isNil(obj.material?.texture)
     const uniforms: Map<string, ZShaderUniform> = obj.shaderProgram.uniformsMap
-    const bufferKeys: Map<string, ZBufferKey> = obj.mesh.bufferKeysMap
+    const bufferKeys: ZBufferKey[] = obj.mesh.bufferKeys
 
     const source: string[] = [
         HEADER,
@@ -54,7 +54,7 @@ export function generateFragmentShaderSource(obj: ZModel) {
             }
         }
 
-        return [...bufferKeys.entries()].map(([name, _]) => genAttribute(name))
+        return [...bufferKeys].map((bufferKey: ZBufferKey) => genAttribute(bufferKey.name))
     }
 
     function genOutAttributes() {
@@ -62,10 +62,10 @@ export function generateFragmentShaderSource(obj: ZModel) {
     }
 
     function genOutColor() {
-        if (bufferKeys.has(ATTR_UV.name) && HAS_TEXTURES) {
+        if (bufferKeys.some((key) => key.name === ATTR_UV.name) && HAS_TEXTURES) {
             return `${ATTR_COLOR.fragName} = texture(${UNIF_TEXTURE.uniformName}, ${ATTR_UV.variantName});`
         }
-        if (bufferKeys.has(ATTR_COLOR.name)) {
+        if (bufferKeys.some((key) => key.name === ATTR_COLOR.name)) {
             return `${ATTR_COLOR.fragName} = vec4(${ATTR_COLOR.variantName}.xyz, 1);`
         }
         return `${ATTR_COLOR.fragName} = vec4(0.5, 0.5, 0.5, 1.0);`

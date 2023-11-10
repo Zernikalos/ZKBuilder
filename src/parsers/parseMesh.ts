@@ -1,12 +1,11 @@
 import {BufferAttribute, BufferGeometry, InterleavedBufferAttribute} from "three"
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils"
 import {ZMesh} from "../zernikalos/mesh/ZMesh"
-import {ZBuffer} from "../zernikalos/mesh/ZBuffer";
-import { isNil } from "lodash";
-import { Zko } from "../proto";
-import { ZBufferKey } from "../zernikalos/mesh/ZBufferKey";
-import { ATTRS } from "../constants";
-import _ from "lodash";
+import {ZRawBuffer} from "../zernikalos/mesh/ZRawBuffer";
+import _, {isNil} from "lodash";
+import {Zko} from "../proto";
+import {ZBufferKey} from "../zernikalos/mesh/ZBufferKey";
+import {ATTRS} from "../constants";
 
 /**
  * Filters only recognized attributes by the parser
@@ -17,54 +16,85 @@ export function filterAttributes(geometry: BufferGeometry) {
 }
 
 /**
- * Detects the appropiate data type for a buffer attribute
+ * Detects the appropriate base data type for a buffer key attribute
  * @param attr
  */
-function detectDataType(attr: BufferAttribute | InterleavedBufferAttribute): Zko.ZDataType {
+function detectBaseType(attr: BufferAttribute | InterleavedBufferAttribute): Zko.ZkBaseType {
     const array = attr.array
     if (array instanceof Int16Array) {
-        return Zko.ZDataType.SHORT
+        return Zko.ZkBaseType.SHORT
     }
     if (array instanceof Uint16Array) {
-        return Zko.ZDataType.USHORT
+        return Zko.ZkBaseType.USHORT
     }
     if (array instanceof Int32Array) {
-        return Zko.ZDataType.INT
+        return Zko.ZkBaseType.INT
     }
     if (array instanceof Uint32Array) {
-        return Zko.ZDataType.UINT
+        return Zko.ZkBaseType.UINT
     }
     if (array instanceof Float32Array) {
-        return Zko.ZDataType.FLOAT
+        return Zko.ZkBaseType.FLOAT
     }
     if (array instanceof Float64Array) {
-        return Zko.ZDataType.DOUBLE
+        return Zko.ZkBaseType.DOUBLE
     }
+}
+
+/**
+ * Detects the appropriate base data type for a buffer key attribute
+ * @param attr
+ */
+function detectFormatType(attr: BufferAttribute | InterleavedBufferAttribute): Zko.ZkFormatType {
+    const itemSize = attr.itemSize
+    switch (itemSize) {
+        case 1:
+            return Zko.ZkFormatType.SCALAR
+        case 2:
+            return Zko.ZkFormatType.VEC2
+        case 3:
+            return Zko.ZkFormatType.VEC3
+        case 4:
+            return Zko.ZkFormatType.VEC4
+    }
+}
+
+/**
+ * Detects the appropriate data type for a buffer key attribute
+ * @param attr
+ */
+function detectDataType(attr: BufferAttribute | InterleavedBufferAttribute) {
+    const baseType = detectBaseType(attr)
+    const formatType = detectFormatType(attr)
+    return Zko.ZkDataType.create({type: baseType, format: formatType})
 }
 
 /**
  * Parses a single attribute key, converts it from a three attribute into a {ZAttributeKey}
  * @param attr
+ * @param attrName
  * @param attrCounter
  */
-function parseBufferKey(attr: BufferAttribute | InterleavedBufferAttribute, attrCounter: number): ZBufferKey {
+function parseBufferKey(attr: BufferAttribute | InterleavedBufferAttribute, attrName: string, attrCounter: number): ZBufferKey {
     if (isNil(attr)) {
         throw new Error("Attributes must be defined when exported")
     }
     const zKey = new ZBufferKey(attrCounter)
     zKey.dataType = detectDataType(attr)
+    zKey.name = attrName
     zKey.size = attr.itemSize
     zKey.count = attr.count
     zKey.normalized = attr.normalized
     zKey.offset = (attr as BufferAttribute)?.updateRange?.offset ?? 0
     zKey.stride = (attr as InterleavedBufferAttribute)?.data?.stride ?? 0
+    // TODO: This is not correct if there are less buffers, interleaved
     zKey.bufferId = attrCounter
     return zKey
 }
 
-function parseBuffer(buffAttr: BufferAttribute | InterleavedBufferAttribute, attrCounter: number): ZBuffer {
+function parseBuffer(buffAttr: BufferAttribute | InterleavedBufferAttribute, attrCounter: number): ZRawBuffer {
     const data = new Uint8Array(buffAttr.array.buffer)
-    const zBuffer = new ZBuffer()
+    const zBuffer = new ZRawBuffer()
     zBuffer.id = attrCounter
     zBuffer.dataArray = data
     return zBuffer
@@ -75,35 +105,35 @@ function parseBuffer(buffAttr: BufferAttribute | InterleavedBufferAttribute, att
  * @param geometry
  */
 function parseBuffersAndKeys(geometry: BufferGeometry) {
-    const keys: Map<string, ZBufferKey> = new Map()
-    const buffers: Map<string, ZBuffer> = new Map()
+    const keys: ZBufferKey[] = []
+    const rawBuffers: ZRawBuffer[] = []
 
     let attrCounter = 0
 
     if (!_.isNil(geometry.index)) {
-        const indicesKey = parseBufferKey(geometry.index, attrCounter)
+        const indicesKey = parseBufferKey(geometry.index, "indices", attrCounter)
         const indicesBuffer = parseBuffer(geometry.index, attrCounter)
 
         indicesKey.isIndexBuffer = true
 
-        buffers.set("indices", indicesBuffer)
-        keys.set("indices", indicesKey)
+        keys.push(indicesKey)
+        rawBuffers.push(indicesBuffer)
         attrCounter++
     }
 
     const filteredAttributes = filterAttributes(geometry)
-    for (const [key, attr] of filteredAttributes) {
+    for (const [name, attr] of filteredAttributes) {
         if (attr instanceof BufferAttribute || attr instanceof InterleavedBufferAttribute) {
-            const zKey = parseBufferKey(attr, attrCounter)
+            const zKey = parseBufferKey(attr, name, attrCounter)
             const zBuffer = parseBuffer(attr, attrCounter)
 
-            keys.set(key, zKey)
-            buffers.set(key, zBuffer)
+            keys.push(zKey)
+            rawBuffers.push(zBuffer)
             attrCounter++
         }
     }
 
-    return {keys, buffers}
+    return {keys, rawBuffers}
 }
 
 /**
@@ -122,9 +152,9 @@ export function parseMesh(geometry: BufferGeometry): ZMesh {
         geometry = BufferGeometryUtils.mergeVertices(geometry)
     }
 
-    const {keys, buffers} = parseBuffersAndKeys(geometry)
-    mesh.setBufferKeys(keys)
-    mesh.setBuffers(buffers)
+    const {keys, rawBuffers} = parseBuffersAndKeys(geometry)
+    mesh.addBufferKeys(keys)
+    mesh.addRawBuffers(rawBuffers)
 
     return mesh
 }

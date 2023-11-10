@@ -1,44 +1,28 @@
 import {ZBufferKey} from "./ZBufferKey";
-import {ZBuffer} from "./ZBuffer";
+import {ZRawBuffer} from "./ZRawBuffer";
 
 export class ZMesh {
 
-    private _bufferKeys: Map<string, ZBufferKey> = new Map()
-    private _buffers: Map<string, ZBuffer> = new Map()
+    public bufferKeys: ZBufferKey[] = []
+    public rawBuffers: ZRawBuffer[] = []
 
-    public get bufferKeys(): {[key: string]: ZBufferKey} {
-        return Object.fromEntries(this._bufferKeys)
+    public addBufferKey(bufferKey: ZBufferKey) {
+        this.bufferKeys.push(bufferKey)
     }
 
-    public get buffers(): {[key: string]: ZBuffer} {
-        return Object.fromEntries(this._buffers)
-    }
-
-    public get bufferKeysMap() {
-        return this._bufferKeys
-    }
-
-    public get buffersMap() {
-        return this._buffers
-    }
-
-    public setBufferKey(key: string, attr: ZBufferKey) {
-        this._bufferKeys.set(key, attr)
-    }
-
-    public setBufferKeys(keys: Map<string, ZBufferKey>) {
-        for (const [key, attr] of keys.entries()) {
-            this.setBufferKey(key, attr)
+    public addBufferKeys(bufferKeys: ZBufferKey[]) {
+        for (const key of bufferKeys) {
+            this.addBufferKey(key)
         }
     }
 
-    public setBuffers(buffers: Map<string, ZBuffer>) {
-        for (const [key, buff] of buffers.entries()) {
-            this.setBuffer(key, buff)
+    public addRawBuffers(rawBuffers: ZRawBuffer[]) {
+        for (const buff of rawBuffers) {
+            this.addRawBuffer(buff)
         }
     }
 
-    public setBuffer(key: string, buffer: ZBuffer) {
-        this._buffers.set(key, buffer)
+    public addRawBuffer(rawBuffer: ZRawBuffer) {
+        this.rawBuffers.push(rawBuffer)
     }
 }
