@@ -5,7 +5,7 @@ import {ZMaterial} from "./material/ZMaterial";
 
 export class ZModel extends ZObject {
     type: ZObjectType = ZObjectType.MODEL
-    mesh: ZMesh = new ZMesh()
+    mesh: ZMesh = ZMesh.init()
     material: ZMaterial
     shaderProgram: ZShaderProgram
 }

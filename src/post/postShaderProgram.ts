@@ -2,21 +2,24 @@ import {ZModel} from "../zernikalos/ZModel";
 import {ZShaderProgram} from "../zernikalos/shader/ZShaderProgram"
 import {ATTRS, UNIF_MODELVIEWPROJECTION, UNIF_TEXTURE} from "../constants";
 import {Attrib} from "../constants/Attribs";
-import {ZShaderAttribute} from "../zernikalos/shader/ZShaderAttribute";
+import {ZAttribute} from "../zernikalos/shader/ZAttribute";
 import _ from "lodash";
-import {ZShaderUniform} from "../zernikalos/shader/ZShaderUniform";
+import {ZUniform} from "../zernikalos/shader/ZUniform";
 import {ZBufferKey} from "../zernikalos/mesh/ZBufferKey";
 import {Uniform} from "../constants/Uniforms";
+import {mapFlatJs} from "../utils/mapFlatJs";
 
 export function postShaderProgram(obj: ZModel): ZShaderProgram {
-    const shaderProgram = new ZShaderProgram()
+    const shaderProgram = ZShaderProgram.init()
 
     let uniformCounter = 0
 
+    const bufferKeys = mapFlatJs(obj.mesh.buffers)
+
     ATTRS.list.forEach((attr: Attrib) => {
-        const bufferKey = obj.mesh.bufferKeys.find((key: ZBufferKey) => key.name === attr.name)
-        if (!_.isNil(bufferKey)) {
-            addAttribute(shaderProgram, attr, bufferKey)
+        const buff = bufferKeys.find((buff) => buff.key === attr.name)
+        if (!_.isNil(buff)) {
+            addAttribute(shaderProgram, attr, buff.value)
         }
     })
 
@@ -33,26 +36,26 @@ export function postShaderProgram(obj: ZModel): ZShaderProgram {
 
 function addUniform(shaderProgram: ZShaderProgram, uniform: Uniform, uniformCounter: number) {
     const shaderUniform = createShaderUniform(uniform, uniformCounter)
-    shaderProgram.setUniform(uniform.name, shaderUniform)
+    shaderProgram.addUniform(uniform.name, shaderUniform)
 }
 
-function createShaderUniform(uniform: Uniform, uniformCounter: number): ZShaderUniform {
-    return new ZShaderUniform({
-        uniformName: uniform.uniformName,
-        dataType: uniform.dataType,
-        // TODO: This might be incorrect in the future
-        count: 1,
-        idx: uniformCounter
-    })
+function createShaderUniform(uniform: Uniform, uniformCounter: number): ZUniform {
+    const shaderUniform = ZUniform.init()
+    shaderUniform.uniformName = uniform.uniformName
+    shaderUniform.dataType = uniform.dataType
+    // TODO: This might be incorrect in the future
+    shaderUniform.count = 1
+    shaderUniform.idx = uniformCounter
+    return shaderUniform
 }
 
 function addAttribute(shaderProgram: ZShaderProgram, attribute: Attrib, bufferKey: ZBufferKey) {
     const shaderAtrib = createShaderAttribute(attribute, bufferKey)
-    shaderProgram.setAttribute(attribute.name, shaderAtrib)
+    shaderProgram.addAttribute(attribute.name, shaderAtrib)
 }
 
-function createShaderAttribute(attribute: Attrib, bufferKey: ZBufferKey): ZShaderAttribute {
-    const shaderAttrib = new ZShaderAttribute()
+function createShaderAttribute(attribute: Attrib, bufferKey: ZBufferKey): ZAttribute {
+    const shaderAttrib = ZAttribute.init()
     shaderAttrib.id = bufferKey.id
     shaderAttrib.attributeName = attribute.attribName
     return shaderAttrib

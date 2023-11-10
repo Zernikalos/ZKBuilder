@@ -1,6 +1,4 @@
 import {ZModel} from "../../zernikalos/ZModel"
-import {ZShaderUniform} from "../../zernikalos/shader/ZShaderUniform"
-import {ZBufferKey} from "../../zernikalos/mesh/ZBufferKey"
 import {BR, buildSource, CLOSE_MAIN, FLOAT_PRECISSION, HEADER, OPEN_MAIN} from "./shadersourcecommon"
 import {
     ATTR_COLOR,
@@ -8,12 +6,13 @@ import {
     UNIF_TEXTURE
 } from "../../constants"
 import _ from "lodash"
+import {kotlinMapToJsMap, mapFlatJs} from "../../utils/mapFlatJs";
 
 export function generateFragmentShaderSource(obj: ZModel) {
 
     const HAS_TEXTURES = !_.isNil(obj.material?.texture)
-    const uniforms: Map<string, ZShaderUniform> = obj.shaderProgram.uniformsMap
-    const bufferKeys: ZBufferKey[] = obj.mesh.bufferKeys
+    const uniforms = kotlinMapToJsMap(obj.shaderProgram.uniforms)
+    const buffers = mapFlatJs(obj.mesh.buffers)
 
     const source: string[] = [
         HEADER,
@@ -54,7 +53,7 @@ export function generateFragmentShaderSource(obj: ZModel) {
             }
         }
 
-        return [...bufferKeys].map((bufferKey: ZBufferKey) => genAttribute(bufferKey.name))
+        return [...buffers].map((buff) => genAttribute(buff.key))
     }
 
     function genOutAttributes() {
@@ -62,10 +61,10 @@ export function generateFragmentShaderSource(obj: ZModel) {
     }
 
     function genOutColor() {
-        if (bufferKeys.some((key) => key.name === ATTR_UV.name) && HAS_TEXTURES) {
+        if (buffers.some((buff) => buff.key === ATTR_UV.name) && HAS_TEXTURES) {
             return `${ATTR_COLOR.fragName} = texture(${UNIF_TEXTURE.uniformName}, ${ATTR_UV.variantName});`
         }
-        if (bufferKeys.some((key) => key.name === ATTR_COLOR.name)) {
+        if (buffers.some((buff) => buff.key === ATTR_COLOR.name)) {
             return `${ATTR_COLOR.fragName} = vec4(${ATTR_COLOR.variantName}.xyz, 1);`
         }
         return `${ATTR_COLOR.fragName} = vec4(0.5, 0.5, 0.5, 1.0);`

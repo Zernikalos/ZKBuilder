@@ -16,6 +16,7 @@
     "generate": "pbjs --target static-module --wrap es6 --es6 --force-message --no-delimited --out protobuild/index.js proto/zko.proto && pbts --no-comments --out protobuild/index.d.ts protobuild/index.js"
   },
   "dependencies": {
+    "@zernikalos/zernikalos": "../Zernikalos/build/js/packages/@zernikalos/zernikalos",
     "@babel/runtime": "7.22.11",
     "three": "0.156.0",
     "lodash": "4.17.21",

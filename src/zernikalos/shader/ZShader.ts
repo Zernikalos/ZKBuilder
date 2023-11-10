@@ -1,7 +1,6 @@
 export type ShaderType = "vertex" | "fragment"
 
-export class ZShader {
-    type: ShaderType = "vertex"
-    source = ""
-}
+import {zernikalos} from "@zernikalos/zernikalos"
+import ZShader = zernikalos.components.shader.ZShader
 
+export {ZShader}
