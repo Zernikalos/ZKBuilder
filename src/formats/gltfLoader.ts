@@ -9,6 +9,9 @@ export async function gltfLoader(filePath: string): Promise<ZkoParseableObject> 
     const originalCreateImageBitmap = window.createImageBitmap
     window.createImageBitmap = undefined
 
+    const originalRevokeURL = URL.revokeObjectURL
+    URL.revokeObjectURL = () => {}
+
     const loader = new GLTFLoader()
 
     const threeObj = await loader.loadAsync(filePath)
@@ -22,5 +25,6 @@ export async function gltfLoader(filePath: string): Promise<ZkoParseableObject> 
     // }
 
     window.createImageBitmap = originalCreateImageBitmap
+    URL.revokeObjectURL = originalRevokeURL
     return new ZkoParseableObject(threeObj.scene)
 }
