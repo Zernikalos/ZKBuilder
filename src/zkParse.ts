@@ -25,9 +25,14 @@ export async function zkParse(parseableObject: ZkoParseableObject, options: Pars
     IdGenerator.parseBegin()
 
     const threeObj = preProcess(parseableObject._threeObj, mergedOptions)
-    let zObj = await parseObject(threeObj)
-    zObj = postProcess(zObj)
+    try {
+        let zObj = await parseObject(threeObj)
+        zObj = postProcess(zObj)
 
-    IdGenerator.reset()
-    return zObj
+        IdGenerator.reset()
+        return zObj
+    } catch (e) {
+        console.error(`Error parsing the object. Error: ${e}`)
+    }
+
 }

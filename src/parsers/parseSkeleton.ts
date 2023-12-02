@@ -34,8 +34,6 @@ export function parseJoint(joint: JointNode): {joint: ZJoint, children: Object3D
     return {joint: zjoint, children: joint.children}
 }
 
-// TODO: Crear un objeto semi objeto 3D indicando el joint node con los hijos aderidos
-// Sera facilmente identificable el nodo si ya existe como padre al hacerlo en el parseo del skeleton
 function recursiveParseSkeleton(obj: Object3D, zparent: ZBone | undefined, children: Object3D[], joints: Map<string, JointNode>) {
     if (obj.type !== "Bone") {
         const parent = obj.parent
