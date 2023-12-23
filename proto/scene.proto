@@ -1,0 +1,21 @@
+syntax = "proto2";
+
+package Zko;
+
+import "./math.proto";
+
+message ZkScene {
+  required string id = 1;
+  required string name = 2;
+
+  required ZkTransform transform = 3;
+
+  optional ZkColor clearColor = 4;
+}
+
+message ZkColor {
+  required float r = 1;
+  required float g = 2;
+  required float b = 3;
+  required float a = 4;
+}

@@ -7,8 +7,12 @@ export const ATTR_NORMAL: Attrib = new Attrib({name: 'normal', shaderName: 'norm
 export const ATTR_UV: Attrib = new Attrib({name: 'uv', shaderName: 'uv', three: 'uv'})
 export const ATTR_COLOR: Attrib = new Attrib({name: 'color', shaderName: 'color', three: 'color'})
 
+export const ATTR_BONE_WEIGHT: Attrib = new Attrib({name: 'boneWeight', shaderName: 'boneWeight', three: 'skinWeight'})
+
+export const ATTR_BONE_INDICES: Attrib = new Attrib({name: 'boneIndices', shaderName: 'boneIndices', three: 'skinIndex'})
+
 export const ATTRS = new AttribList([
-    ATTR_POSITION, ATTR_NORMAL, ATTR_UV, ATTR_COLOR
+    ATTR_POSITION, ATTR_NORMAL, ATTR_UV, ATTR_COLOR, ATTR_BONE_WEIGHT, ATTR_BONE_INDICES
 ])
 
 export const UNIF_MODELVIEWPROJECTION = new Uniform({name: "ModelViewProjectionMatrix", shaderName: "mvpMatrix", dataType: ZTypes.MAT4F})

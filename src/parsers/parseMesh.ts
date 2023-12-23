@@ -6,13 +6,18 @@ import _, {isNil} from "lodash";
 import {ZBufferKey} from "../zernikalos/mesh/ZBufferKey";
 import {ATTRS} from "../constants";
 import {ZBaseType, ZDataType, ZFormatType} from "../zernikalos/ZDataType";
+import {Attrib} from "../constants/Attribs";
 
 /**
  * Filters only recognized attributes by the parser
  * @param geometry
  */
-export function filterAttributes(geometry: BufferGeometry) {
+function filterAttributes(geometry: BufferGeometry) {
     return Object.entries(geometry.attributes).filter(([key, _attr]) => !_.isNil(ATTRS.findByThreeName(key)))
+}
+
+function findZAttributeByName(name: string): Attrib {
+    return ATTRS.findByThreeName(name)
 }
 
 /**
@@ -21,6 +26,12 @@ export function filterAttributes(geometry: BufferGeometry) {
  */
 function detectBaseType(attr: BufferAttribute | InterleavedBufferAttribute): ZBaseType {
     const array = attr.array
+    if (array instanceof Int8Array) {
+        return ZBaseType.BYTE
+    }
+    if (array instanceof Uint8Array) {
+        return ZBaseType.UNSIGNED_BYTE
+    }
     if (array instanceof Int16Array) {
         return ZBaseType.SHORT
     }
@@ -39,6 +50,7 @@ function detectBaseType(attr: BufferAttribute | InterleavedBufferAttribute): ZBa
     if (array instanceof Float64Array) {
         return ZBaseType.DOUBLE
     }
+    throw new Error(`Unable to detect base type for attr: ${attr.name}`)
 }
 
 /**
@@ -57,6 +69,7 @@ function detectFormatType(attr: BufferAttribute | InterleavedBufferAttribute): Z
         case 4:
             return ZFormatType.VEC4
     }
+    throw new Error(`Unable to detect format type for attr: ${attr.name}`)
 }
 
 /**
@@ -123,9 +136,10 @@ function parseBuffersAndKeys(geometry: BufferGeometry) {
     }
 
     const filteredAttributes = filterAttributes(geometry)
-    for (const [name, attr] of filteredAttributes) {
+    for (const [threeName, attr] of filteredAttributes) {
         if (attr instanceof BufferAttribute || attr instanceof InterleavedBufferAttribute) {
-            const zKey = parseBufferKey(attr, name, attrCounter)
+            const zattr = findZAttributeByName(threeName)
+            const zKey = parseBufferKey(attr, zattr.name, attrCounter)
             const zBuffer = parseBuffer(attr, attrCounter)
 
             keys.push(zKey)

@@ -27,6 +27,8 @@ export const Zko = $root.Zko = (() => {
          * @property {Zko.ZkGroup|null} [group] ProtoZkObject group
          * @property {Zko.ZkModel|null} [model] ProtoZkObject model
          * @property {Zko.ZkCamera|null} [camera] ProtoZkObject camera
+         * @property {Zko.ZkSkeleton|null} [skeleton] ProtoZkObject skeleton
+         * @property {Zko.ZkJoint|null} [joint] ProtoZkObject joint
          * @property {Array.<Zko.ProtoZkObject>|null} [children] ProtoZkObject children
          */
 
@@ -87,6 +89,22 @@ export const Zko = $root.Zko = (() => {
         ProtoZkObject.prototype.camera = null;
 
         /**
+         * ProtoZkObject skeleton.
+         * @member {Zko.ZkSkeleton|null|undefined} skeleton
+         * @memberof Zko.ProtoZkObject
+         * @instance
+         */
+        ProtoZkObject.prototype.skeleton = null;
+
+        /**
+         * ProtoZkObject joint.
+         * @member {Zko.ZkJoint|null|undefined} joint
+         * @memberof Zko.ProtoZkObject
+         * @instance
+         */
+        ProtoZkObject.prototype.joint = null;
+
+        /**
          * ProtoZkObject children.
          * @member {Array.<Zko.ProtoZkObject>} children
          * @memberof Zko.ProtoZkObject
@@ -127,6 +145,10 @@ export const Zko = $root.Zko = (() => {
                 $root.Zko.ZkModel.encode(message.model, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
             if (message.camera != null && Object.hasOwnProperty.call(message, "camera"))
                 $root.Zko.ZkCamera.encode(message.camera, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            if (message.skeleton != null && Object.hasOwnProperty.call(message, "skeleton"))
+                $root.Zko.ZkSkeleton.encode(message.skeleton, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+            if (message.joint != null && Object.hasOwnProperty.call(message, "joint"))
+                $root.Zko.ZkJoint.encode(message.joint, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
             if (message.children != null && message.children.length)
                 for (let i = 0; i < message.children.length; ++i)
                     $root.Zko.ProtoZkObject.encode(message.children[i], writer.uint32(/* id 100, wireType 2 =*/802).fork()).ldelim();
@@ -169,6 +191,14 @@ export const Zko = $root.Zko = (() => {
                     }
                 case 5: {
                         message.camera = $root.Zko.ZkCamera.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 6: {
+                        message.skeleton = $root.Zko.ZkSkeleton.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 7: {
+                        message.joint = $root.Zko.ZkJoint.decode(reader, reader.uint32());
                         break;
                     }
                 case 100: {
@@ -220,6 +250,16 @@ export const Zko = $root.Zko = (() => {
                 if (error)
                     return "camera." + error;
             }
+            if (message.skeleton != null && message.hasOwnProperty("skeleton")) {
+                let error = $root.Zko.ZkSkeleton.verify(message.skeleton);
+                if (error)
+                    return "skeleton." + error;
+            }
+            if (message.joint != null && message.hasOwnProperty("joint")) {
+                let error = $root.Zko.ZkJoint.verify(message.joint);
+                if (error)
+                    return "joint." + error;
+            }
             if (message.children != null && message.hasOwnProperty("children")) {
                 if (!Array.isArray(message.children))
                     return "children: array expected";
@@ -266,6 +306,16 @@ export const Zko = $root.Zko = (() => {
                     throw TypeError(".Zko.ProtoZkObject.camera: object expected");
                 message.camera = $root.Zko.ZkCamera.fromObject(object.camera);
             }
+            if (object.skeleton != null) {
+                if (typeof object.skeleton !== "object")
+                    throw TypeError(".Zko.ProtoZkObject.skeleton: object expected");
+                message.skeleton = $root.Zko.ZkSkeleton.fromObject(object.skeleton);
+            }
+            if (object.joint != null) {
+                if (typeof object.joint !== "object")
+                    throw TypeError(".Zko.ProtoZkObject.joint: object expected");
+                message.joint = $root.Zko.ZkJoint.fromObject(object.joint);
+            }
             if (object.children) {
                 if (!Array.isArray(object.children))
                     throw TypeError(".Zko.ProtoZkObject.children: array expected");
@@ -300,6 +350,8 @@ export const Zko = $root.Zko = (() => {
                 object.group = null;
                 object.model = null;
                 object.camera = null;
+                object.skeleton = null;
+                object.joint = null;
             }
             if (message.type != null && message.hasOwnProperty("type"))
                 object.type = message.type;
@@ -311,6 +363,10 @@ export const Zko = $root.Zko = (() => {
                 object.model = $root.Zko.ZkModel.toObject(message.model, options);
             if (message.camera != null && message.hasOwnProperty("camera"))
                 object.camera = $root.Zko.ZkCamera.toObject(message.camera, options);
+            if (message.skeleton != null && message.hasOwnProperty("skeleton"))
+                object.skeleton = $root.Zko.ZkSkeleton.toObject(message.skeleton, options);
+            if (message.joint != null && message.hasOwnProperty("joint"))
+                object.joint = $root.Zko.ZkJoint.toObject(message.joint, options);
             if (message.children && message.children.length) {
                 object.children = [];
                 for (let j = 0; j < message.children.length; ++j)
@@ -346,732 +402,6 @@ export const Zko = $root.Zko = (() => {
         };
 
         return ProtoZkObject;
-    })();
-
-    Zko.ZkGroup = (function() {
-
-        /**
-         * Properties of a ZkGroup.
-         * @memberof Zko
-         * @interface IZkGroup
-         * @property {string} id ZkGroup id
-         * @property {string} name ZkGroup name
-         * @property {Zko.ZkTransform} transform ZkGroup transform
-         */
-
-        /**
-         * Constructs a new ZkGroup.
-         * @memberof Zko
-         * @classdesc Represents a ZkGroup.
-         * @implements IZkGroup
-         * @constructor
-         * @param {Zko.IZkGroup=} [properties] Properties to set
-         */
-        function ZkGroup(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * ZkGroup id.
-         * @member {string} id
-         * @memberof Zko.ZkGroup
-         * @instance
-         */
-        ZkGroup.prototype.id = "";
-
-        /**
-         * ZkGroup name.
-         * @member {string} name
-         * @memberof Zko.ZkGroup
-         * @instance
-         */
-        ZkGroup.prototype.name = "";
-
-        /**
-         * ZkGroup transform.
-         * @member {Zko.ZkTransform} transform
-         * @memberof Zko.ZkGroup
-         * @instance
-         */
-        ZkGroup.prototype.transform = null;
-
-        /**
-         * Creates a new ZkGroup instance using the specified properties.
-         * @function create
-         * @memberof Zko.ZkGroup
-         * @static
-         * @param {Zko.IZkGroup=} [properties] Properties to set
-         * @returns {Zko.ZkGroup} ZkGroup instance
-         */
-        ZkGroup.create = function create(properties) {
-            return new ZkGroup(properties);
-        };
-
-        /**
-         * Encodes the specified ZkGroup message. Does not implicitly {@link Zko.ZkGroup.verify|verify} messages.
-         * @function encode
-         * @memberof Zko.ZkGroup
-         * @static
-         * @param {Zko.ZkGroup} message ZkGroup message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ZkGroup.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
-            $root.Zko.ZkTransform.encode(message.transform, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Decodes a ZkGroup message from the specified reader or buffer.
-         * @function decode
-         * @memberof Zko.ZkGroup
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Zko.ZkGroup} ZkGroup
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ZkGroup.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkGroup();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1: {
-                        message.id = reader.string();
-                        break;
-                    }
-                case 2: {
-                        message.name = reader.string();
-                        break;
-                    }
-                case 3: {
-                        message.transform = $root.Zko.ZkTransform.decode(reader, reader.uint32());
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("id"))
-                throw $util.ProtocolError("missing required 'id'", { instance: message });
-            if (!message.hasOwnProperty("name"))
-                throw $util.ProtocolError("missing required 'name'", { instance: message });
-            if (!message.hasOwnProperty("transform"))
-                throw $util.ProtocolError("missing required 'transform'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Verifies a ZkGroup message.
-         * @function verify
-         * @memberof Zko.ZkGroup
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ZkGroup.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isString(message.id))
-                return "id: string expected";
-            if (!$util.isString(message.name))
-                return "name: string expected";
-            {
-                let error = $root.Zko.ZkTransform.verify(message.transform);
-                if (error)
-                    return "transform." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a ZkGroup message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Zko.ZkGroup
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Zko.ZkGroup} ZkGroup
-         */
-        ZkGroup.fromObject = function fromObject(object) {
-            if (object instanceof $root.Zko.ZkGroup)
-                return object;
-            let message = new $root.Zko.ZkGroup();
-            if (object.id != null)
-                message.id = String(object.id);
-            if (object.name != null)
-                message.name = String(object.name);
-            if (object.transform != null) {
-                if (typeof object.transform !== "object")
-                    throw TypeError(".Zko.ZkGroup.transform: object expected");
-                message.transform = $root.Zko.ZkTransform.fromObject(object.transform);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a ZkGroup message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Zko.ZkGroup
-         * @static
-         * @param {Zko.ZkGroup} message ZkGroup
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ZkGroup.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults) {
-                object.id = "";
-                object.name = "";
-                object.transform = null;
-            }
-            if (message.id != null && message.hasOwnProperty("id"))
-                object.id = message.id;
-            if (message.name != null && message.hasOwnProperty("name"))
-                object.name = message.name;
-            if (message.transform != null && message.hasOwnProperty("transform"))
-                object.transform = $root.Zko.ZkTransform.toObject(message.transform, options);
-            return object;
-        };
-
-        /**
-         * Converts this ZkGroup to JSON.
-         * @function toJSON
-         * @memberof Zko.ZkGroup
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ZkGroup.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for ZkGroup
-         * @function getTypeUrl
-         * @memberof Zko.ZkGroup
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        ZkGroup.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/Zko.ZkGroup";
-        };
-
-        return ZkGroup;
-    })();
-
-    Zko.ZkColor = (function() {
-
-        /**
-         * Properties of a ZkColor.
-         * @memberof Zko
-         * @interface IZkColor
-         * @property {number} r ZkColor r
-         * @property {number} g ZkColor g
-         * @property {number} b ZkColor b
-         * @property {number} a ZkColor a
-         */
-
-        /**
-         * Constructs a new ZkColor.
-         * @memberof Zko
-         * @classdesc Represents a ZkColor.
-         * @implements IZkColor
-         * @constructor
-         * @param {Zko.IZkColor=} [properties] Properties to set
-         */
-        function ZkColor(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * ZkColor r.
-         * @member {number} r
-         * @memberof Zko.ZkColor
-         * @instance
-         */
-        ZkColor.prototype.r = 0;
-
-        /**
-         * ZkColor g.
-         * @member {number} g
-         * @memberof Zko.ZkColor
-         * @instance
-         */
-        ZkColor.prototype.g = 0;
-
-        /**
-         * ZkColor b.
-         * @member {number} b
-         * @memberof Zko.ZkColor
-         * @instance
-         */
-        ZkColor.prototype.b = 0;
-
-        /**
-         * ZkColor a.
-         * @member {number} a
-         * @memberof Zko.ZkColor
-         * @instance
-         */
-        ZkColor.prototype.a = 0;
-
-        /**
-         * Creates a new ZkColor instance using the specified properties.
-         * @function create
-         * @memberof Zko.ZkColor
-         * @static
-         * @param {Zko.IZkColor=} [properties] Properties to set
-         * @returns {Zko.ZkColor} ZkColor instance
-         */
-        ZkColor.create = function create(properties) {
-            return new ZkColor(properties);
-        };
-
-        /**
-         * Encodes the specified ZkColor message. Does not implicitly {@link Zko.ZkColor.verify|verify} messages.
-         * @function encode
-         * @memberof Zko.ZkColor
-         * @static
-         * @param {Zko.ZkColor} message ZkColor message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ZkColor.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 5 =*/13).float(message.r);
-            writer.uint32(/* id 2, wireType 5 =*/21).float(message.g);
-            writer.uint32(/* id 3, wireType 5 =*/29).float(message.b);
-            writer.uint32(/* id 4, wireType 5 =*/37).float(message.a);
-            return writer;
-        };
-
-        /**
-         * Decodes a ZkColor message from the specified reader or buffer.
-         * @function decode
-         * @memberof Zko.ZkColor
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Zko.ZkColor} ZkColor
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ZkColor.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkColor();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1: {
-                        message.r = reader.float();
-                        break;
-                    }
-                case 2: {
-                        message.g = reader.float();
-                        break;
-                    }
-                case 3: {
-                        message.b = reader.float();
-                        break;
-                    }
-                case 4: {
-                        message.a = reader.float();
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("r"))
-                throw $util.ProtocolError("missing required 'r'", { instance: message });
-            if (!message.hasOwnProperty("g"))
-                throw $util.ProtocolError("missing required 'g'", { instance: message });
-            if (!message.hasOwnProperty("b"))
-                throw $util.ProtocolError("missing required 'b'", { instance: message });
-            if (!message.hasOwnProperty("a"))
-                throw $util.ProtocolError("missing required 'a'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Verifies a ZkColor message.
-         * @function verify
-         * @memberof Zko.ZkColor
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ZkColor.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (typeof message.r !== "number")
-                return "r: number expected";
-            if (typeof message.g !== "number")
-                return "g: number expected";
-            if (typeof message.b !== "number")
-                return "b: number expected";
-            if (typeof message.a !== "number")
-                return "a: number expected";
-            return null;
-        };
-
-        /**
-         * Creates a ZkColor message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Zko.ZkColor
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Zko.ZkColor} ZkColor
-         */
-        ZkColor.fromObject = function fromObject(object) {
-            if (object instanceof $root.Zko.ZkColor)
-                return object;
-            let message = new $root.Zko.ZkColor();
-            if (object.r != null)
-                message.r = Number(object.r);
-            if (object.g != null)
-                message.g = Number(object.g);
-            if (object.b != null)
-                message.b = Number(object.b);
-            if (object.a != null)
-                message.a = Number(object.a);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a ZkColor message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Zko.ZkColor
-         * @static
-         * @param {Zko.ZkColor} message ZkColor
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ZkColor.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults) {
-                object.r = 0;
-                object.g = 0;
-                object.b = 0;
-                object.a = 0;
-            }
-            if (message.r != null && message.hasOwnProperty("r"))
-                object.r = options.json && !isFinite(message.r) ? String(message.r) : message.r;
-            if (message.g != null && message.hasOwnProperty("g"))
-                object.g = options.json && !isFinite(message.g) ? String(message.g) : message.g;
-            if (message.b != null && message.hasOwnProperty("b"))
-                object.b = options.json && !isFinite(message.b) ? String(message.b) : message.b;
-            if (message.a != null && message.hasOwnProperty("a"))
-                object.a = options.json && !isFinite(message.a) ? String(message.a) : message.a;
-            return object;
-        };
-
-        /**
-         * Converts this ZkColor to JSON.
-         * @function toJSON
-         * @memberof Zko.ZkColor
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ZkColor.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for ZkColor
-         * @function getTypeUrl
-         * @memberof Zko.ZkColor
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        ZkColor.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/Zko.ZkColor";
-        };
-
-        return ZkColor;
-    })();
-
-    Zko.ZkScene = (function() {
-
-        /**
-         * Properties of a ZkScene.
-         * @memberof Zko
-         * @interface IZkScene
-         * @property {string} id ZkScene id
-         * @property {string} name ZkScene name
-         * @property {Zko.ZkTransform} transform ZkScene transform
-         * @property {Zko.ZkColor|null} [clearColor] ZkScene clearColor
-         */
-
-        /**
-         * Constructs a new ZkScene.
-         * @memberof Zko
-         * @classdesc Represents a ZkScene.
-         * @implements IZkScene
-         * @constructor
-         * @param {Zko.IZkScene=} [properties] Properties to set
-         */
-        function ZkScene(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * ZkScene id.
-         * @member {string} id
-         * @memberof Zko.ZkScene
-         * @instance
-         */
-        ZkScene.prototype.id = "";
-
-        /**
-         * ZkScene name.
-         * @member {string} name
-         * @memberof Zko.ZkScene
-         * @instance
-         */
-        ZkScene.prototype.name = "";
-
-        /**
-         * ZkScene transform.
-         * @member {Zko.ZkTransform} transform
-         * @memberof Zko.ZkScene
-         * @instance
-         */
-        ZkScene.prototype.transform = null;
-
-        /**
-         * ZkScene clearColor.
-         * @member {Zko.ZkColor|null|undefined} clearColor
-         * @memberof Zko.ZkScene
-         * @instance
-         */
-        ZkScene.prototype.clearColor = null;
-
-        /**
-         * Creates a new ZkScene instance using the specified properties.
-         * @function create
-         * @memberof Zko.ZkScene
-         * @static
-         * @param {Zko.IZkScene=} [properties] Properties to set
-         * @returns {Zko.ZkScene} ZkScene instance
-         */
-        ZkScene.create = function create(properties) {
-            return new ZkScene(properties);
-        };
-
-        /**
-         * Encodes the specified ZkScene message. Does not implicitly {@link Zko.ZkScene.verify|verify} messages.
-         * @function encode
-         * @memberof Zko.ZkScene
-         * @static
-         * @param {Zko.ZkScene} message ZkScene message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ZkScene.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
-            $root.Zko.ZkTransform.encode(message.transform, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            if (message.clearColor != null && Object.hasOwnProperty.call(message, "clearColor"))
-                $root.Zko.ZkColor.encode(message.clearColor, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Decodes a ZkScene message from the specified reader or buffer.
-         * @function decode
-         * @memberof Zko.ZkScene
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Zko.ZkScene} ZkScene
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ZkScene.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkScene();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1: {
-                        message.id = reader.string();
-                        break;
-                    }
-                case 2: {
-                        message.name = reader.string();
-                        break;
-                    }
-                case 3: {
-                        message.transform = $root.Zko.ZkTransform.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 4: {
-                        message.clearColor = $root.Zko.ZkColor.decode(reader, reader.uint32());
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("id"))
-                throw $util.ProtocolError("missing required 'id'", { instance: message });
-            if (!message.hasOwnProperty("name"))
-                throw $util.ProtocolError("missing required 'name'", { instance: message });
-            if (!message.hasOwnProperty("transform"))
-                throw $util.ProtocolError("missing required 'transform'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Verifies a ZkScene message.
-         * @function verify
-         * @memberof Zko.ZkScene
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ZkScene.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isString(message.id))
-                return "id: string expected";
-            if (!$util.isString(message.name))
-                return "name: string expected";
-            {
-                let error = $root.Zko.ZkTransform.verify(message.transform);
-                if (error)
-                    return "transform." + error;
-            }
-            if (message.clearColor != null && message.hasOwnProperty("clearColor")) {
-                let error = $root.Zko.ZkColor.verify(message.clearColor);
-                if (error)
-                    return "clearColor." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a ZkScene message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Zko.ZkScene
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Zko.ZkScene} ZkScene
-         */
-        ZkScene.fromObject = function fromObject(object) {
-            if (object instanceof $root.Zko.ZkScene)
-                return object;
-            let message = new $root.Zko.ZkScene();
-            if (object.id != null)
-                message.id = String(object.id);
-            if (object.name != null)
-                message.name = String(object.name);
-            if (object.transform != null) {
-                if (typeof object.transform !== "object")
-                    throw TypeError(".Zko.ZkScene.transform: object expected");
-                message.transform = $root.Zko.ZkTransform.fromObject(object.transform);
-            }
-            if (object.clearColor != null) {
-                if (typeof object.clearColor !== "object")
-                    throw TypeError(".Zko.ZkScene.clearColor: object expected");
-                message.clearColor = $root.Zko.ZkColor.fromObject(object.clearColor);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a ZkScene message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Zko.ZkScene
-         * @static
-         * @param {Zko.ZkScene} message ZkScene
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ZkScene.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults) {
-                object.id = "";
-                object.name = "";
-                object.transform = null;
-                object.clearColor = null;
-            }
-            if (message.id != null && message.hasOwnProperty("id"))
-                object.id = message.id;
-            if (message.name != null && message.hasOwnProperty("name"))
-                object.name = message.name;
-            if (message.transform != null && message.hasOwnProperty("transform"))
-                object.transform = $root.Zko.ZkTransform.toObject(message.transform, options);
-            if (message.clearColor != null && message.hasOwnProperty("clearColor"))
-                object.clearColor = $root.Zko.ZkColor.toObject(message.clearColor, options);
-            return object;
-        };
-
-        /**
-         * Converts this ZkScene to JSON.
-         * @function toJSON
-         * @memberof Zko.ZkScene
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ZkScene.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for ZkScene
-         * @function getTypeUrl
-         * @memberof Zko.ZkScene
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        ZkScene.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/Zko.ZkScene";
-        };
-
-        return ZkScene;
     })();
 
     /**
@@ -2394,6 +1724,732 @@ export const Zko = $root.Zko = (() => {
         return ZkQuaternion;
     })();
 
+    Zko.ZkGroup = (function() {
+
+        /**
+         * Properties of a ZkGroup.
+         * @memberof Zko
+         * @interface IZkGroup
+         * @property {string} id ZkGroup id
+         * @property {string} name ZkGroup name
+         * @property {Zko.ZkTransform} transform ZkGroup transform
+         */
+
+        /**
+         * Constructs a new ZkGroup.
+         * @memberof Zko
+         * @classdesc Represents a ZkGroup.
+         * @implements IZkGroup
+         * @constructor
+         * @param {Zko.IZkGroup=} [properties] Properties to set
+         */
+        function ZkGroup(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ZkGroup id.
+         * @member {string} id
+         * @memberof Zko.ZkGroup
+         * @instance
+         */
+        ZkGroup.prototype.id = "";
+
+        /**
+         * ZkGroup name.
+         * @member {string} name
+         * @memberof Zko.ZkGroup
+         * @instance
+         */
+        ZkGroup.prototype.name = "";
+
+        /**
+         * ZkGroup transform.
+         * @member {Zko.ZkTransform} transform
+         * @memberof Zko.ZkGroup
+         * @instance
+         */
+        ZkGroup.prototype.transform = null;
+
+        /**
+         * Creates a new ZkGroup instance using the specified properties.
+         * @function create
+         * @memberof Zko.ZkGroup
+         * @static
+         * @param {Zko.IZkGroup=} [properties] Properties to set
+         * @returns {Zko.ZkGroup} ZkGroup instance
+         */
+        ZkGroup.create = function create(properties) {
+            return new ZkGroup(properties);
+        };
+
+        /**
+         * Encodes the specified ZkGroup message. Does not implicitly {@link Zko.ZkGroup.verify|verify} messages.
+         * @function encode
+         * @memberof Zko.ZkGroup
+         * @static
+         * @param {Zko.ZkGroup} message ZkGroup message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ZkGroup.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+            $root.Zko.ZkTransform.encode(message.transform, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Decodes a ZkGroup message from the specified reader or buffer.
+         * @function decode
+         * @memberof Zko.ZkGroup
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Zko.ZkGroup} ZkGroup
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ZkGroup.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkGroup();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.id = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.name = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.transform = $root.Zko.ZkTransform.decode(reader, reader.uint32());
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("id"))
+                throw $util.ProtocolError("missing required 'id'", { instance: message });
+            if (!message.hasOwnProperty("name"))
+                throw $util.ProtocolError("missing required 'name'", { instance: message });
+            if (!message.hasOwnProperty("transform"))
+                throw $util.ProtocolError("missing required 'transform'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Verifies a ZkGroup message.
+         * @function verify
+         * @memberof Zko.ZkGroup
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ZkGroup.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isString(message.id))
+                return "id: string expected";
+            if (!$util.isString(message.name))
+                return "name: string expected";
+            {
+                let error = $root.Zko.ZkTransform.verify(message.transform);
+                if (error)
+                    return "transform." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a ZkGroup message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Zko.ZkGroup
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Zko.ZkGroup} ZkGroup
+         */
+        ZkGroup.fromObject = function fromObject(object) {
+            if (object instanceof $root.Zko.ZkGroup)
+                return object;
+            let message = new $root.Zko.ZkGroup();
+            if (object.id != null)
+                message.id = String(object.id);
+            if (object.name != null)
+                message.name = String(object.name);
+            if (object.transform != null) {
+                if (typeof object.transform !== "object")
+                    throw TypeError(".Zko.ZkGroup.transform: object expected");
+                message.transform = $root.Zko.ZkTransform.fromObject(object.transform);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ZkGroup message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Zko.ZkGroup
+         * @static
+         * @param {Zko.ZkGroup} message ZkGroup
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ZkGroup.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.id = "";
+                object.name = "";
+                object.transform = null;
+            }
+            if (message.id != null && message.hasOwnProperty("id"))
+                object.id = message.id;
+            if (message.name != null && message.hasOwnProperty("name"))
+                object.name = message.name;
+            if (message.transform != null && message.hasOwnProperty("transform"))
+                object.transform = $root.Zko.ZkTransform.toObject(message.transform, options);
+            return object;
+        };
+
+        /**
+         * Converts this ZkGroup to JSON.
+         * @function toJSON
+         * @memberof Zko.ZkGroup
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ZkGroup.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ZkGroup
+         * @function getTypeUrl
+         * @memberof Zko.ZkGroup
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ZkGroup.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/Zko.ZkGroup";
+        };
+
+        return ZkGroup;
+    })();
+
+    Zko.ZkScene = (function() {
+
+        /**
+         * Properties of a ZkScene.
+         * @memberof Zko
+         * @interface IZkScene
+         * @property {string} id ZkScene id
+         * @property {string} name ZkScene name
+         * @property {Zko.ZkTransform} transform ZkScene transform
+         * @property {Zko.ZkColor|null} [clearColor] ZkScene clearColor
+         */
+
+        /**
+         * Constructs a new ZkScene.
+         * @memberof Zko
+         * @classdesc Represents a ZkScene.
+         * @implements IZkScene
+         * @constructor
+         * @param {Zko.IZkScene=} [properties] Properties to set
+         */
+        function ZkScene(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ZkScene id.
+         * @member {string} id
+         * @memberof Zko.ZkScene
+         * @instance
+         */
+        ZkScene.prototype.id = "";
+
+        /**
+         * ZkScene name.
+         * @member {string} name
+         * @memberof Zko.ZkScene
+         * @instance
+         */
+        ZkScene.prototype.name = "";
+
+        /**
+         * ZkScene transform.
+         * @member {Zko.ZkTransform} transform
+         * @memberof Zko.ZkScene
+         * @instance
+         */
+        ZkScene.prototype.transform = null;
+
+        /**
+         * ZkScene clearColor.
+         * @member {Zko.ZkColor|null|undefined} clearColor
+         * @memberof Zko.ZkScene
+         * @instance
+         */
+        ZkScene.prototype.clearColor = null;
+
+        /**
+         * Creates a new ZkScene instance using the specified properties.
+         * @function create
+         * @memberof Zko.ZkScene
+         * @static
+         * @param {Zko.IZkScene=} [properties] Properties to set
+         * @returns {Zko.ZkScene} ZkScene instance
+         */
+        ZkScene.create = function create(properties) {
+            return new ZkScene(properties);
+        };
+
+        /**
+         * Encodes the specified ZkScene message. Does not implicitly {@link Zko.ZkScene.verify|verify} messages.
+         * @function encode
+         * @memberof Zko.ZkScene
+         * @static
+         * @param {Zko.ZkScene} message ZkScene message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ZkScene.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+            $root.Zko.ZkTransform.encode(message.transform, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            if (message.clearColor != null && Object.hasOwnProperty.call(message, "clearColor"))
+                $root.Zko.ZkColor.encode(message.clearColor, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Decodes a ZkScene message from the specified reader or buffer.
+         * @function decode
+         * @memberof Zko.ZkScene
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Zko.ZkScene} ZkScene
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ZkScene.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkScene();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.id = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.name = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.transform = $root.Zko.ZkTransform.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 4: {
+                        message.clearColor = $root.Zko.ZkColor.decode(reader, reader.uint32());
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("id"))
+                throw $util.ProtocolError("missing required 'id'", { instance: message });
+            if (!message.hasOwnProperty("name"))
+                throw $util.ProtocolError("missing required 'name'", { instance: message });
+            if (!message.hasOwnProperty("transform"))
+                throw $util.ProtocolError("missing required 'transform'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Verifies a ZkScene message.
+         * @function verify
+         * @memberof Zko.ZkScene
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ZkScene.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isString(message.id))
+                return "id: string expected";
+            if (!$util.isString(message.name))
+                return "name: string expected";
+            {
+                let error = $root.Zko.ZkTransform.verify(message.transform);
+                if (error)
+                    return "transform." + error;
+            }
+            if (message.clearColor != null && message.hasOwnProperty("clearColor")) {
+                let error = $root.Zko.ZkColor.verify(message.clearColor);
+                if (error)
+                    return "clearColor." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a ZkScene message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Zko.ZkScene
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Zko.ZkScene} ZkScene
+         */
+        ZkScene.fromObject = function fromObject(object) {
+            if (object instanceof $root.Zko.ZkScene)
+                return object;
+            let message = new $root.Zko.ZkScene();
+            if (object.id != null)
+                message.id = String(object.id);
+            if (object.name != null)
+                message.name = String(object.name);
+            if (object.transform != null) {
+                if (typeof object.transform !== "object")
+                    throw TypeError(".Zko.ZkScene.transform: object expected");
+                message.transform = $root.Zko.ZkTransform.fromObject(object.transform);
+            }
+            if (object.clearColor != null) {
+                if (typeof object.clearColor !== "object")
+                    throw TypeError(".Zko.ZkScene.clearColor: object expected");
+                message.clearColor = $root.Zko.ZkColor.fromObject(object.clearColor);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ZkScene message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Zko.ZkScene
+         * @static
+         * @param {Zko.ZkScene} message ZkScene
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ZkScene.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.id = "";
+                object.name = "";
+                object.transform = null;
+                object.clearColor = null;
+            }
+            if (message.id != null && message.hasOwnProperty("id"))
+                object.id = message.id;
+            if (message.name != null && message.hasOwnProperty("name"))
+                object.name = message.name;
+            if (message.transform != null && message.hasOwnProperty("transform"))
+                object.transform = $root.Zko.ZkTransform.toObject(message.transform, options);
+            if (message.clearColor != null && message.hasOwnProperty("clearColor"))
+                object.clearColor = $root.Zko.ZkColor.toObject(message.clearColor, options);
+            return object;
+        };
+
+        /**
+         * Converts this ZkScene to JSON.
+         * @function toJSON
+         * @memberof Zko.ZkScene
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ZkScene.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ZkScene
+         * @function getTypeUrl
+         * @memberof Zko.ZkScene
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ZkScene.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/Zko.ZkScene";
+        };
+
+        return ZkScene;
+    })();
+
+    Zko.ZkColor = (function() {
+
+        /**
+         * Properties of a ZkColor.
+         * @memberof Zko
+         * @interface IZkColor
+         * @property {number} r ZkColor r
+         * @property {number} g ZkColor g
+         * @property {number} b ZkColor b
+         * @property {number} a ZkColor a
+         */
+
+        /**
+         * Constructs a new ZkColor.
+         * @memberof Zko
+         * @classdesc Represents a ZkColor.
+         * @implements IZkColor
+         * @constructor
+         * @param {Zko.IZkColor=} [properties] Properties to set
+         */
+        function ZkColor(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ZkColor r.
+         * @member {number} r
+         * @memberof Zko.ZkColor
+         * @instance
+         */
+        ZkColor.prototype.r = 0;
+
+        /**
+         * ZkColor g.
+         * @member {number} g
+         * @memberof Zko.ZkColor
+         * @instance
+         */
+        ZkColor.prototype.g = 0;
+
+        /**
+         * ZkColor b.
+         * @member {number} b
+         * @memberof Zko.ZkColor
+         * @instance
+         */
+        ZkColor.prototype.b = 0;
+
+        /**
+         * ZkColor a.
+         * @member {number} a
+         * @memberof Zko.ZkColor
+         * @instance
+         */
+        ZkColor.prototype.a = 0;
+
+        /**
+         * Creates a new ZkColor instance using the specified properties.
+         * @function create
+         * @memberof Zko.ZkColor
+         * @static
+         * @param {Zko.IZkColor=} [properties] Properties to set
+         * @returns {Zko.ZkColor} ZkColor instance
+         */
+        ZkColor.create = function create(properties) {
+            return new ZkColor(properties);
+        };
+
+        /**
+         * Encodes the specified ZkColor message. Does not implicitly {@link Zko.ZkColor.verify|verify} messages.
+         * @function encode
+         * @memberof Zko.ZkColor
+         * @static
+         * @param {Zko.ZkColor} message ZkColor message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ZkColor.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 5 =*/13).float(message.r);
+            writer.uint32(/* id 2, wireType 5 =*/21).float(message.g);
+            writer.uint32(/* id 3, wireType 5 =*/29).float(message.b);
+            writer.uint32(/* id 4, wireType 5 =*/37).float(message.a);
+            return writer;
+        };
+
+        /**
+         * Decodes a ZkColor message from the specified reader or buffer.
+         * @function decode
+         * @memberof Zko.ZkColor
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Zko.ZkColor} ZkColor
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ZkColor.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkColor();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.r = reader.float();
+                        break;
+                    }
+                case 2: {
+                        message.g = reader.float();
+                        break;
+                    }
+                case 3: {
+                        message.b = reader.float();
+                        break;
+                    }
+                case 4: {
+                        message.a = reader.float();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("r"))
+                throw $util.ProtocolError("missing required 'r'", { instance: message });
+            if (!message.hasOwnProperty("g"))
+                throw $util.ProtocolError("missing required 'g'", { instance: message });
+            if (!message.hasOwnProperty("b"))
+                throw $util.ProtocolError("missing required 'b'", { instance: message });
+            if (!message.hasOwnProperty("a"))
+                throw $util.ProtocolError("missing required 'a'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Verifies a ZkColor message.
+         * @function verify
+         * @memberof Zko.ZkColor
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ZkColor.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (typeof message.r !== "number")
+                return "r: number expected";
+            if (typeof message.g !== "number")
+                return "g: number expected";
+            if (typeof message.b !== "number")
+                return "b: number expected";
+            if (typeof message.a !== "number")
+                return "a: number expected";
+            return null;
+        };
+
+        /**
+         * Creates a ZkColor message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Zko.ZkColor
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Zko.ZkColor} ZkColor
+         */
+        ZkColor.fromObject = function fromObject(object) {
+            if (object instanceof $root.Zko.ZkColor)
+                return object;
+            let message = new $root.Zko.ZkColor();
+            if (object.r != null)
+                message.r = Number(object.r);
+            if (object.g != null)
+                message.g = Number(object.g);
+            if (object.b != null)
+                message.b = Number(object.b);
+            if (object.a != null)
+                message.a = Number(object.a);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ZkColor message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Zko.ZkColor
+         * @static
+         * @param {Zko.ZkColor} message ZkColor
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ZkColor.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.r = 0;
+                object.g = 0;
+                object.b = 0;
+                object.a = 0;
+            }
+            if (message.r != null && message.hasOwnProperty("r"))
+                object.r = options.json && !isFinite(message.r) ? String(message.r) : message.r;
+            if (message.g != null && message.hasOwnProperty("g"))
+                object.g = options.json && !isFinite(message.g) ? String(message.g) : message.g;
+            if (message.b != null && message.hasOwnProperty("b"))
+                object.b = options.json && !isFinite(message.b) ? String(message.b) : message.b;
+            if (message.a != null && message.hasOwnProperty("a"))
+                object.a = options.json && !isFinite(message.a) ? String(message.a) : message.a;
+            return object;
+        };
+
+        /**
+         * Converts this ZkColor to JSON.
+         * @function toJSON
+         * @memberof Zko.ZkColor
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ZkColor.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ZkColor
+         * @function getTypeUrl
+         * @memberof Zko.ZkColor
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ZkColor.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/Zko.ZkColor";
+        };
+
+        return ZkColor;
+    })();
+
     Zko.ZkModel = (function() {
 
         /**
@@ -2406,6 +2462,7 @@ export const Zko = $root.Zko = (() => {
          * @property {Zko.ZkShaderProgram} shaderProgram ZkModel shaderProgram
          * @property {Zko.ZkMesh} mesh ZkModel mesh
          * @property {ZkMaterial|null} [material] ZkModel material
+         * @property {Zko.ZkSkeleton|null} [skeleton] ZkModel skeleton
          */
 
         /**
@@ -2472,6 +2529,14 @@ export const Zko = $root.Zko = (() => {
         ZkModel.prototype.material = null;
 
         /**
+         * ZkModel skeleton.
+         * @member {Zko.ZkSkeleton|null|undefined} skeleton
+         * @memberof Zko.ZkModel
+         * @instance
+         */
+        ZkModel.prototype.skeleton = null;
+
+        /**
          * Creates a new ZkModel instance using the specified properties.
          * @function create
          * @memberof Zko.ZkModel
@@ -2502,6 +2567,8 @@ export const Zko = $root.Zko = (() => {
             $root.Zko.ZkMesh.encode(message.mesh, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             if (message.material != null && Object.hasOwnProperty.call(message, "material"))
                 $root.ZkMaterial.encode(message.material, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+            if (message.skeleton != null && Object.hasOwnProperty.call(message, "skeleton"))
+                $root.Zko.ZkSkeleton.encode(message.skeleton, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
             return writer;
         };
 
@@ -2545,6 +2612,10 @@ export const Zko = $root.Zko = (() => {
                     }
                 case 6: {
                         message.material = $root.ZkMaterial.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 7: {
+                        message.skeleton = $root.Zko.ZkSkeleton.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -2600,6 +2671,11 @@ export const Zko = $root.Zko = (() => {
                 if (error)
                     return "material." + error;
             }
+            if (message.skeleton != null && message.hasOwnProperty("skeleton")) {
+                let error = $root.Zko.ZkSkeleton.verify(message.skeleton);
+                if (error)
+                    return "skeleton." + error;
+            }
             return null;
         };
 
@@ -2639,6 +2715,11 @@ export const Zko = $root.Zko = (() => {
                     throw TypeError(".Zko.ZkModel.material: object expected");
                 message.material = $root.ZkMaterial.fromObject(object.material);
             }
+            if (object.skeleton != null) {
+                if (typeof object.skeleton !== "object")
+                    throw TypeError(".Zko.ZkModel.skeleton: object expected");
+                message.skeleton = $root.Zko.ZkSkeleton.fromObject(object.skeleton);
+            }
             return message;
         };
 
@@ -2662,6 +2743,7 @@ export const Zko = $root.Zko = (() => {
                 object.shaderProgram = null;
                 object.mesh = null;
                 object.material = null;
+                object.skeleton = null;
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
@@ -2675,6 +2757,8 @@ export const Zko = $root.Zko = (() => {
                 object.mesh = $root.Zko.ZkMesh.toObject(message.mesh, options);
             if (message.material != null && message.hasOwnProperty("material"))
                 object.material = $root.ZkMaterial.toObject(message.material, options);
+            if (message.skeleton != null && message.hasOwnProperty("skeleton"))
+                object.skeleton = $root.Zko.ZkSkeleton.toObject(message.skeleton, options);
             return object;
         };
 
@@ -4537,6 +4621,761 @@ export const Zko = $root.Zko = (() => {
         };
 
         return ZkShaderUniform;
+    })();
+
+    Zko.ZkSkeleton = (function() {
+
+        /**
+         * Properties of a ZkSkeleton.
+         * @memberof Zko
+         * @interface IZkSkeleton
+         * @property {string} id ZkSkeleton id
+         * @property {string} name ZkSkeleton name
+         * @property {Zko.ZkBone} root ZkSkeleton root
+         */
+
+        /**
+         * Constructs a new ZkSkeleton.
+         * @memberof Zko
+         * @classdesc Represents a ZkSkeleton.
+         * @implements IZkSkeleton
+         * @constructor
+         * @param {Zko.IZkSkeleton=} [properties] Properties to set
+         */
+        function ZkSkeleton(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ZkSkeleton id.
+         * @member {string} id
+         * @memberof Zko.ZkSkeleton
+         * @instance
+         */
+        ZkSkeleton.prototype.id = "";
+
+        /**
+         * ZkSkeleton name.
+         * @member {string} name
+         * @memberof Zko.ZkSkeleton
+         * @instance
+         */
+        ZkSkeleton.prototype.name = "";
+
+        /**
+         * ZkSkeleton root.
+         * @member {Zko.ZkBone} root
+         * @memberof Zko.ZkSkeleton
+         * @instance
+         */
+        ZkSkeleton.prototype.root = null;
+
+        /**
+         * Creates a new ZkSkeleton instance using the specified properties.
+         * @function create
+         * @memberof Zko.ZkSkeleton
+         * @static
+         * @param {Zko.IZkSkeleton=} [properties] Properties to set
+         * @returns {Zko.ZkSkeleton} ZkSkeleton instance
+         */
+        ZkSkeleton.create = function create(properties) {
+            return new ZkSkeleton(properties);
+        };
+
+        /**
+         * Encodes the specified ZkSkeleton message. Does not implicitly {@link Zko.ZkSkeleton.verify|verify} messages.
+         * @function encode
+         * @memberof Zko.ZkSkeleton
+         * @static
+         * @param {Zko.ZkSkeleton} message ZkSkeleton message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ZkSkeleton.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+            $root.Zko.ZkBone.encode(message.root, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Decodes a ZkSkeleton message from the specified reader or buffer.
+         * @function decode
+         * @memberof Zko.ZkSkeleton
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Zko.ZkSkeleton} ZkSkeleton
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ZkSkeleton.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkSkeleton();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.id = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.name = reader.string();
+                        break;
+                    }
+                case 4: {
+                        message.root = $root.Zko.ZkBone.decode(reader, reader.uint32());
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("id"))
+                throw $util.ProtocolError("missing required 'id'", { instance: message });
+            if (!message.hasOwnProperty("name"))
+                throw $util.ProtocolError("missing required 'name'", { instance: message });
+            if (!message.hasOwnProperty("root"))
+                throw $util.ProtocolError("missing required 'root'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Verifies a ZkSkeleton message.
+         * @function verify
+         * @memberof Zko.ZkSkeleton
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ZkSkeleton.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isString(message.id))
+                return "id: string expected";
+            if (!$util.isString(message.name))
+                return "name: string expected";
+            {
+                let error = $root.Zko.ZkBone.verify(message.root);
+                if (error)
+                    return "root." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a ZkSkeleton message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Zko.ZkSkeleton
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Zko.ZkSkeleton} ZkSkeleton
+         */
+        ZkSkeleton.fromObject = function fromObject(object) {
+            if (object instanceof $root.Zko.ZkSkeleton)
+                return object;
+            let message = new $root.Zko.ZkSkeleton();
+            if (object.id != null)
+                message.id = String(object.id);
+            if (object.name != null)
+                message.name = String(object.name);
+            if (object.root != null) {
+                if (typeof object.root !== "object")
+                    throw TypeError(".Zko.ZkSkeleton.root: object expected");
+                message.root = $root.Zko.ZkBone.fromObject(object.root);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ZkSkeleton message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Zko.ZkSkeleton
+         * @static
+         * @param {Zko.ZkSkeleton} message ZkSkeleton
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ZkSkeleton.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.id = "";
+                object.name = "";
+                object.root = null;
+            }
+            if (message.id != null && message.hasOwnProperty("id"))
+                object.id = message.id;
+            if (message.name != null && message.hasOwnProperty("name"))
+                object.name = message.name;
+            if (message.root != null && message.hasOwnProperty("root"))
+                object.root = $root.Zko.ZkBone.toObject(message.root, options);
+            return object;
+        };
+
+        /**
+         * Converts this ZkSkeleton to JSON.
+         * @function toJSON
+         * @memberof Zko.ZkSkeleton
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ZkSkeleton.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ZkSkeleton
+         * @function getTypeUrl
+         * @memberof Zko.ZkSkeleton
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ZkSkeleton.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/Zko.ZkSkeleton";
+        };
+
+        return ZkSkeleton;
+    })();
+
+    Zko.ZkBone = (function() {
+
+        /**
+         * Properties of a ZkBone.
+         * @memberof Zko
+         * @interface IZkBone
+         * @property {string} id ZkBone id
+         * @property {string} name ZkBone name
+         * @property {Zko.ZkTransform} transform ZkBone transform
+         * @property {Array.<Zko.ZkBone>|null} [children] ZkBone children
+         */
+
+        /**
+         * Constructs a new ZkBone.
+         * @memberof Zko
+         * @classdesc Represents a ZkBone.
+         * @implements IZkBone
+         * @constructor
+         * @param {Zko.IZkBone=} [properties] Properties to set
+         */
+        function ZkBone(properties) {
+            this.children = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ZkBone id.
+         * @member {string} id
+         * @memberof Zko.ZkBone
+         * @instance
+         */
+        ZkBone.prototype.id = "";
+
+        /**
+         * ZkBone name.
+         * @member {string} name
+         * @memberof Zko.ZkBone
+         * @instance
+         */
+        ZkBone.prototype.name = "";
+
+        /**
+         * ZkBone transform.
+         * @member {Zko.ZkTransform} transform
+         * @memberof Zko.ZkBone
+         * @instance
+         */
+        ZkBone.prototype.transform = null;
+
+        /**
+         * ZkBone children.
+         * @member {Array.<Zko.ZkBone>} children
+         * @memberof Zko.ZkBone
+         * @instance
+         */
+        ZkBone.prototype.children = $util.emptyArray;
+
+        /**
+         * Creates a new ZkBone instance using the specified properties.
+         * @function create
+         * @memberof Zko.ZkBone
+         * @static
+         * @param {Zko.IZkBone=} [properties] Properties to set
+         * @returns {Zko.ZkBone} ZkBone instance
+         */
+        ZkBone.create = function create(properties) {
+            return new ZkBone(properties);
+        };
+
+        /**
+         * Encodes the specified ZkBone message. Does not implicitly {@link Zko.ZkBone.verify|verify} messages.
+         * @function encode
+         * @memberof Zko.ZkBone
+         * @static
+         * @param {Zko.ZkBone} message ZkBone message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ZkBone.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+            $root.Zko.ZkTransform.encode(message.transform, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            if (message.children != null && message.children.length)
+                for (let i = 0; i < message.children.length; ++i)
+                    $root.Zko.ZkBone.encode(message.children[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Decodes a ZkBone message from the specified reader or buffer.
+         * @function decode
+         * @memberof Zko.ZkBone
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Zko.ZkBone} ZkBone
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ZkBone.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkBone();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.id = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.name = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.transform = $root.Zko.ZkTransform.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 5: {
+                        if (!(message.children && message.children.length))
+                            message.children = [];
+                        message.children.push($root.Zko.ZkBone.decode(reader, reader.uint32()));
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("id"))
+                throw $util.ProtocolError("missing required 'id'", { instance: message });
+            if (!message.hasOwnProperty("name"))
+                throw $util.ProtocolError("missing required 'name'", { instance: message });
+            if (!message.hasOwnProperty("transform"))
+                throw $util.ProtocolError("missing required 'transform'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Verifies a ZkBone message.
+         * @function verify
+         * @memberof Zko.ZkBone
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ZkBone.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isString(message.id))
+                return "id: string expected";
+            if (!$util.isString(message.name))
+                return "name: string expected";
+            {
+                let error = $root.Zko.ZkTransform.verify(message.transform);
+                if (error)
+                    return "transform." + error;
+            }
+            if (message.children != null && message.hasOwnProperty("children")) {
+                if (!Array.isArray(message.children))
+                    return "children: array expected";
+                for (let i = 0; i < message.children.length; ++i) {
+                    let error = $root.Zko.ZkBone.verify(message.children[i]);
+                    if (error)
+                        return "children." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a ZkBone message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Zko.ZkBone
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Zko.ZkBone} ZkBone
+         */
+        ZkBone.fromObject = function fromObject(object) {
+            if (object instanceof $root.Zko.ZkBone)
+                return object;
+            let message = new $root.Zko.ZkBone();
+            if (object.id != null)
+                message.id = String(object.id);
+            if (object.name != null)
+                message.name = String(object.name);
+            if (object.transform != null) {
+                if (typeof object.transform !== "object")
+                    throw TypeError(".Zko.ZkBone.transform: object expected");
+                message.transform = $root.Zko.ZkTransform.fromObject(object.transform);
+            }
+            if (object.children) {
+                if (!Array.isArray(object.children))
+                    throw TypeError(".Zko.ZkBone.children: array expected");
+                message.children = [];
+                for (let i = 0; i < object.children.length; ++i) {
+                    if (typeof object.children[i] !== "object")
+                        throw TypeError(".Zko.ZkBone.children: object expected");
+                    message.children[i] = $root.Zko.ZkBone.fromObject(object.children[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ZkBone message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Zko.ZkBone
+         * @static
+         * @param {Zko.ZkBone} message ZkBone
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ZkBone.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.children = [];
+            if (options.defaults) {
+                object.id = "";
+                object.name = "";
+                object.transform = null;
+            }
+            if (message.id != null && message.hasOwnProperty("id"))
+                object.id = message.id;
+            if (message.name != null && message.hasOwnProperty("name"))
+                object.name = message.name;
+            if (message.transform != null && message.hasOwnProperty("transform"))
+                object.transform = $root.Zko.ZkTransform.toObject(message.transform, options);
+            if (message.children && message.children.length) {
+                object.children = [];
+                for (let j = 0; j < message.children.length; ++j)
+                    object.children[j] = $root.Zko.ZkBone.toObject(message.children[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this ZkBone to JSON.
+         * @function toJSON
+         * @memberof Zko.ZkBone
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ZkBone.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ZkBone
+         * @function getTypeUrl
+         * @memberof Zko.ZkBone
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ZkBone.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/Zko.ZkBone";
+        };
+
+        return ZkBone;
+    })();
+
+    Zko.ZkJoint = (function() {
+
+        /**
+         * Properties of a ZkJoint.
+         * @memberof Zko
+         * @interface IZkJoint
+         * @property {string} id ZkJoint id
+         * @property {string} name ZkJoint name
+         * @property {Zko.ZkTransform} transform ZkJoint transform
+         * @property {Zko.ZkBone} bone ZkJoint bone
+         */
+
+        /**
+         * Constructs a new ZkJoint.
+         * @memberof Zko
+         * @classdesc Represents a ZkJoint.
+         * @implements IZkJoint
+         * @constructor
+         * @param {Zko.IZkJoint=} [properties] Properties to set
+         */
+        function ZkJoint(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ZkJoint id.
+         * @member {string} id
+         * @memberof Zko.ZkJoint
+         * @instance
+         */
+        ZkJoint.prototype.id = "";
+
+        /**
+         * ZkJoint name.
+         * @member {string} name
+         * @memberof Zko.ZkJoint
+         * @instance
+         */
+        ZkJoint.prototype.name = "";
+
+        /**
+         * ZkJoint transform.
+         * @member {Zko.ZkTransform} transform
+         * @memberof Zko.ZkJoint
+         * @instance
+         */
+        ZkJoint.prototype.transform = null;
+
+        /**
+         * ZkJoint bone.
+         * @member {Zko.ZkBone} bone
+         * @memberof Zko.ZkJoint
+         * @instance
+         */
+        ZkJoint.prototype.bone = null;
+
+        /**
+         * Creates a new ZkJoint instance using the specified properties.
+         * @function create
+         * @memberof Zko.ZkJoint
+         * @static
+         * @param {Zko.IZkJoint=} [properties] Properties to set
+         * @returns {Zko.ZkJoint} ZkJoint instance
+         */
+        ZkJoint.create = function create(properties) {
+            return new ZkJoint(properties);
+        };
+
+        /**
+         * Encodes the specified ZkJoint message. Does not implicitly {@link Zko.ZkJoint.verify|verify} messages.
+         * @function encode
+         * @memberof Zko.ZkJoint
+         * @static
+         * @param {Zko.ZkJoint} message ZkJoint message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ZkJoint.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+            $root.Zko.ZkTransform.encode(message.transform, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            $root.Zko.ZkBone.encode(message.bone, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Decodes a ZkJoint message from the specified reader or buffer.
+         * @function decode
+         * @memberof Zko.ZkJoint
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Zko.ZkJoint} ZkJoint
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ZkJoint.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkJoint();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.id = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.name = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.transform = $root.Zko.ZkTransform.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 4: {
+                        message.bone = $root.Zko.ZkBone.decode(reader, reader.uint32());
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("id"))
+                throw $util.ProtocolError("missing required 'id'", { instance: message });
+            if (!message.hasOwnProperty("name"))
+                throw $util.ProtocolError("missing required 'name'", { instance: message });
+            if (!message.hasOwnProperty("transform"))
+                throw $util.ProtocolError("missing required 'transform'", { instance: message });
+            if (!message.hasOwnProperty("bone"))
+                throw $util.ProtocolError("missing required 'bone'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Verifies a ZkJoint message.
+         * @function verify
+         * @memberof Zko.ZkJoint
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ZkJoint.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isString(message.id))
+                return "id: string expected";
+            if (!$util.isString(message.name))
+                return "name: string expected";
+            {
+                let error = $root.Zko.ZkTransform.verify(message.transform);
+                if (error)
+                    return "transform." + error;
+            }
+            {
+                let error = $root.Zko.ZkBone.verify(message.bone);
+                if (error)
+                    return "bone." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a ZkJoint message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Zko.ZkJoint
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Zko.ZkJoint} ZkJoint
+         */
+        ZkJoint.fromObject = function fromObject(object) {
+            if (object instanceof $root.Zko.ZkJoint)
+                return object;
+            let message = new $root.Zko.ZkJoint();
+            if (object.id != null)
+                message.id = String(object.id);
+            if (object.name != null)
+                message.name = String(object.name);
+            if (object.transform != null) {
+                if (typeof object.transform !== "object")
+                    throw TypeError(".Zko.ZkJoint.transform: object expected");
+                message.transform = $root.Zko.ZkTransform.fromObject(object.transform);
+            }
+            if (object.bone != null) {
+                if (typeof object.bone !== "object")
+                    throw TypeError(".Zko.ZkJoint.bone: object expected");
+                message.bone = $root.Zko.ZkBone.fromObject(object.bone);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ZkJoint message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Zko.ZkJoint
+         * @static
+         * @param {Zko.ZkJoint} message ZkJoint
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ZkJoint.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.id = "";
+                object.name = "";
+                object.transform = null;
+                object.bone = null;
+            }
+            if (message.id != null && message.hasOwnProperty("id"))
+                object.id = message.id;
+            if (message.name != null && message.hasOwnProperty("name"))
+                object.name = message.name;
+            if (message.transform != null && message.hasOwnProperty("transform"))
+                object.transform = $root.Zko.ZkTransform.toObject(message.transform, options);
+            if (message.bone != null && message.hasOwnProperty("bone"))
+                object.bone = $root.Zko.ZkBone.toObject(message.bone, options);
+            return object;
+        };
+
+        /**
+         * Converts this ZkJoint to JSON.
+         * @function toJSON
+         * @memberof Zko.ZkJoint
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ZkJoint.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ZkJoint
+         * @function getTypeUrl
+         * @memberof Zko.ZkJoint
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ZkJoint.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/Zko.ZkJoint";
+        };
+
+        return ZkJoint;
     })();
 
     Zko.ZkCamera = (function() {

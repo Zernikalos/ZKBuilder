@@ -1,8 +1,8 @@
-import {Camera, PerspectiveCamera} from "three";
+import {Camera, Object3D, PerspectiveCamera} from "three";
 import {ZCamera} from "../zernikalos/ZCamera";
 import {ZPerspectiveLens} from "../zernikalos/camera/ZPerspectiveLens";
 
-export function parseCamera(obj: Camera): ZCamera {
+export function parseCamera(obj: Camera): { camera: ZCamera, children: Object3D[] } {
     const camera = new ZCamera()
 
     let lens
@@ -17,5 +17,5 @@ export function parseCamera(obj: Camera): ZCamera {
         throw new Error("Not implmented yet: Not supported export for orthographic camera")
     }
 
-    return camera
+    return {camera, children: obj.children}
 }

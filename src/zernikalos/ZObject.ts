@@ -8,6 +8,9 @@ export enum ZObjectType {
     MODEL = "Model",
     GROUP = "Group",
     CAMERA = "Camera",
+    BONE = "Bone",
+    JOINT = "Joint",
+    SKELETON = "Skeleton"
 }
 
 export class ZObject {

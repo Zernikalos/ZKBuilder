@@ -10,6 +10,9 @@ export function postProcess(obj: ZObject) {
         case ZObjectType.OBJECT:
         case ZObjectType.GROUP:
         case ZObjectType.CAMERA:
+        case ZObjectType.BONE:
+        case ZObjectType.SKELETON:
+        case ZObjectType.JOINT:
             postObj = obj
             break
         case ZObjectType.MODEL:
