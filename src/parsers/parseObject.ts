@@ -3,11 +3,11 @@ import {ZGroup} from "../zernikalos/ZGroup"
 import {parseGroup} from "./parseGroup"
 import {parseModel} from "./parseModel"
 import {isNil} from "lodash"
-import {Bone, Camera, Group, Mesh, Object3D, Scene} from "three"
+import {Camera, Group, Mesh, Object3D, Scene} from "three"
 import {parseTransform} from "./parseTransform"
 import {parseScene} from "./parseScene"
 import {parseCamera} from "./parseCamera"
-import {JointNode, parseJoint, parseSkeleton} from "./parseSkeleton"
+import {JointNode, parseJoint} from "./parseSkeleton"
 
 export async function parseObject(threeObj: Object3D): Promise<ZObject | undefined> {
     return await parseObjectRecursive(threeObj)
@@ -53,11 +53,11 @@ async function parseObjectByType(threeObj: Object3D): Promise<{zObject: ZObject,
             zObject = res.scene
             children = res.children
             break
-        case "Bone":
-            res = parseSkeleton(threeObj as Bone)
-            zObject = res.skeleton
-            children = res.children
-            break
+        // case "Bone":
+        //     res = parseSkeleton(threeObj as Bone)
+        //     zObject = res.skeleton
+        //     children = res.children
+        //     break
         case "Joint":
             res = parseJoint(threeObj as JointNode)
             zObject = res.joint

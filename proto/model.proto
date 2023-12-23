@@ -4,6 +4,7 @@ package Zko;
 
 import "./shaders.proto";
 import "./material.proto";
+import "./skeleton.proto";
 
 message ZkModel {
   required string id = 1;
@@ -14,6 +15,7 @@ message ZkModel {
   required ZkShaderProgram shaderProgram = 4;
   required ZkMesh mesh = 5;
   optional ZkMaterial material = 6;
+  optional ZkSkeleton skeleton = 7;
 }
 
 /**

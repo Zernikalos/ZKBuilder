@@ -8,7 +8,7 @@ message ZkSkeleton {
   required string id = 1;
   required string name = 2;
 
-  required ZkTransform transform = 3;
+  // required ZkTransform transform = 3;
 
   required ZkBone root = 4;
 }

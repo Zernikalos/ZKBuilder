@@ -26,6 +26,12 @@ function findZAttributeByName(name: string): Attrib {
  */
 function detectBaseType(attr: BufferAttribute | InterleavedBufferAttribute): ZBaseType {
     const array = attr.array
+    if (array instanceof Int8Array) {
+        return ZBaseType.BYTE
+    }
+    if (array instanceof Uint8Array) {
+        return ZBaseType.UNSIGNED_BYTE
+    }
     if (array instanceof Int16Array) {
         return ZBaseType.SHORT
     }
@@ -44,6 +50,7 @@ function detectBaseType(attr: BufferAttribute | InterleavedBufferAttribute): ZBa
     if (array instanceof Float64Array) {
         return ZBaseType.DOUBLE
     }
+    throw new Error(`Unable to detect base type for attr: ${attr.name}`)
 }
 
 /**
@@ -62,6 +69,7 @@ function detectFormatType(attr: BufferAttribute | InterleavedBufferAttribute): Z
         case 4:
             return ZFormatType.VEC4
     }
+    throw new Error(`Unable to detect format type for attr: ${attr.name}`)
 }
 
 /**

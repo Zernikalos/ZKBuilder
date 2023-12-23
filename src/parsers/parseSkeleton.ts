@@ -1,7 +1,7 @@
-import {Bone, Object3D} from "three";
+import {Bone, Object3D, Skeleton} from "three";
 import {ZBone} from "../zernikalos/skeleton/ZBone"
 import {parseTransform} from "./parseTransform"
-import {isNil} from "lodash";
+import _, {isNil} from "lodash";
 import {ZSkeleton} from "../zernikalos/skeleton/ZSkeleton"
 import {ZJoint} from "../zernikalos/skeleton/ZJoint";
 
@@ -12,19 +12,28 @@ export class JointNode extends Object3D {
     children: Object3D[] = []
 }
 
-export function parseSkeleton(obj: Bone): { skeleton: ZSkeleton, children: Object3D[] } {
+export function parseSkeleton(obj: Skeleton): ZSkeleton {
+    const boneRoot = findParentBone(obj.bones[0])
     // Only root bones will be processed here
-    if (obj.parent.type === "Bone") {
+    if (_.isNil(boneRoot) || boneRoot.type !== "Bone") {
         return
     }
 
-    const children: Object3D[] = []
     const joints: Map<string, JointNode> = new Map()
-    const root = recursiveParseSkeleton(obj, undefined, children, joints)
-    const skeleton = new ZSkeleton()
+    const root = recursiveParseSkeleton(boneRoot, undefined, joints)
+    const skeleton = ZSkeleton.init()
     skeleton.root = root
 
-    return {skeleton, children: [...joints.values()]}
+    // return {skeleton, children: [...joints.values()]}
+    return skeleton
+}
+
+function findParentBone(bone: Bone): Bone {
+    let boneRoot = bone
+    while (!_.isNil(boneRoot.parent) && boneRoot.parent.type === "Bone") {
+        boneRoot = boneRoot.parent as Bone
+    }
+    return boneRoot
 }
 
 export function parseJoint(joint: JointNode): {joint: ZJoint, children: Object3D[]} {
@@ -34,7 +43,7 @@ export function parseJoint(joint: JointNode): {joint: ZJoint, children: Object3D
     return {joint: zjoint, children: joint.children}
 }
 
-function recursiveParseSkeleton(obj: Object3D, zparent: ZBone | undefined, children: Object3D[], joints: Map<string, JointNode>) {
+function recursiveParseSkeleton(obj: Object3D, zparent: ZBone | undefined, joints: Map<string, JointNode>) {
     if (obj.type !== "Bone") {
         const parent = obj.parent
 
@@ -56,9 +65,10 @@ function recursiveParseSkeleton(obj: Object3D, zparent: ZBone | undefined, child
         return
     }
 
-    zbone.children = obj.children
-        .map((bone: Object3D) => recursiveParseSkeleton(bone, zbone, children, joints))
+    const boneChildren = obj.children
+        .map((bone: Object3D) => recursiveParseSkeleton(bone, zbone, joints))
         .filter((bone: ZBone) => !isNil(bone))
+    boneChildren.forEach((childBone) => zbone.addChildren(childBone))
 
     return zbone
 }
@@ -68,7 +78,7 @@ function parseBone(bone: Object3D): ZBone {
         return
     }
 
-    const zbone = new ZBone()
+    const zbone = ZBone.init()
 
     zbone.name = bone.name
     zbone.transform = parseTransform(bone)

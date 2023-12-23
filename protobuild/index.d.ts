@@ -238,6 +238,7 @@ export namespace Zko {
         shaderProgram: Zko.ZkShaderProgram;
         mesh: Zko.ZkMesh;
         material?: (ZkMaterial|null);
+        skeleton?: (Zko.ZkSkeleton|null);
     }
 
     class ZkModel implements IZkModel {
@@ -248,6 +249,7 @@ export namespace Zko {
         public shaderProgram: Zko.ZkShaderProgram;
         public mesh: Zko.ZkMesh;
         public material?: (ZkMaterial|null);
+        public skeleton?: (Zko.ZkSkeleton|null);
         public static create(properties?: Zko.IZkModel): Zko.ZkModel;
         public static encode(message: Zko.ZkModel, writer?: $protobuf.Writer): $protobuf.Writer;
         public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkModel;
@@ -415,56 +417,9 @@ export namespace Zko {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
-    interface IZkCamera {
-        id: string;
-        name: string;
-        transform: Zko.ZkTransform;
-        lens: Zko.ZkLens;
-    }
-
-    class ZkCamera implements IZkCamera {
-        constructor(properties?: Zko.IZkCamera);
-        public id: string;
-        public name: string;
-        public transform: Zko.ZkTransform;
-        public lens: Zko.ZkLens;
-        public static create(properties?: Zko.IZkCamera): Zko.ZkCamera;
-        public static encode(message: Zko.ZkCamera, writer?: $protobuf.Writer): $protobuf.Writer;
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkCamera;
-        public static verify(message: { [k: string]: any }): (string|null);
-        public static fromObject(object: { [k: string]: any }): Zko.ZkCamera;
-        public static toObject(message: Zko.ZkCamera, options?: $protobuf.IConversionOptions): { [k: string]: any };
-        public toJSON(): { [k: string]: any };
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
-    interface IZkLens {
-        near: number;
-        far: number;
-        aspectRatio?: (number|null);
-        fov?: (number|null);
-    }
-
-    class ZkLens implements IZkLens {
-        constructor(properties?: Zko.IZkLens);
-        public near: number;
-        public far: number;
-        public aspectRatio: number;
-        public fov: number;
-        public static create(properties?: Zko.IZkLens): Zko.ZkLens;
-        public static encode(message: Zko.ZkLens, writer?: $protobuf.Writer): $protobuf.Writer;
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkLens;
-        public static verify(message: { [k: string]: any }): (string|null);
-        public static fromObject(object: { [k: string]: any }): Zko.ZkLens;
-        public static toObject(message: Zko.ZkLens, options?: $protobuf.IConversionOptions): { [k: string]: any };
-        public toJSON(): { [k: string]: any };
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
     interface IZkSkeleton {
         id: string;
         name: string;
-        transform: Zko.ZkTransform;
         root: Zko.ZkBone;
     }
 
@@ -472,7 +427,6 @@ export namespace Zko {
         constructor(properties?: Zko.IZkSkeleton);
         public id: string;
         public name: string;
-        public transform: Zko.ZkTransform;
         public root: Zko.ZkBone;
         public static create(properties?: Zko.IZkSkeleton): Zko.ZkSkeleton;
         public static encode(message: Zko.ZkSkeleton, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -526,6 +480,52 @@ export namespace Zko {
         public static verify(message: { [k: string]: any }): (string|null);
         public static fromObject(object: { [k: string]: any }): Zko.ZkJoint;
         public static toObject(message: Zko.ZkJoint, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public toJSON(): { [k: string]: any };
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    interface IZkCamera {
+        id: string;
+        name: string;
+        transform: Zko.ZkTransform;
+        lens: Zko.ZkLens;
+    }
+
+    class ZkCamera implements IZkCamera {
+        constructor(properties?: Zko.IZkCamera);
+        public id: string;
+        public name: string;
+        public transform: Zko.ZkTransform;
+        public lens: Zko.ZkLens;
+        public static create(properties?: Zko.IZkCamera): Zko.ZkCamera;
+        public static encode(message: Zko.ZkCamera, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkCamera;
+        public static verify(message: { [k: string]: any }): (string|null);
+        public static fromObject(object: { [k: string]: any }): Zko.ZkCamera;
+        public static toObject(message: Zko.ZkCamera, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public toJSON(): { [k: string]: any };
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    interface IZkLens {
+        near: number;
+        far: number;
+        aspectRatio?: (number|null);
+        fov?: (number|null);
+    }
+
+    class ZkLens implements IZkLens {
+        constructor(properties?: Zko.IZkLens);
+        public near: number;
+        public far: number;
+        public aspectRatio: number;
+        public fov: number;
+        public static create(properties?: Zko.IZkLens): Zko.ZkLens;
+        public static encode(message: Zko.ZkLens, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkLens;
+        public static verify(message: { [k: string]: any }): (string|null);
+        public static fromObject(object: { [k: string]: any }): Zko.ZkLens;
+        public static toObject(message: Zko.ZkLens, options?: $protobuf.IConversionOptions): { [k: string]: any };
         public toJSON(): { [k: string]: any };
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }

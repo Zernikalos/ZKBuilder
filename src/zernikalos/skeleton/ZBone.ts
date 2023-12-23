@@ -1,5 +1,4 @@
-import {ZObject, ZObjectType} from "../ZObject";
+import {zernikalos} from "@zernikalos/zernikalos"
+import ZBone = zernikalos.components.skeleton.ZBone
 
-export class ZBone extends ZObject {
-    type = ZObjectType.BONE
-}
+export {ZBone}
