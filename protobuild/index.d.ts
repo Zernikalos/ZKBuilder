@@ -1,4 +1,5 @@
 import * as $protobuf from "protobufjs";
+import Long = require("long");
 export namespace Zko {
 
     interface IProtoZkObject {
@@ -441,6 +442,7 @@ export namespace Zko {
     interface IZkBone {
         id: string;
         name: string;
+        idx: number;
         transform: Zko.ZkTransform;
         children?: (Zko.ZkBone[]|null);
     }
@@ -449,6 +451,7 @@ export namespace Zko {
         constructor(properties?: Zko.IZkBone);
         public id: string;
         public name: string;
+        public idx: number;
         public transform: Zko.ZkTransform;
         public children: Zko.ZkBone[];
         public static create(properties?: Zko.IZkBone): Zko.ZkBone;

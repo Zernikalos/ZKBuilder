@@ -4858,6 +4858,7 @@ export const Zko = $root.Zko = (() => {
          * @interface IZkBone
          * @property {string} id ZkBone id
          * @property {string} name ZkBone name
+         * @property {number} idx ZkBone idx
          * @property {Zko.ZkTransform} transform ZkBone transform
          * @property {Array.<Zko.ZkBone>|null} [children] ZkBone children
          */
@@ -4893,6 +4894,14 @@ export const Zko = $root.Zko = (() => {
          * @instance
          */
         ZkBone.prototype.name = "";
+
+        /**
+         * ZkBone idx.
+         * @member {number} idx
+         * @memberof Zko.ZkBone
+         * @instance
+         */
+        ZkBone.prototype.idx = 0;
 
         /**
          * ZkBone transform.
@@ -4936,7 +4945,8 @@ export const Zko = $root.Zko = (() => {
                 writer = $Writer.create();
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
-            $root.Zko.ZkTransform.encode(message.transform, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.idx);
+            $root.Zko.ZkTransform.encode(message.transform, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
             if (message.children != null && message.children.length)
                 for (let i = 0; i < message.children.length; ++i)
                     $root.Zko.ZkBone.encode(message.children[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
@@ -4970,6 +4980,10 @@ export const Zko = $root.Zko = (() => {
                         break;
                     }
                 case 3: {
+                        message.idx = reader.uint32();
+                        break;
+                    }
+                case 4: {
                         message.transform = $root.Zko.ZkTransform.decode(reader, reader.uint32());
                         break;
                     }
@@ -4988,6 +5002,8 @@ export const Zko = $root.Zko = (() => {
                 throw $util.ProtocolError("missing required 'id'", { instance: message });
             if (!message.hasOwnProperty("name"))
                 throw $util.ProtocolError("missing required 'name'", { instance: message });
+            if (!message.hasOwnProperty("idx"))
+                throw $util.ProtocolError("missing required 'idx'", { instance: message });
             if (!message.hasOwnProperty("transform"))
                 throw $util.ProtocolError("missing required 'transform'", { instance: message });
             return message;
@@ -5008,6 +5024,8 @@ export const Zko = $root.Zko = (() => {
                 return "id: string expected";
             if (!$util.isString(message.name))
                 return "name: string expected";
+            if (!$util.isInteger(message.idx))
+                return "idx: integer expected";
             {
                 let error = $root.Zko.ZkTransform.verify(message.transform);
                 if (error)
@@ -5041,6 +5059,8 @@ export const Zko = $root.Zko = (() => {
                 message.id = String(object.id);
             if (object.name != null)
                 message.name = String(object.name);
+            if (object.idx != null)
+                message.idx = object.idx >>> 0;
             if (object.transform != null) {
                 if (typeof object.transform !== "object")
                     throw TypeError(".Zko.ZkBone.transform: object expected");
@@ -5077,12 +5097,15 @@ export const Zko = $root.Zko = (() => {
             if (options.defaults) {
                 object.id = "";
                 object.name = "";
+                object.idx = 0;
                 object.transform = null;
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
             if (message.name != null && message.hasOwnProperty("name"))
                 object.name = message.name;
+            if (message.idx != null && message.hasOwnProperty("idx"))
+                object.idx = message.idx;
             if (message.transform != null && message.hasOwnProperty("transform"))
                 object.transform = $root.Zko.ZkTransform.toObject(message.transform, options);
             if (message.children && message.children.length) {

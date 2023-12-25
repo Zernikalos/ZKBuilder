@@ -16,9 +16,8 @@ message ZkSkeleton {
 message ZkBone {
   required string id = 1;
   required string name = 2;
-
-  required ZkTransform transform = 3;
-
+  required uint32 idx = 3;
+  required ZkTransform transform = 4;
   repeated ZkBone children = 5;
 }
 

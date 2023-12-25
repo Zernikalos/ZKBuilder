@@ -19,8 +19,8 @@ export function parseSkeleton(obj: Skeleton): ZSkeleton {
         return
     }
 
-    const joints: Map<string, JointNode> = new Map()
-    const root = recursiveParseSkeleton(boneRoot, undefined, joints)
+    // const root = recursiveParseSkeleton(boneRoot, 0)
+    const root = parseBonesFromRoot(boneRoot)
     const skeleton = ZSkeleton.init()
     skeleton.root = root
 
@@ -43,43 +43,69 @@ export function parseJoint(joint: JointNode): {joint: ZJoint, children: Object3D
     return {joint: zjoint, children: joint.children}
 }
 
-function recursiveParseSkeleton(obj: Object3D, zparent: ZBone | undefined, joints: Map<string, JointNode>) {
-    if (obj.type !== "Bone") {
-        const parent = obj.parent
+function parseBonesFromRoot(rootBone: Bone): ZBone {
+    let idx = 0
+    let root: ZBone | undefined = undefined
+    const q: [ZBone | undefined, Bone][] = []
+    q.push([undefined, rootBone])
 
-        let semiJointNode
-        if (joints.has(parent.uuid)) {
-            semiJointNode = joints.get(parent.uuid)
+    while (!_.isEmpty(q)) {
+        const [parent, bone] = q.shift()
+        const zbone: ZBone = parseBone(bone, idx)
+        idx++
+        if (!_.isNil(parent)) {
+            parent.addChild(zbone)
         } else {
-            semiJointNode = new JointNode()
-            semiJointNode.name = parent.name
-            semiJointNode.zbone = zparent
-            joints.set(parent.uuid, semiJointNode)
+            root = zbone
         }
-        semiJointNode.children.push(obj)
-        return
+        const boneChildren: Bone[] = bone.children.filter((child) => child.type === "Bone") as Bone[]
+        const boneChildrenWithParent: [ZBone | undefined, Bone][] = boneChildren.map((bone) => [zbone, bone])
+        q.push(...boneChildrenWithParent)
     }
+    return root
+}
 
-    const zbone: ZBone = parseBone(obj)
+// @ts-ignore
+function recursiveParseSkeleton(obj: Object3D, idx: number, nextIdx: number) {
+    // if (obj.type !== "Bone") {
+    //     const parent = obj.parent
+    //
+    //     let semiJointNode
+    //     if (joints.has(parent.uuid)) {
+    //         semiJointNode = joints.get(parent.uuid)
+    //     } else {
+    //         semiJointNode = new JointNode()
+    //         semiJointNode.name = parent.name
+    //         semiJointNode.zbone = zparent
+    //         joints.set(parent.uuid, semiJointNode)
+    //     }
+    //     semiJointNode.children.push(obj)
+    //     return
+    // }
+
+    const zbone: ZBone = parseBone(obj, idx)
     if (isNil(zbone)) {
         return
     }
 
-    const boneChildren = obj.children
-        .map((bone: Object3D) => recursiveParseSkeleton(bone, zbone, joints))
+    const children = obj.children.filter((child) => child.type === "Bone")
+    let childIdx = idx
+    const boneChildren = children
+        //@ts-ignore
+        .map((bone: Object3D) => recursiveParseSkeleton(bone, childIdx++, ))
         .filter((bone: ZBone) => !isNil(bone))
-    boneChildren.forEach((childBone) => zbone.addChildren(childBone))
+    boneChildren.forEach((childBone) => zbone.addChild(childBone))
 
     return zbone
 }
 
-function parseBone(bone: Object3D): ZBone {
+function parseBone(bone: Object3D, idx: number): ZBone {
     if (bone.type !== "Bone") {
         return
     }
 
     const zbone = ZBone.init()
-
+    zbone.idx = idx
     zbone.name = bone.name
     zbone.transform = parseTransform(bone)
 
