@@ -4,6 +4,7 @@ import {ZModel} from "../zernikalos/ZModel"
 import _ from "lodash";
 import {parseMaterial} from "./parseMaterial";
 import {parseSkeleton} from "./parseSkeleton";
+import {ZSkinning} from "../zernikalos/skeleton/ZSkinning";
 
 export async function parseModel(obj: Mesh | SkinnedMesh): Promise<{ model: ZModel, children: Object3D[] }> {
     const model = new ZModel()
@@ -15,6 +16,13 @@ export async function parseModel(obj: Mesh | SkinnedMesh): Promise<{ model: ZMod
     if (!_.isNil((obj as SkinnedMesh).skeleton)) {
         const skeleton: Skeleton = (obj as SkinnedMesh).skeleton
         model.skeleton = parseSkeleton(skeleton)
+
+        const boneIndices = skeleton.bones.map((bone) => model.skeleton.findBoneByName(bone.name))
+            .filter((zbone) => !_.isNil(zbone))
+            .map((zbone) => zbone.idx)
+        const skinning = new ZSkinning()
+        skinning.boneIndices = boneIndices
+        model.skinning = skinning
     }
 
     return {model, children: obj.children}

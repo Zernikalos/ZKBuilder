@@ -2462,6 +2462,7 @@ export const Zko = $root.Zko = (() => {
          * @property {Zko.ZkShaderProgram} shaderProgram ZkModel shaderProgram
          * @property {Zko.ZkMesh} mesh ZkModel mesh
          * @property {ZkMaterial|null} [material] ZkModel material
+         * @property {Zko.ZkSkinning|null} [skinning] ZkModel skinning
          * @property {Zko.ZkSkeleton|null} [skeleton] ZkModel skeleton
          */
 
@@ -2529,6 +2530,14 @@ export const Zko = $root.Zko = (() => {
         ZkModel.prototype.material = null;
 
         /**
+         * ZkModel skinning.
+         * @member {Zko.ZkSkinning|null|undefined} skinning
+         * @memberof Zko.ZkModel
+         * @instance
+         */
+        ZkModel.prototype.skinning = null;
+
+        /**
          * ZkModel skeleton.
          * @member {Zko.ZkSkeleton|null|undefined} skeleton
          * @memberof Zko.ZkModel
@@ -2567,8 +2576,10 @@ export const Zko = $root.Zko = (() => {
             $root.Zko.ZkMesh.encode(message.mesh, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             if (message.material != null && Object.hasOwnProperty.call(message, "material"))
                 $root.ZkMaterial.encode(message.material, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+            if (message.skinning != null && Object.hasOwnProperty.call(message, "skinning"))
+                $root.Zko.ZkSkinning.encode(message.skinning, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
             if (message.skeleton != null && Object.hasOwnProperty.call(message, "skeleton"))
-                $root.Zko.ZkSkeleton.encode(message.skeleton, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+                $root.Zko.ZkSkeleton.encode(message.skeleton, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
             return writer;
         };
 
@@ -2615,6 +2626,10 @@ export const Zko = $root.Zko = (() => {
                         break;
                     }
                 case 7: {
+                        message.skinning = $root.Zko.ZkSkinning.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 8: {
                         message.skeleton = $root.Zko.ZkSkeleton.decode(reader, reader.uint32());
                         break;
                     }
@@ -2671,6 +2686,11 @@ export const Zko = $root.Zko = (() => {
                 if (error)
                     return "material." + error;
             }
+            if (message.skinning != null && message.hasOwnProperty("skinning")) {
+                let error = $root.Zko.ZkSkinning.verify(message.skinning);
+                if (error)
+                    return "skinning." + error;
+            }
             if (message.skeleton != null && message.hasOwnProperty("skeleton")) {
                 let error = $root.Zko.ZkSkeleton.verify(message.skeleton);
                 if (error)
@@ -2715,6 +2735,11 @@ export const Zko = $root.Zko = (() => {
                     throw TypeError(".Zko.ZkModel.material: object expected");
                 message.material = $root.ZkMaterial.fromObject(object.material);
             }
+            if (object.skinning != null) {
+                if (typeof object.skinning !== "object")
+                    throw TypeError(".Zko.ZkModel.skinning: object expected");
+                message.skinning = $root.Zko.ZkSkinning.fromObject(object.skinning);
+            }
             if (object.skeleton != null) {
                 if (typeof object.skeleton !== "object")
                     throw TypeError(".Zko.ZkModel.skeleton: object expected");
@@ -2743,6 +2768,7 @@ export const Zko = $root.Zko = (() => {
                 object.shaderProgram = null;
                 object.mesh = null;
                 object.material = null;
+                object.skinning = null;
                 object.skeleton = null;
             }
             if (message.id != null && message.hasOwnProperty("id"))
@@ -2757,6 +2783,8 @@ export const Zko = $root.Zko = (() => {
                 object.mesh = $root.Zko.ZkMesh.toObject(message.mesh, options);
             if (message.material != null && message.hasOwnProperty("material"))
                 object.material = $root.ZkMaterial.toObject(message.material, options);
+            if (message.skinning != null && message.hasOwnProperty("skinning"))
+                object.skinning = $root.Zko.ZkSkinning.toObject(message.skinning, options);
             if (message.skeleton != null && message.hasOwnProperty("skeleton"))
                 object.skeleton = $root.Zko.ZkSkeleton.toObject(message.skeleton, options);
             return object;
@@ -5143,6 +5171,201 @@ export const Zko = $root.Zko = (() => {
         };
 
         return ZkBone;
+    })();
+
+    Zko.ZkSkinning = (function() {
+
+        /**
+         * Properties of a ZkSkinning.
+         * @memberof Zko
+         * @interface IZkSkinning
+         * @property {Array.<number>|null} [boneIndices] ZkSkinning boneIndices
+         */
+
+        /**
+         * Constructs a new ZkSkinning.
+         * @memberof Zko
+         * @classdesc Represents a ZkSkinning.
+         * @implements IZkSkinning
+         * @constructor
+         * @param {Zko.IZkSkinning=} [properties] Properties to set
+         */
+        function ZkSkinning(properties) {
+            this.boneIndices = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ZkSkinning boneIndices.
+         * @member {Array.<number>} boneIndices
+         * @memberof Zko.ZkSkinning
+         * @instance
+         */
+        ZkSkinning.prototype.boneIndices = $util.emptyArray;
+
+        /**
+         * Creates a new ZkSkinning instance using the specified properties.
+         * @function create
+         * @memberof Zko.ZkSkinning
+         * @static
+         * @param {Zko.IZkSkinning=} [properties] Properties to set
+         * @returns {Zko.ZkSkinning} ZkSkinning instance
+         */
+        ZkSkinning.create = function create(properties) {
+            return new ZkSkinning(properties);
+        };
+
+        /**
+         * Encodes the specified ZkSkinning message. Does not implicitly {@link Zko.ZkSkinning.verify|verify} messages.
+         * @function encode
+         * @memberof Zko.ZkSkinning
+         * @static
+         * @param {Zko.ZkSkinning} message ZkSkinning message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ZkSkinning.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.boneIndices != null && message.boneIndices.length)
+                for (let i = 0; i < message.boneIndices.length; ++i)
+                    writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.boneIndices[i]);
+            return writer;
+        };
+
+        /**
+         * Decodes a ZkSkinning message from the specified reader or buffer.
+         * @function decode
+         * @memberof Zko.ZkSkinning
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Zko.ZkSkinning} ZkSkinning
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ZkSkinning.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkSkinning();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        if (!(message.boneIndices && message.boneIndices.length))
+                            message.boneIndices = [];
+                        if ((tag & 7) === 2) {
+                            let end2 = reader.uint32() + reader.pos;
+                            while (reader.pos < end2)
+                                message.boneIndices.push(reader.uint32());
+                        } else
+                            message.boneIndices.push(reader.uint32());
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Verifies a ZkSkinning message.
+         * @function verify
+         * @memberof Zko.ZkSkinning
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ZkSkinning.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.boneIndices != null && message.hasOwnProperty("boneIndices")) {
+                if (!Array.isArray(message.boneIndices))
+                    return "boneIndices: array expected";
+                for (let i = 0; i < message.boneIndices.length; ++i)
+                    if (!$util.isInteger(message.boneIndices[i]))
+                        return "boneIndices: integer[] expected";
+            }
+            return null;
+        };
+
+        /**
+         * Creates a ZkSkinning message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Zko.ZkSkinning
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Zko.ZkSkinning} ZkSkinning
+         */
+        ZkSkinning.fromObject = function fromObject(object) {
+            if (object instanceof $root.Zko.ZkSkinning)
+                return object;
+            let message = new $root.Zko.ZkSkinning();
+            if (object.boneIndices) {
+                if (!Array.isArray(object.boneIndices))
+                    throw TypeError(".Zko.ZkSkinning.boneIndices: array expected");
+                message.boneIndices = [];
+                for (let i = 0; i < object.boneIndices.length; ++i)
+                    message.boneIndices[i] = object.boneIndices[i] >>> 0;
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ZkSkinning message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Zko.ZkSkinning
+         * @static
+         * @param {Zko.ZkSkinning} message ZkSkinning
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ZkSkinning.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.boneIndices = [];
+            if (message.boneIndices && message.boneIndices.length) {
+                object.boneIndices = [];
+                for (let j = 0; j < message.boneIndices.length; ++j)
+                    object.boneIndices[j] = message.boneIndices[j];
+            }
+            return object;
+        };
+
+        /**
+         * Converts this ZkSkinning to JSON.
+         * @function toJSON
+         * @memberof Zko.ZkSkinning
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ZkSkinning.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ZkSkinning
+         * @function getTypeUrl
+         * @memberof Zko.ZkSkinning
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ZkSkinning.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/Zko.ZkSkinning";
+        };
+
+        return ZkSkinning;
     })();
 
     Zko.ZkJoint = (function() {
