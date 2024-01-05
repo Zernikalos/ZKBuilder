@@ -1,7 +1,7 @@
 import {Bone, Object3D, Skeleton} from "three";
 import {ZBone} from "../zernikalos/skeleton/ZBone"
 import {parseTransform} from "./parseTransform"
-import _, {isNil} from "lodash";
+import _ from "lodash";
 import {ZSkeleton} from "../zernikalos/skeleton/ZSkeleton"
 import {ZJoint} from "../zernikalos/skeleton/ZJoint";
 
@@ -66,40 +66,40 @@ function parseBonesFromRoot(rootBone: Bone): ZBone {
 }
 
 // @ts-ignore
-function recursiveParseSkeleton(obj: Object3D, idx: number, nextIdx: number) {
-    // if (obj.type !== "Bone") {
-    //     const parent = obj.parent
-    //
-    //     let semiJointNode
-    //     if (joints.has(parent.uuid)) {
-    //         semiJointNode = joints.get(parent.uuid)
-    //     } else {
-    //         semiJointNode = new JointNode()
-    //         semiJointNode.name = parent.name
-    //         semiJointNode.zbone = zparent
-    //         joints.set(parent.uuid, semiJointNode)
-    //     }
-    //     semiJointNode.children.push(obj)
-    //     return
-    // }
+// function recursiveParseSkeleton(obj: Object3D, idx: number, nextIdx: number) {
+//     // if (obj.type !== "Bone") {
+//     //     const parent = obj.parent
+//     //
+//     //     let semiJointNode
+//     //     if (joints.has(parent.uuid)) {
+//     //         semiJointNode = joints.get(parent.uuid)
+//     //     } else {
+//     //         semiJointNode = new JointNode()
+//     //         semiJointNode.name = parent.name
+//     //         semiJointNode.zbone = zparent
+//     //         joints.set(parent.uuid, semiJointNode)
+//     //     }
+//     //     semiJointNode.children.push(obj)
+//     //     return
+//     // }
+//
+//     const zbone: ZBone = parseBone(obj, idx)
+//     if (isNil(zbone)) {
+//         return
+//     }
+//
+//     const children = obj.children.filter((child) => child.type === "Bone")
+//     let childIdx = idx
+//     const boneChildren = children
+//         //@ts-ignore
+//         .map((bone: Object3D) => recursiveParseSkeleton(bone, childIdx++, ))
+//         .filter((bone: ZBone) => !isNil(bone))
+//     boneChildren.forEach((childBone) => zbone.addChild(childBone))
+//
+//     return zbone
+// }
 
-    const zbone: ZBone = parseBone(obj, idx)
-    if (isNil(zbone)) {
-        return
-    }
-
-    const children = obj.children.filter((child) => child.type === "Bone")
-    let childIdx = idx
-    const boneChildren = children
-        //@ts-ignore
-        .map((bone: Object3D) => recursiveParseSkeleton(bone, childIdx++, ))
-        .filter((bone: ZBone) => !isNil(bone))
-    boneChildren.forEach((childBone) => zbone.addChild(childBone))
-
-    return zbone
-}
-
-function parseBone(bone: Object3D, idx: number): ZBone {
+function parseBone(bone: Bone, idx: number): ZBone {
     if (bone.type !== "Bone") {
         return
     }
