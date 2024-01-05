@@ -1,6 +1,14 @@
 import {ZModel} from "../zernikalos/ZModel";
 import {ZShaderProgram} from "../zernikalos/shader/ZShaderProgram"
-import {ATTRS, UNIF_MODELVIEWPROJECTION, UNIF_TEXTURE} from "../constants";
+import {
+    ATTRS,
+    UNIF_BIND_MATRIX,
+    UNIF_BONES, UNIF_INV_BIND_MATRIX,
+    UNIF_MODELVIEWPROJECTION,
+    UNIF_PROJECTION,
+    UNIF_TEXTURE,
+    UNIF_VIEW
+} from "../constants";
 import {Attrib} from "../constants/Attribs";
 import {ZAttribute} from "../zernikalos/shader/ZAttribute";
 import _ from "lodash";
@@ -23,13 +31,30 @@ export function postShaderProgram(obj: ZModel): ZShaderProgram {
         }
     })
 
-    addUniform(shaderProgram, UNIF_MODELVIEWPROJECTION, uniformCounter)
-    uniformCounter++
-
     if (!_.isNil(obj.material.texture)) {
         addUniform(shaderProgram, UNIF_TEXTURE, uniformCounter)
         uniformCounter++
     }
+
+    if (!_.isNil(obj.skeleton)) {
+        addUniform(shaderProgram, UNIF_BONES, uniformCounter)
+        uniformCounter++
+
+        addUniform(shaderProgram, UNIF_PROJECTION, uniformCounter)
+        uniformCounter++
+
+        addUniform(shaderProgram, UNIF_VIEW, uniformCounter)
+        uniformCounter++
+
+        addUniform(shaderProgram, UNIF_BIND_MATRIX, uniformCounter)
+        uniformCounter++
+
+        addUniform(shaderProgram, UNIF_INV_BIND_MATRIX, uniformCounter)
+        uniformCounter++
+    }
+
+    addUniform(shaderProgram, UNIF_MODELVIEWPROJECTION, uniformCounter)
+    uniformCounter++
 
     return shaderProgram
 }

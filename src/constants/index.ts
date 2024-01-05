@@ -16,6 +16,12 @@ export const ATTRS = new AttribList([
 ])
 
 export const UNIF_MODELVIEWPROJECTION = new Uniform({name: "ModelViewProjectionMatrix", shaderName: "mvpMatrix", dataType: ZTypes.MAT4F})
+export const UNIF_VIEW = new Uniform({name: "ViewMatrix", shaderName: "viewMatrix", dataType: ZTypes.MAT4F})
 export const UNIF_MODELVIEW = new Uniform({name: "ViewModelMatrix", shaderName: "modelViewMatrix", dataType: ZTypes.MAT4F})
 export const UNIF_PROJECTION = new Uniform({name: "ProjectionMatrix", shaderName: "projMatrix", dataType: ZTypes.MAT4F})
 export const UNIF_TEXTURE = new Uniform({name: "Texture", shaderName: "texture", dataType: ZTypes.TEXTURE})
+export const UNIF_BONES = new Uniform({name: "Bones", shaderName: "bones", dataType: ZTypes.MAT4F})
+
+export const UNIF_BIND_MATRIX = new Uniform({name: "BindMatrix", shaderName: "bindMatrix", dataType: ZTypes.MAT4F})
+
+export const UNIF_INV_BIND_MATRIX = new Uniform({name: "InverseBindMatrix", shaderName: "invBindMatrix", dataType: ZTypes.MAT4F})

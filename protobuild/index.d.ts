@@ -1,4 +1,5 @@
 import * as $protobuf from "protobufjs";
+import Long = require("long");
 export namespace Zko {
 
     interface IProtoZkObject {
@@ -238,6 +239,7 @@ export namespace Zko {
         shaderProgram: Zko.ZkShaderProgram;
         mesh: Zko.ZkMesh;
         material?: (ZkMaterial|null);
+        skinning?: (Zko.ZkSkinning|null);
         skeleton?: (Zko.ZkSkeleton|null);
     }
 
@@ -249,6 +251,7 @@ export namespace Zko {
         public shaderProgram: Zko.ZkShaderProgram;
         public mesh: Zko.ZkMesh;
         public material?: (ZkMaterial|null);
+        public skinning?: (Zko.ZkSkinning|null);
         public skeleton?: (Zko.ZkSkeleton|null);
         public static create(properties?: Zko.IZkModel): Zko.ZkModel;
         public static encode(message: Zko.ZkModel, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -441,6 +444,7 @@ export namespace Zko {
     interface IZkBone {
         id: string;
         name: string;
+        idx: number;
         transform: Zko.ZkTransform;
         children?: (Zko.ZkBone[]|null);
     }
@@ -449,6 +453,7 @@ export namespace Zko {
         constructor(properties?: Zko.IZkBone);
         public id: string;
         public name: string;
+        public idx: number;
         public transform: Zko.ZkTransform;
         public children: Zko.ZkBone[];
         public static create(properties?: Zko.IZkBone): Zko.ZkBone;
@@ -457,6 +462,23 @@ export namespace Zko {
         public static verify(message: { [k: string]: any }): (string|null);
         public static fromObject(object: { [k: string]: any }): Zko.ZkBone;
         public static toObject(message: Zko.ZkBone, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public toJSON(): { [k: string]: any };
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    interface IZkSkinning {
+        boneIndices?: (number[]|null);
+    }
+
+    class ZkSkinning implements IZkSkinning {
+        constructor(properties?: Zko.IZkSkinning);
+        public boneIndices: number[];
+        public static create(properties?: Zko.IZkSkinning): Zko.ZkSkinning;
+        public static encode(message: Zko.ZkSkinning, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkSkinning;
+        public static verify(message: { [k: string]: any }): (string|null);
+        public static fromObject(object: { [k: string]: any }): Zko.ZkSkinning;
+        public static toObject(message: Zko.ZkSkinning, options?: $protobuf.IConversionOptions): { [k: string]: any };
         public toJSON(): { [k: string]: any };
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
