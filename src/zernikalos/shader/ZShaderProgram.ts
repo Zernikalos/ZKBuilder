@@ -13,6 +13,12 @@ Zko.ZkShaderProgram.fromObject = (obj: any) => {
     }
     const attributes = kotlinMapToJsObject(obj.attributes)
     const uniforms = kotlinMapToJsObject(obj.uniforms)
-    const newObj = {vertexShader: obj.vertexShader, fragmentShader: obj.fragmentShader, attributes, uniforms}
+    const newObj = {
+        refId: obj.refId,
+        vertexShader: obj.vertexShader,
+        fragmentShader: obj.fragmentShader,
+        attributes,
+        uniforms
+    }
     return ogFromObject(newObj)
 }

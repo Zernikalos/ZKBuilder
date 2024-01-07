@@ -5,6 +5,8 @@ package Zko;
 import "./math.proto";
 
 message ZkSkeleton {
+  required uint32 refId = 500;
+
   required string id = 1;
   required string name = 2;
 

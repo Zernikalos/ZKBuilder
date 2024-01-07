@@ -2825,6 +2825,7 @@ export const Zko = $root.Zko = (() => {
          * Properties of a ZkMesh.
          * @memberof Zko
          * @interface IZkMesh
+         * @property {number} refId ZkMesh refId
          * @property {Array.<Zko.ZkBufferKey>|null} [bufferKeys] ZkMesh bufferKeys
          * @property {Array.<Zko.ZkRawBuffer>|null} [rawBuffers] ZkMesh rawBuffers
          */
@@ -2846,6 +2847,14 @@ export const Zko = $root.Zko = (() => {
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
+
+        /**
+         * ZkMesh refId.
+         * @member {number} refId
+         * @memberof Zko.ZkMesh
+         * @instance
+         */
+        ZkMesh.prototype.refId = 0;
 
         /**
          * ZkMesh bufferKeys.
@@ -2893,6 +2902,7 @@ export const Zko = $root.Zko = (() => {
             if (message.rawBuffers != null && message.rawBuffers.length)
                 for (let i = 0; i < message.rawBuffers.length; ++i)
                     $root.Zko.ZkRawBuffer.encode(message.rawBuffers[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            writer.uint32(/* id 500, wireType 0 =*/4000).uint32(message.refId);
             return writer;
         };
 
@@ -2914,6 +2924,10 @@ export const Zko = $root.Zko = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
+                case 500: {
+                        message.refId = reader.uint32();
+                        break;
+                    }
                 case 1: {
                         if (!(message.bufferKeys && message.bufferKeys.length))
                             message.bufferKeys = [];
@@ -2931,6 +2945,8 @@ export const Zko = $root.Zko = (() => {
                     break;
                 }
             }
+            if (!message.hasOwnProperty("refId"))
+                throw $util.ProtocolError("missing required 'refId'", { instance: message });
             return message;
         };
 
@@ -2945,6 +2961,8 @@ export const Zko = $root.Zko = (() => {
         ZkMesh.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
+            if (!$util.isInteger(message.refId))
+                return "refId: integer expected";
             if (message.bufferKeys != null && message.hasOwnProperty("bufferKeys")) {
                 if (!Array.isArray(message.bufferKeys))
                     return "bufferKeys: array expected";
@@ -2978,6 +2996,8 @@ export const Zko = $root.Zko = (() => {
             if (object instanceof $root.Zko.ZkMesh)
                 return object;
             let message = new $root.Zko.ZkMesh();
+            if (object.refId != null)
+                message.refId = object.refId >>> 0;
             if (object.bufferKeys) {
                 if (!Array.isArray(object.bufferKeys))
                     throw TypeError(".Zko.ZkMesh.bufferKeys: array expected");
@@ -3018,6 +3038,8 @@ export const Zko = $root.Zko = (() => {
                 object.bufferKeys = [];
                 object.rawBuffers = [];
             }
+            if (options.defaults)
+                object.refId = 0;
             if (message.bufferKeys && message.bufferKeys.length) {
                 object.bufferKeys = [];
                 for (let j = 0; j < message.bufferKeys.length; ++j)
@@ -3028,6 +3050,8 @@ export const Zko = $root.Zko = (() => {
                 for (let j = 0; j < message.rawBuffers.length; ++j)
                     object.rawBuffers[j] = $root.Zko.ZkRawBuffer.toObject(message.rawBuffers[j], options);
             }
+            if (message.refId != null && message.hasOwnProperty("refId"))
+                object.refId = message.refId;
             return object;
         };
 
@@ -3670,6 +3694,7 @@ export const Zko = $root.Zko = (() => {
          * Properties of a ZkShaderProgram.
          * @memberof Zko
          * @interface IZkShaderProgram
+         * @property {number} refId ZkShaderProgram refId
          * @property {Zko.ZkShader} vertexShader ZkShaderProgram vertexShader
          * @property {Zko.ZkShader} fragmentShader ZkShaderProgram fragmentShader
          * @property {Object.<string,Zko.ZkShaderAttribute>|null} [attributes] ZkShaderProgram attributes
@@ -3692,6 +3717,14 @@ export const Zko = $root.Zko = (() => {
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
+
+        /**
+         * ZkShaderProgram refId.
+         * @member {number} refId
+         * @memberof Zko.ZkShaderProgram
+         * @instance
+         */
+        ZkShaderProgram.prototype.refId = 0;
 
         /**
          * ZkShaderProgram vertexShader.
@@ -3761,6 +3794,7 @@ export const Zko = $root.Zko = (() => {
                     writer.uint32(/* id 4, wireType 2 =*/34).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
                     $root.Zko.ZkShaderUniform.encode(message.uniforms[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
                 }
+            writer.uint32(/* id 500, wireType 0 =*/4000).uint32(message.refId);
             return writer;
         };
 
@@ -3782,6 +3816,10 @@ export const Zko = $root.Zko = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
+                case 500: {
+                        message.refId = reader.uint32();
+                        break;
+                    }
                 case 1: {
                         message.vertexShader = $root.Zko.ZkShader.decode(reader, reader.uint32());
                         break;
@@ -3841,6 +3879,8 @@ export const Zko = $root.Zko = (() => {
                     break;
                 }
             }
+            if (!message.hasOwnProperty("refId"))
+                throw $util.ProtocolError("missing required 'refId'", { instance: message });
             if (!message.hasOwnProperty("vertexShader"))
                 throw $util.ProtocolError("missing required 'vertexShader'", { instance: message });
             if (!message.hasOwnProperty("fragmentShader"))
@@ -3859,6 +3899,8 @@ export const Zko = $root.Zko = (() => {
         ZkShaderProgram.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
+            if (!$util.isInteger(message.refId))
+                return "refId: integer expected";
             {
                 let error = $root.Zko.ZkShader.verify(message.vertexShader);
                 if (error)
@@ -3904,6 +3946,8 @@ export const Zko = $root.Zko = (() => {
             if (object instanceof $root.Zko.ZkShaderProgram)
                 return object;
             let message = new $root.Zko.ZkShaderProgram();
+            if (object.refId != null)
+                message.refId = object.refId >>> 0;
             if (object.vertexShader != null) {
                 if (typeof object.vertexShader !== "object")
                     throw TypeError(".Zko.ZkShaderProgram.vertexShader: object expected");
@@ -3957,6 +4001,7 @@ export const Zko = $root.Zko = (() => {
             if (options.defaults) {
                 object.vertexShader = null;
                 object.fragmentShader = null;
+                object.refId = 0;
             }
             if (message.vertexShader != null && message.hasOwnProperty("vertexShader"))
                 object.vertexShader = $root.Zko.ZkShader.toObject(message.vertexShader, options);
@@ -3973,6 +4018,8 @@ export const Zko = $root.Zko = (() => {
                 for (let j = 0; j < keys2.length; ++j)
                     object.uniforms[keys2[j]] = $root.Zko.ZkShaderUniform.toObject(message.uniforms[keys2[j]], options);
             }
+            if (message.refId != null && message.hasOwnProperty("refId"))
+                object.refId = message.refId;
             return object;
         };
 
@@ -4657,6 +4704,7 @@ export const Zko = $root.Zko = (() => {
          * Properties of a ZkSkeleton.
          * @memberof Zko
          * @interface IZkSkeleton
+         * @property {number} refId ZkSkeleton refId
          * @property {string} id ZkSkeleton id
          * @property {string} name ZkSkeleton name
          * @property {Zko.ZkBone} root ZkSkeleton root
@@ -4676,6 +4724,14 @@ export const Zko = $root.Zko = (() => {
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
+
+        /**
+         * ZkSkeleton refId.
+         * @member {number} refId
+         * @memberof Zko.ZkSkeleton
+         * @instance
+         */
+        ZkSkeleton.prototype.refId = 0;
 
         /**
          * ZkSkeleton id.
@@ -4728,6 +4784,7 @@ export const Zko = $root.Zko = (() => {
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
             $root.Zko.ZkBone.encode(message.root, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            writer.uint32(/* id 500, wireType 0 =*/4000).uint32(message.refId);
             return writer;
         };
 
@@ -4749,6 +4806,10 @@ export const Zko = $root.Zko = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
+                case 500: {
+                        message.refId = reader.uint32();
+                        break;
+                    }
                 case 1: {
                         message.id = reader.string();
                         break;
@@ -4766,6 +4827,8 @@ export const Zko = $root.Zko = (() => {
                     break;
                 }
             }
+            if (!message.hasOwnProperty("refId"))
+                throw $util.ProtocolError("missing required 'refId'", { instance: message });
             if (!message.hasOwnProperty("id"))
                 throw $util.ProtocolError("missing required 'id'", { instance: message });
             if (!message.hasOwnProperty("name"))
@@ -4786,6 +4849,8 @@ export const Zko = $root.Zko = (() => {
         ZkSkeleton.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
+            if (!$util.isInteger(message.refId))
+                return "refId: integer expected";
             if (!$util.isString(message.id))
                 return "id: string expected";
             if (!$util.isString(message.name))
@@ -4810,6 +4875,8 @@ export const Zko = $root.Zko = (() => {
             if (object instanceof $root.Zko.ZkSkeleton)
                 return object;
             let message = new $root.Zko.ZkSkeleton();
+            if (object.refId != null)
+                message.refId = object.refId >>> 0;
             if (object.id != null)
                 message.id = String(object.id);
             if (object.name != null)
@@ -4839,6 +4906,7 @@ export const Zko = $root.Zko = (() => {
                 object.id = "";
                 object.name = "";
                 object.root = null;
+                object.refId = 0;
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
@@ -4846,6 +4914,8 @@ export const Zko = $root.Zko = (() => {
                 object.name = message.name;
             if (message.root != null && message.hasOwnProperty("root"))
                 object.root = $root.Zko.ZkBone.toObject(message.root, options);
+            if (message.refId != null && message.hasOwnProperty("refId"))
+                object.refId = message.refId;
             return object;
         };
 
@@ -6133,6 +6203,7 @@ export const ZkMaterial = $root.ZkMaterial = (() => {
      * Properties of a ZkMaterial.
      * @exports IZkMaterial
      * @interface IZkMaterial
+     * @property {number} refId ZkMaterial refId
      * @property {ZkTexture|null} [texture] ZkMaterial texture
      */
 
@@ -6150,6 +6221,14 @@ export const ZkMaterial = $root.ZkMaterial = (() => {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
+
+    /**
+     * ZkMaterial refId.
+     * @member {number} refId
+     * @memberof ZkMaterial
+     * @instance
+     */
+    ZkMaterial.prototype.refId = 0;
 
     /**
      * ZkMaterial texture.
@@ -6185,6 +6264,7 @@ export const ZkMaterial = $root.ZkMaterial = (() => {
             writer = $Writer.create();
         if (message.texture != null && Object.hasOwnProperty.call(message, "texture"))
             $root.ZkTexture.encode(message.texture, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        writer.uint32(/* id 500, wireType 0 =*/4000).uint32(message.refId);
         return writer;
     };
 
@@ -6206,6 +6286,10 @@ export const ZkMaterial = $root.ZkMaterial = (() => {
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
+            case 500: {
+                    message.refId = reader.uint32();
+                    break;
+                }
             case 1: {
                     message.texture = $root.ZkTexture.decode(reader, reader.uint32());
                     break;
@@ -6215,6 +6299,8 @@ export const ZkMaterial = $root.ZkMaterial = (() => {
                 break;
             }
         }
+        if (!message.hasOwnProperty("refId"))
+            throw $util.ProtocolError("missing required 'refId'", { instance: message });
         return message;
     };
 
@@ -6229,6 +6315,8 @@ export const ZkMaterial = $root.ZkMaterial = (() => {
     ZkMaterial.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
+        if (!$util.isInteger(message.refId))
+            return "refId: integer expected";
         if (message.texture != null && message.hasOwnProperty("texture")) {
             let error = $root.ZkTexture.verify(message.texture);
             if (error)
@@ -6249,6 +6337,8 @@ export const ZkMaterial = $root.ZkMaterial = (() => {
         if (object instanceof $root.ZkMaterial)
             return object;
         let message = new $root.ZkMaterial();
+        if (object.refId != null)
+            message.refId = object.refId >>> 0;
         if (object.texture != null) {
             if (typeof object.texture !== "object")
                 throw TypeError(".ZkMaterial.texture: object expected");
@@ -6270,10 +6360,14 @@ export const ZkMaterial = $root.ZkMaterial = (() => {
         if (!options)
             options = {};
         let object = {};
-        if (options.defaults)
+        if (options.defaults) {
             object.texture = null;
+            object.refId = 0;
+        }
         if (message.texture != null && message.hasOwnProperty("texture"))
             object.texture = $root.ZkTexture.toObject(message.texture, options);
+        if (message.refId != null && message.hasOwnProperty("refId"))
+            object.refId = message.refId;
         return object;
     };
 
@@ -6312,6 +6406,7 @@ export const ZkTexture = $root.ZkTexture = (() => {
      * Properties of a ZkTexture.
      * @exports IZkTexture
      * @interface IZkTexture
+     * @property {number} refId ZkTexture refId
      * @property {string} id ZkTexture id
      * @property {Uint8Array} dataArray ZkTexture dataArray
      */
@@ -6330,6 +6425,14 @@ export const ZkTexture = $root.ZkTexture = (() => {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
+
+    /**
+     * ZkTexture refId.
+     * @member {number} refId
+     * @memberof ZkTexture
+     * @instance
+     */
+    ZkTexture.prototype.refId = 0;
 
     /**
      * ZkTexture id.
@@ -6373,6 +6476,7 @@ export const ZkTexture = $root.ZkTexture = (() => {
             writer = $Writer.create();
         writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
         writer.uint32(/* id 2, wireType 2 =*/18).bytes(message.dataArray);
+        writer.uint32(/* id 500, wireType 0 =*/4000).uint32(message.refId);
         return writer;
     };
 
@@ -6394,6 +6498,10 @@ export const ZkTexture = $root.ZkTexture = (() => {
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
+            case 500: {
+                    message.refId = reader.uint32();
+                    break;
+                }
             case 1: {
                     message.id = reader.string();
                     break;
@@ -6407,6 +6515,8 @@ export const ZkTexture = $root.ZkTexture = (() => {
                 break;
             }
         }
+        if (!message.hasOwnProperty("refId"))
+            throw $util.ProtocolError("missing required 'refId'", { instance: message });
         if (!message.hasOwnProperty("id"))
             throw $util.ProtocolError("missing required 'id'", { instance: message });
         if (!message.hasOwnProperty("dataArray"))
@@ -6425,6 +6535,8 @@ export const ZkTexture = $root.ZkTexture = (() => {
     ZkTexture.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
+        if (!$util.isInteger(message.refId))
+            return "refId: integer expected";
         if (!$util.isString(message.id))
             return "id: string expected";
         if (!(message.dataArray && typeof message.dataArray.length === "number" || $util.isString(message.dataArray)))
@@ -6444,6 +6556,8 @@ export const ZkTexture = $root.ZkTexture = (() => {
         if (object instanceof $root.ZkTexture)
             return object;
         let message = new $root.ZkTexture();
+        if (object.refId != null)
+            message.refId = object.refId >>> 0;
         if (object.id != null)
             message.id = String(object.id);
         if (object.dataArray != null)
@@ -6476,11 +6590,14 @@ export const ZkTexture = $root.ZkTexture = (() => {
                 if (options.bytes !== Array)
                     object.dataArray = $util.newBuffer(object.dataArray);
             }
+            object.refId = 0;
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
         if (message.dataArray != null && message.hasOwnProperty("dataArray"))
             object.dataArray = options.bytes === String ? $util.base64.encode(message.dataArray, 0, message.dataArray.length) : options.bytes === Array ? Array.prototype.slice.call(message.dataArray) : message.dataArray;
+        if (message.refId != null && message.hasOwnProperty("refId"))
+            object.refId = message.refId;
         return object;
     };
 

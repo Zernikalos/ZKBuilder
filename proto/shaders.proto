@@ -3,6 +3,8 @@ syntax = "proto2";
 package Zko;
 
 message ZkShaderProgram {
+  required uint32 refId = 500;
+
   required ZkShader vertexShader = 1;
   required ZkShader fragmentShader = 2;
 
