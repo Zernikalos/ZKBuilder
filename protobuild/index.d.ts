@@ -581,6 +581,8 @@ export class ZkMaterial implements IZkMaterial {
 export interface IZkTexture {
     refId: number;
     id: string;
+    width: number;
+    height: number;
     dataArray: Uint8Array;
 }
 
@@ -588,6 +590,8 @@ export class ZkTexture implements IZkTexture {
     constructor(properties?: IZkTexture);
     public refId: number;
     public id: string;
+    public width: number;
+    public height: number;
     public dataArray: Uint8Array;
     public static create(properties?: IZkTexture): ZkTexture;
     public static encode(message: ZkTexture, writer?: $protobuf.Writer): $protobuf.Writer;

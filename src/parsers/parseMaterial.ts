@@ -27,7 +27,10 @@ async function parseTexture(tex: Texture): Promise<ZTexture> {
 
     const texture = ZTexture.init()
     texture.dataArray = new Int8Array(data)
+    // TODO: Is this field required any longer?
     texture.id = `${hash(texture.dataArray)}`
+    texture.width = imgElement.width
+    texture.height = imgElement.height
 
     return texture
 }

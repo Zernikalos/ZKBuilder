@@ -6408,6 +6408,8 @@ export const ZkTexture = $root.ZkTexture = (() => {
      * @interface IZkTexture
      * @property {number} refId ZkTexture refId
      * @property {string} id ZkTexture id
+     * @property {number} width ZkTexture width
+     * @property {number} height ZkTexture height
      * @property {Uint8Array} dataArray ZkTexture dataArray
      */
 
@@ -6443,6 +6445,22 @@ export const ZkTexture = $root.ZkTexture = (() => {
     ZkTexture.prototype.id = "";
 
     /**
+     * ZkTexture width.
+     * @member {number} width
+     * @memberof ZkTexture
+     * @instance
+     */
+    ZkTexture.prototype.width = 0;
+
+    /**
+     * ZkTexture height.
+     * @member {number} height
+     * @memberof ZkTexture
+     * @instance
+     */
+    ZkTexture.prototype.height = 0;
+
+    /**
      * ZkTexture dataArray.
      * @member {Uint8Array} dataArray
      * @memberof ZkTexture
@@ -6475,7 +6493,9 @@ export const ZkTexture = $root.ZkTexture = (() => {
         if (!writer)
             writer = $Writer.create();
         writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-        writer.uint32(/* id 2, wireType 2 =*/18).bytes(message.dataArray);
+        writer.uint32(/* id 2, wireType 0 =*/16).int32(message.width);
+        writer.uint32(/* id 3, wireType 0 =*/24).int32(message.height);
+        writer.uint32(/* id 4, wireType 2 =*/34).bytes(message.dataArray);
         writer.uint32(/* id 500, wireType 0 =*/4000).uint32(message.refId);
         return writer;
     };
@@ -6507,6 +6527,14 @@ export const ZkTexture = $root.ZkTexture = (() => {
                     break;
                 }
             case 2: {
+                    message.width = reader.int32();
+                    break;
+                }
+            case 3: {
+                    message.height = reader.int32();
+                    break;
+                }
+            case 4: {
                     message.dataArray = reader.bytes();
                     break;
                 }
@@ -6519,6 +6547,10 @@ export const ZkTexture = $root.ZkTexture = (() => {
             throw $util.ProtocolError("missing required 'refId'", { instance: message });
         if (!message.hasOwnProperty("id"))
             throw $util.ProtocolError("missing required 'id'", { instance: message });
+        if (!message.hasOwnProperty("width"))
+            throw $util.ProtocolError("missing required 'width'", { instance: message });
+        if (!message.hasOwnProperty("height"))
+            throw $util.ProtocolError("missing required 'height'", { instance: message });
         if (!message.hasOwnProperty("dataArray"))
             throw $util.ProtocolError("missing required 'dataArray'", { instance: message });
         return message;
@@ -6539,6 +6571,10 @@ export const ZkTexture = $root.ZkTexture = (() => {
             return "refId: integer expected";
         if (!$util.isString(message.id))
             return "id: string expected";
+        if (!$util.isInteger(message.width))
+            return "width: integer expected";
+        if (!$util.isInteger(message.height))
+            return "height: integer expected";
         if (!(message.dataArray && typeof message.dataArray.length === "number" || $util.isString(message.dataArray)))
             return "dataArray: buffer expected";
         return null;
@@ -6560,6 +6596,10 @@ export const ZkTexture = $root.ZkTexture = (() => {
             message.refId = object.refId >>> 0;
         if (object.id != null)
             message.id = String(object.id);
+        if (object.width != null)
+            message.width = object.width | 0;
+        if (object.height != null)
+            message.height = object.height | 0;
         if (object.dataArray != null)
             if (typeof object.dataArray === "string")
                 $util.base64.decode(object.dataArray, message.dataArray = $util.newBuffer($util.base64.length(object.dataArray)), 0);
@@ -6583,6 +6623,8 @@ export const ZkTexture = $root.ZkTexture = (() => {
         let object = {};
         if (options.defaults) {
             object.id = "";
+            object.width = 0;
+            object.height = 0;
             if (options.bytes === String)
                 object.dataArray = "";
             else {
@@ -6594,6 +6636,10 @@ export const ZkTexture = $root.ZkTexture = (() => {
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
+        if (message.width != null && message.hasOwnProperty("width"))
+            object.width = message.width;
+        if (message.height != null && message.hasOwnProperty("height"))
+            object.height = message.height;
         if (message.dataArray != null && message.hasOwnProperty("dataArray"))
             object.dataArray = options.bytes === String ? $util.base64.encode(message.dataArray, 0, message.dataArray.length) : options.bytes === Array ? Array.prototype.slice.call(message.dataArray) : message.dataArray;
         if (message.refId != null && message.hasOwnProperty("refId"))
