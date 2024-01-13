@@ -1,4 +1,5 @@
-export {ZObject, ZObjectType} from "./src/zernikalos/ZObject"
+export {ZObject} from "./src/zernikalos/ZObject"
+export {ZObjectType} from "./src/zernikalos/ZObjectType"
 export {ZModel} from "./src/zernikalos/ZModel"
 
 export {ZVector3} from "./src/zernikalos/math/ZVector3"

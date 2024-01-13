@@ -21,7 +21,7 @@ export async function parseModel(obj: Mesh | SkinnedMesh): Promise<{ model: ZMod
             .filter((zbone) => !_.isNil(zbone))
             .map((zbone) => zbone.idx)
         boneIndices.sort((a,b) => a - b)
-        const skinning = new ZSkinning()
+        const skinning = ZSkinning.init()
         skinning.boneIndices = boneIndices
         model.skinning = skinning
     }

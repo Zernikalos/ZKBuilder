@@ -3,7 +3,7 @@ import {ZBone} from "../zernikalos/skeleton/ZBone"
 import {parseTransform} from "./parseTransform"
 import _ from "lodash";
 import {ZSkeleton} from "../zernikalos/skeleton/ZSkeleton"
-import {ZJoint} from "../zernikalos/skeleton/ZJoint";
+//import {ZJoint} from "../zernikalos/skeleton/ZJoint";
 
 export class JointNode extends Object3D {
     type = "Joint"
@@ -36,12 +36,12 @@ function findParentBone(bone: Bone): Bone {
     return boneRoot
 }
 
-export function parseJoint(joint: JointNode): {joint: ZJoint, children: Object3D[]} {
-    const zjoint = new ZJoint()
-    zjoint.bone = joint.zbone
-    zjoint.name = joint.name
-    return {joint: zjoint, children: joint.children}
-}
+// export function parseJoint(joint: JointNode): {joint: ZJoint, children: Object3D[]} {
+//     const zjoint = new ZJoint()
+//     zjoint.bone = joint.zbone
+//     zjoint.name = joint.name
+//     return {joint: zjoint, children: joint.children}
+// }
 
 function parseBonesFromRoot(rootBone: Bone): ZBone {
     let idx = 0

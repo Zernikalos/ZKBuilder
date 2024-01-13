@@ -1,4 +1,4 @@
-import {ZObjectType} from "../zernikalos/ZObject";
+import {ZObjectType} from "../zernikalos/ZObjectType";
 
 /**
  * Simple ID generation based on numbers of element per type

@@ -1,6 +1,7 @@
-import {ZObject, ZObjectType} from "../zernikalos/ZObject";
+import {ZObject} from "../zernikalos/ZObject";
 import {Zko} from "../proto";
 import _ from "lodash";
+import {ZObjectType} from "../zernikalos/ZObjectType";
 
 export async function writeTree(obj: ZObject): Promise<Zko.ProtoZkObject> {
     const auxNode: Zko.ProtoZkObject = await asyncConvertToProto(obj)
@@ -27,40 +28,40 @@ function convertToProto(obj: ZObject) {
     switch (obj.type) {
         case ZObjectType.SCENE:
             auxNode = new Zko.ProtoZkObject({
-                type: "Scene",
+                type: ZObjectType.SCENE.name,
                 scene: Zko.ZkScene.fromObject(obj)
             })
             break
         case ZObjectType.GROUP:
         case ZObjectType.OBJECT:
             auxNode = new Zko.ProtoZkObject({
-                type: "Group",
+                type: ZObjectType.GROUP.name,
                 group: Zko.ZkGroup.fromObject(obj)
             })
             break
         case ZObjectType.MODEL:
             auxNode = new Zko.ProtoZkObject({
-                type: "Model",
+                type: ZObjectType.MODEL.name,
                 model: Zko.ZkModel.fromObject(obj)
             })
             break
         case ZObjectType.CAMERA:
             auxNode = new Zko.ProtoZkObject({
-                type: "Camera",
+                type: ZObjectType.CAMERA.name,
                 camera: Zko.ZkCamera.fromObject(obj)
             })
             break
         case ZObjectType.SKELETON:
             auxNode = new Zko.ProtoZkObject({
-                type: "Skeleton",
+                type: ZObjectType.SKELETON.name,
                 skeleton: Zko.ZkSkeleton.fromObject(obj)
             })
             break
-        case ZObjectType.JOINT:
-            auxNode = new Zko.ProtoZkObject({
-                type: "Joint",
-                joint: Zko.ZkJoint.fromObject(obj)
-            })
+        // case ZObjectType.JOINT:
+        //     auxNode = new Zko.ProtoZkObject({
+        //         type: "Joint",
+        //         joint: Zko.ZkJoint.fromObject(obj)
+        //     })
     }
     return auxNode
 }
