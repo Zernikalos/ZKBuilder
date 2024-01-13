@@ -18,10 +18,14 @@ Zko.ZkMesh.fromObject = (obj: any) => {
     const bufferKeys = buffers.map((pair) => createTempBufferKey(pair.value))
     const rawBuffers = buffers.map((pair) => createTempRawBuffer(pair.value))
 
-    return ogFromObject({bufferKeys, rawBuffers})
+    return ogFromObject({
+        refId: obj.refId,
+        bufferKeys,
+        rawBuffers
+    })
 }
 
-function createTempBufferKey(buff: ZBuffer): ZBufferKey {
+function createTempBufferKey(buff: ZBuffer): Partial<ZBufferKey> {
     return {
         bufferId: buff.bufferId,
         count: buff.count,

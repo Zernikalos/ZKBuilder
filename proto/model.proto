@@ -24,6 +24,8 @@ Mesh will provide:
 A relationship between the BufferKey and its Buffers
  */
 message ZkMesh {
+  required uint32 refId = 500;
+
   repeated ZkBufferKey bufferKeys = 1;
   repeated ZkRawBuffer rawBuffers = 2;
 }

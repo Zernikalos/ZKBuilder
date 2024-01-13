@@ -264,12 +264,14 @@ export namespace Zko {
     }
 
     interface IZkMesh {
+        refId: number;
         bufferKeys?: (Zko.ZkBufferKey[]|null);
         rawBuffers?: (Zko.ZkRawBuffer[]|null);
     }
 
     class ZkMesh implements IZkMesh {
         constructor(properties?: Zko.IZkMesh);
+        public refId: number;
         public bufferKeys: Zko.ZkBufferKey[];
         public rawBuffers: Zko.ZkRawBuffer[];
         public static create(properties?: Zko.IZkMesh): Zko.ZkMesh;
@@ -337,6 +339,7 @@ export namespace Zko {
     }
 
     interface IZkShaderProgram {
+        refId: number;
         vertexShader: Zko.ZkShader;
         fragmentShader: Zko.ZkShader;
         attributes?: ({ [k: string]: Zko.ZkShaderAttribute }|null);
@@ -345,6 +348,7 @@ export namespace Zko {
 
     class ZkShaderProgram implements IZkShaderProgram {
         constructor(properties?: Zko.IZkShaderProgram);
+        public refId: number;
         public vertexShader: Zko.ZkShader;
         public fragmentShader: Zko.ZkShader;
         public attributes: { [k: string]: Zko.ZkShaderAttribute };
@@ -421,6 +425,7 @@ export namespace Zko {
     }
 
     interface IZkSkeleton {
+        refId: number;
         id: string;
         name: string;
         root: Zko.ZkBone;
@@ -428,6 +433,7 @@ export namespace Zko {
 
     class ZkSkeleton implements IZkSkeleton {
         constructor(properties?: Zko.IZkSkeleton);
+        public refId: number;
         public id: string;
         public name: string;
         public root: Zko.ZkBone;
@@ -554,11 +560,13 @@ export namespace Zko {
 }
 
 export interface IZkMaterial {
+    refId: number;
     texture?: (ZkTexture|null);
 }
 
 export class ZkMaterial implements IZkMaterial {
     constructor(properties?: IZkMaterial);
+    public refId: number;
     public texture?: (ZkTexture|null);
     public static create(properties?: IZkMaterial): ZkMaterial;
     public static encode(message: ZkMaterial, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -571,13 +579,19 @@ export class ZkMaterial implements IZkMaterial {
 }
 
 export interface IZkTexture {
+    refId: number;
     id: string;
+    width: number;
+    height: number;
     dataArray: Uint8Array;
 }
 
 export class ZkTexture implements IZkTexture {
     constructor(properties?: IZkTexture);
+    public refId: number;
     public id: string;
+    public width: number;
+    public height: number;
     public dataArray: Uint8Array;
     public static create(properties?: IZkTexture): ZkTexture;
     public static encode(message: ZkTexture, writer?: $protobuf.Writer): $protobuf.Writer;

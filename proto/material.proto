@@ -1,9 +1,15 @@
 
 message ZkMaterial {
+  required uint32 refId = 500;
+
   optional ZkTexture texture = 1;
 }
 
 message ZkTexture {
+  required uint32 refId = 500;
+
   required string id = 1;
-  required bytes dataArray = 2;
+  required int32 width = 2;
+  required int32 height = 3;
+  required bytes dataArray = 4;
 }
