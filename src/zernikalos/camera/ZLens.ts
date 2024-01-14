@@ -1,10 +1,14 @@
+import {zernikalos} from "@zernikalos/zernikalos"
+import ZLens = zernikalos.components.camera.ZLens
 
-export abstract class ZLens {
-    near: number
-    far: number
+export {ZLens}
 
-    protected constructor(near = 0.1, far = 1000) {
-        this.near = near ?? 0.1
-        this.far = far ?? 1000
-    }
-}
+// export abstract class ZLens {
+//     near: number
+//     far: number
+//
+//     protected constructor(near = 0.1, far = 1000) {
+//         this.near = near ?? 0.1
+//         this.far = far ?? 1000
+//     }
+// }

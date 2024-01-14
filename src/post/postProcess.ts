@@ -1,4 +1,5 @@
-import {ZObject, ZObjectType} from "../zernikalos/ZObject"
+import {ZObject} from "../zernikalos/ZObject"
+import {ZObjectType} from "../zernikalos/ZObjectType"
 import {ZModel} from "../zernikalos/ZModel"
 import {isNil} from "lodash"
 import {postModel} from "./postModel"
@@ -10,9 +11,9 @@ export function postProcess(obj: ZObject) {
         case ZObjectType.OBJECT:
         case ZObjectType.GROUP:
         case ZObjectType.CAMERA:
-        case ZObjectType.BONE:
+        //case ZObjectType.BONE:
         case ZObjectType.SKELETON:
-        case ZObjectType.JOINT:
+        //case ZObjectType.JOINT:
             postObj = obj
             break
         case ZObjectType.MODEL:

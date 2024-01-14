@@ -7,7 +7,6 @@ import {Camera, Group, Mesh, Object3D, Scene} from "three"
 import {parseTransform} from "./parseTransform"
 import {parseScene} from "./parseScene"
 import {parseCamera} from "./parseCamera"
-import {JointNode, parseJoint} from "./parseSkeleton"
 
 export async function parseObject(threeObj: Object3D): Promise<ZObject | undefined> {
     return await parseObjectRecursive(threeObj)
@@ -58,11 +57,11 @@ async function parseObjectByType(threeObj: Object3D): Promise<{zObject: ZObject,
         //     zObject = res.skeleton
         //     children = res.children
         //     break
-        case "Joint":
-            res = parseJoint(threeObj as JointNode)
-            zObject = res.joint
-            children = res.children
-            break
+        // case "Joint":
+        //     res = parseJoint(threeObj as JointNode)
+        //     zObject = res.joint
+        //     children = res.children
+        //     break
     }
 
     if (isNil(zObject) || isNil(zObject.type)) {
@@ -73,6 +72,9 @@ async function parseObjectByType(threeObj: Object3D): Promise<{zObject: ZObject,
     }
     zObject.name = threeObj.name
     zObject.transform = parseTransform(threeObj)
+
+    // This is for being able to recognize the type when the reactivity comes in
+    Object.seal(zObject.type)
 
     return {zObject, children}
 }
