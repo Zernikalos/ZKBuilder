@@ -1,6 +1,7 @@
 import {ZModel} from "../zernikalos/ZModel";
 import {ZShaderProgram} from "../zernikalos/shader/ZShaderProgram"
 import {
+    ATTR_UV,
     ATTRS,
     UNIF_BIND_MATRIX,
     UNIF_BONES, UNIF_INV_BIND_MATRIX,
@@ -27,7 +28,12 @@ export function postShaderProgram(obj: ZModel): ZShaderProgram {
     ATTRS.list.forEach((attr: Attrib) => {
         const buff = bufferKeys.find((buff) => buff.key === attr.name)
         if (!_.isNil(buff)) {
-            addAttribute(shaderProgram, attr, buff.value)
+            // TODO: Temporal implementation for checks
+            if (attr === ATTR_UV && !obj.hasTextures) {
+
+            } else {
+                addAttribute(shaderProgram, attr, buff.value)
+            }
         }
     })
 
