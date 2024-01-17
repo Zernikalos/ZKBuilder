@@ -25,6 +25,7 @@ import {
 } from "../../constants"
 import _ from "lodash"
 import {kotlinMapToJsMap, mapFlatJs} from "../../utils/mapFlatJs";
+import {ZBufferKey} from "../../zernikalos/mesh/ZBufferKey";
 
 export function generateVertexShaderSource(obj: ZModel): string {
 
@@ -33,7 +34,7 @@ export function generateVertexShaderSource(obj: ZModel): string {
     const HAS_SKINNING = !_.isNil(obj.skeleton) && !_.isNil(obj.skinning) && false
     // const uniforms: Map<string, ZUniform> = obj.shaderProgram.uniformsMap
     const uniforms = kotlinMapToJsMap(obj.shaderProgram.uniforms)
-    const buffers = mapFlatJs(obj.mesh.buffers)
+    const buffers: {key: string, value: ZBufferKey}[] = mapFlatJs(obj.mesh.buffers)
 
     const source: (string | string[])[] = [
         HEADER,

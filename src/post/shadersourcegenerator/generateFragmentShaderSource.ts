@@ -7,12 +7,13 @@ import {
 } from "../../constants"
 import _ from "lodash"
 import {kotlinMapToJsMap, mapFlatJs} from "../../utils/mapFlatJs";
+import {ZBufferKey} from "../../zernikalos/mesh/ZBufferKey";
 
 export function generateFragmentShaderSource(obj: ZModel) {
 
     const HAS_TEXTURES = !_.isNil(obj.material?.texture)
     const uniforms = kotlinMapToJsMap(obj.shaderProgram.uniforms)
-    const buffers = mapFlatJs(obj.mesh.buffers)
+    const buffers: {key: string, value: ZBufferKey}[] = mapFlatJs(obj.mesh.buffers)
 
     const source: string[] = [
         HEADER,
