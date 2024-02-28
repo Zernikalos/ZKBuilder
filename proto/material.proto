@@ -1,15 +1,25 @@
 
-message ZkMaterial {
-  required uint32 refId = 500;
+message ZkRefMaterial {
+  required int32 refId = 1;
+  required bool isReference = 2;
 
-  optional ZkTexture texture = 1;
+  optional ZkMaterial data = 100;
+}
+
+message ZkMaterial {
+  optional ZkRefTexture texture = 1;
+}
+
+message ZkRefTexture {
+  required int32 refId = 1;
+  required bool isReference = 2;
+
+  optional ZkTexture data = 100;
 }
 
 message ZkTexture {
-  required uint32 refId = 500;
-
-  required string id = 1;
-  required int32 width = 2;
-  required int32 height = 3;
-  required bytes dataArray = 4;
+  optional string id = 1;
+  optional int32 width = 2;
+  optional int32 height = 3;
+  optional bytes dataArray = 4;
 }

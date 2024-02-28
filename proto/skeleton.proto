@@ -4,15 +4,23 @@ package Zko;
 
 import "./math.proto";
 
-message ZkSkeleton {
-  required uint32 refId = 500;
+message ZkRefSkeleton {
+  required int32 refId = 1;
+  required bool isReference = 2;
 
-  required string id = 1;
-  required string name = 2;
+  optional ZkSkeleton data = 100;
+}
+
+message ZkSkeleton {
+  required int32 refId = 1;
+  required bool isReference = 2;
+
+  optional string id = 101;
+  optional string name = 102;
 
   // required ZkTransform transform = 3;
 
-  required ZkBone root = 4;
+  optional ZkBone root = 104;
 }
 
 message ZkBone {

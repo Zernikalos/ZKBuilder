@@ -3,12 +3,22 @@ syntax = "proto2";
 package Zko;
 
 import "./commons.proto";
+import "./component.proto";
 import "./math.proto";
 import "./group.proto";
 import "./scene.proto";
 import "./model.proto";
 import "./camera.proto";
 import "./skeleton.proto";
+
+message Zko {
+  required ZkoHeader header = 1;
+  required ProtoZkObject data = 2;
+}
+
+message ZkoHeader {
+  required string version = 1;
+}
 
 message ProtoZkObject {
   required string type = 1;

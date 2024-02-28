@@ -2,27 +2,41 @@ import {ZObject} from "../zernikalos/ZObject";
 import {Zko} from "../proto";
 import _ from "lodash";
 import {ZObjectType} from "../zernikalos/ZObjectType";
+import {modelWriter} from "./sceneobjects/modelWriter";
+import {ZModel} from "../zernikalos/ZModel";
+import {WriterContext} from "./WriterContext";
 
 export async function writeTree(obj: ZObject): Promise<Zko.ProtoZkObject> {
-    const auxNode: Zko.ProtoZkObject = await asyncConvertToProto(obj)
+    const ctx = new WriterContext()
+    return innerWriteTree(ctx, obj)
+}
+
+async function innerWriteTree(ctx: WriterContext, obj: ZObject): Promise<Zko.ProtoZkObject> {
+    const auxNode: Zko.ProtoZkObject = await asyncConvertToProto(ctx, obj)
     if (_.isNil(auxNode)) {
         throw new Error(`Unrecognized conversion for object ${obj.name} with type ${obj.type}`)
     }
 
-    auxNode.children = await Promise.all(obj.children.map(async child => await writeTree(child)))
+    const children: Zko.ProtoZkObject[] = []
+    for (const child of obj.children) {
+        const zkChild = await innerWriteTree(ctx, child)
+        children.push(zkChild)
+    }
+
+    auxNode.children = children
 
     return auxNode
 }
 
-function asyncConvertToProto(obj: ZObject): Promise<Zko.ProtoZkObject> {
+function asyncConvertToProto(ctx: WriterContext, obj: ZObject): Promise<Zko.ProtoZkObject> {
     return new Promise(resolve => {
         setTimeout(() =>{
-            resolve(convertToProto(obj))
+            resolve(convertToProto(ctx, obj))
         })
     })
 }
 
-function convertToProto(obj: ZObject) {
+function convertToProto(ctx: WriterContext, obj: ZObject) {
     // TODO: The use of fromObject affects a lot to the performance
     let auxNode: Zko.ProtoZkObject
     switch (obj.type) {
@@ -42,7 +56,7 @@ function convertToProto(obj: ZObject) {
         case ZObjectType.MODEL:
             auxNode = new Zko.ProtoZkObject({
                 type: ZObjectType.MODEL.name,
-                model: Zko.ZkModel.fromObject(obj)
+                model: modelWriter(ctx, obj as ZModel)
             })
             break
         case ZObjectType.CAMERA:

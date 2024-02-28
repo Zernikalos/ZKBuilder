@@ -2,6 +2,8 @@ syntax = "proto2";
 
 package Zko;
 
+import "./component.proto";
+import "./mesh.proto";
 import "./shaders.proto";
 import "./material.proto";
 import "./skeleton.proto";
@@ -14,63 +16,7 @@ message ZkModel {
 
   required ZkShaderProgram shaderProgram = 4;
   required ZkMesh mesh = 5;
-  optional ZkMaterial material = 6;
+  optional ZkRefMaterial material = 6;
   optional ZkSkinning skinning = 7;
-  optional ZkSkeleton skeleton = 8;
-}
-
-/**
-Mesh will provide:
-A relationship between the BufferKey and its Buffers
- */
-message ZkMesh {
-  required uint32 refId = 500;
-
-  repeated ZkBufferKey bufferKeys = 1;
-  repeated ZkRawBuffer rawBuffers = 2;
-}
-
-/**
-BufferKeys are the one in charge to provide specific data about how the information is being stored inside
-the RawBuffer data arrays
- */
-message ZkBufferKey {
-  /**
-  ID for this BufferKey.
-  Might differ from BufferId
-   */
-  required uint32 id = 1;
-  /**
-  Type of data stored
-   */
-  required ZkDataType dataType = 2;
-
-  required string name = 3;
-  /**
-  How many elements are stored per data unit.
-  Example: a Vec3 will have size equals to 3 in the same way a Scalar will be 1
-   */
-  required uint32 size = 4;
-  /**
-  How many elements of this type are stored.
-  Example: If we store 15 Vec3 elements in the data array the count will have a value of 15.
-   */
-  required uint32 count = 5;
-  required bool normalized = 6;
-  required uint32 offset = 7;
-  /**
-  If the data is tightly represented within the array how many elements it requires to be jumped to the next one
-  Example: We store a Vec3 postion and a Vec3 normal in the very same array, the stride will be 6
-   */
-  required uint32 stride = 8;
-  required bool isIndexBuffer = 9;
-  /**
-  Refers to the RawBuffer Id
-   */
-  required uint32 bufferId = 10;
-}
-
-message ZkRawBuffer {
-  required uint32 id = 1;
-  required bytes dataArray = 2;
+  optional ZkRefSkeleton skeleton = 8;
 }
