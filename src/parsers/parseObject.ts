@@ -7,24 +7,29 @@ import {Camera, Group, Mesh, Object3D, Scene} from "three"
 import {parseTransform} from "./parseTransform"
 import {parseScene} from "./parseScene"
 import {parseCamera} from "./parseCamera"
+import {ParserContext} from "./ParserContext";
 
 export async function parseObject(threeObj: Object3D): Promise<ZObject | undefined> {
-    return await parseObjectRecursive(threeObj)
+    const ctx = new ParserContext()
+
+    const zobj = await parseObjectRecursive(ctx, threeObj)
+    return zobj
 }
 
-async function parseObjectRecursive(threeObj: Object3D): Promise<ZObject | undefined> {
-    const {zObject, children} = await parseObjectByType(threeObj)
+async function parseObjectRecursive(ctx: ParserContext, threeObj: Object3D): Promise<ZObject | undefined> {
+    const {zObject, children} = await parseObjectByType(ctx, threeObj)
 
-    const parsedChildren = await Promise.all(
-        children
-            .map(async (child: Object3D)=> await parseObjectRecursive(child))
-    )
+    const parsedChilden = []
+    for (const child of children) {
+        const parsed = await parseObjectRecursive(ctx, child)
+        parsedChilden.push(parsed)
+    }
 
-    zObject.children = parsedChildren.filter((child: ZObject) => !isNil(child))
+    zObject.children = parsedChilden.filter((child: ZObject) => !isNil(child))
     return zObject
 }
 
-async function parseObjectByType(threeObj: Object3D): Promise<{zObject: ZObject, children: Object3D[]}> {
+async function parseObjectByType(ctx: ParserContext, threeObj: Object3D): Promise<{zObject: ZObject, children: Object3D[]}> {
     let zObject: ZObject
     let res
     let children
@@ -37,7 +42,7 @@ async function parseObjectByType(threeObj: Object3D): Promise<{zObject: ZObject,
             break
         case "Mesh":
         case "SkinnedMesh":
-            res = await parseModel(threeObj as Mesh)
+            res = await parseModel(ctx, threeObj as Mesh)
             zObject = res.model
             children = res.children
             break

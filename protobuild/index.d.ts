@@ -2,6 +2,42 @@ import * as $protobuf from "protobufjs";
 import Long = require("long");
 export namespace Zko {
 
+    interface IZko {
+        header: Zko.ZkoHeader;
+        data: Zko.ProtoZkObject;
+    }
+
+    class Zko implements IZko {
+        constructor(properties?: Zko.IZko);
+        public header: Zko.ZkoHeader;
+        public data: Zko.ProtoZkObject;
+        public static create(properties?: Zko.IZko): Zko.Zko;
+        public static encode(message: Zko.Zko, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.Zko;
+        public static verify(message: { [k: string]: any }): (string|null);
+        public static fromObject(object: { [k: string]: any }): Zko.Zko;
+        public static toObject(message: Zko.Zko, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public toJSON(): { [k: string]: any };
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    interface IZkoHeader {
+        version: string;
+    }
+
+    class ZkoHeader implements IZkoHeader {
+        constructor(properties?: Zko.IZkoHeader);
+        public version: string;
+        public static create(properties?: Zko.IZkoHeader): Zko.ZkoHeader;
+        public static encode(message: Zko.ZkoHeader, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkoHeader;
+        public static verify(message: { [k: string]: any }): (string|null);
+        public static fromObject(object: { [k: string]: any }): Zko.ZkoHeader;
+        public static toObject(message: Zko.ZkoHeader, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public toJSON(): { [k: string]: any };
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
     interface IProtoZkObject {
         type: string;
         scene?: (Zko.ZkScene|null);
@@ -73,6 +109,37 @@ export namespace Zko {
         public static verify(message: { [k: string]: any }): (string|null);
         public static fromObject(object: { [k: string]: any }): Zko.ZkDataType;
         public static toObject(message: Zko.ZkDataType, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public toJSON(): { [k: string]: any };
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    enum ZkRefType {
+        MESH = 0,
+        TEXTURE = 2,
+        MATERIAL = 3
+    }
+
+    interface IZkReference {
+        refId: number;
+        type: Zko.ZkRefType;
+        mesh?: (Zko.ZkMesh|null);
+        texture?: (ZkTexture|null);
+        material?: (ZkMaterial|null);
+    }
+
+    class ZkReference implements IZkReference {
+        constructor(properties?: Zko.IZkReference);
+        public refId: number;
+        public type: Zko.ZkRefType;
+        public mesh?: (Zko.ZkMesh|null);
+        public texture?: (ZkTexture|null);
+        public material?: (ZkMaterial|null);
+        public static create(properties?: Zko.IZkReference): Zko.ZkReference;
+        public static encode(message: Zko.ZkReference, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkReference;
+        public static verify(message: { [k: string]: any }): (string|null);
+        public static fromObject(object: { [k: string]: any }): Zko.ZkReference;
+        public static toObject(message: Zko.ZkReference, options?: $protobuf.IConversionOptions): { [k: string]: any };
         public toJSON(): { [k: string]: any };
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
@@ -238,9 +305,9 @@ export namespace Zko {
         transform: Zko.ZkTransform;
         shaderProgram: Zko.ZkShaderProgram;
         mesh: Zko.ZkMesh;
-        material?: (ZkMaterial|null);
+        material?: (ZkRefMaterial|null);
         skinning?: (Zko.ZkSkinning|null);
-        skeleton?: (Zko.ZkSkeleton|null);
+        skeleton?: (Zko.ZkRefSkeleton|null);
     }
 
     class ZkModel implements IZkModel {
@@ -250,9 +317,9 @@ export namespace Zko {
         public transform: Zko.ZkTransform;
         public shaderProgram: Zko.ZkShaderProgram;
         public mesh: Zko.ZkMesh;
-        public material?: (ZkMaterial|null);
+        public material?: (ZkRefMaterial|null);
         public skinning?: (Zko.ZkSkinning|null);
-        public skeleton?: (Zko.ZkSkeleton|null);
+        public skeleton?: (Zko.ZkRefSkeleton|null);
         public static create(properties?: Zko.IZkModel): Zko.ZkModel;
         public static encode(message: Zko.ZkModel, writer?: $protobuf.Writer): $protobuf.Writer;
         public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkModel;
@@ -265,6 +332,7 @@ export namespace Zko {
 
     interface IZkMesh {
         refId: number;
+        isReference: boolean;
         bufferKeys?: (Zko.ZkBufferKey[]|null);
         rawBuffers?: (Zko.ZkRawBuffer[]|null);
     }
@@ -272,6 +340,7 @@ export namespace Zko {
     class ZkMesh implements IZkMesh {
         constructor(properties?: Zko.IZkMesh);
         public refId: number;
+        public isReference: boolean;
         public bufferKeys: Zko.ZkBufferKey[];
         public rawBuffers: Zko.ZkRawBuffer[];
         public static create(properties?: Zko.IZkMesh): Zko.ZkMesh;
@@ -424,19 +493,42 @@ export namespace Zko {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
+    interface IZkRefSkeleton {
+        refId: number;
+        isReference: boolean;
+        data?: (Zko.ZkSkeleton|null);
+    }
+
+    class ZkRefSkeleton implements IZkRefSkeleton {
+        constructor(properties?: Zko.IZkRefSkeleton);
+        public refId: number;
+        public isReference: boolean;
+        public data?: (Zko.ZkSkeleton|null);
+        public static create(properties?: Zko.IZkRefSkeleton): Zko.ZkRefSkeleton;
+        public static encode(message: Zko.ZkRefSkeleton, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkRefSkeleton;
+        public static verify(message: { [k: string]: any }): (string|null);
+        public static fromObject(object: { [k: string]: any }): Zko.ZkRefSkeleton;
+        public static toObject(message: Zko.ZkRefSkeleton, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public toJSON(): { [k: string]: any };
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
     interface IZkSkeleton {
         refId: number;
-        id: string;
-        name: string;
-        root: Zko.ZkBone;
+        isReference: boolean;
+        id?: (string|null);
+        name?: (string|null);
+        root?: (Zko.ZkBone|null);
     }
 
     class ZkSkeleton implements IZkSkeleton {
         constructor(properties?: Zko.IZkSkeleton);
         public refId: number;
+        public isReference: boolean;
         public id: string;
         public name: string;
-        public root: Zko.ZkBone;
+        public root?: (Zko.ZkBone|null);
         public static create(properties?: Zko.IZkSkeleton): Zko.ZkSkeleton;
         public static encode(message: Zko.ZkSkeleton, writer?: $protobuf.Writer): $protobuf.Writer;
         public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkSkeleton;
@@ -559,15 +651,34 @@ export namespace Zko {
     }
 }
 
-export interface IZkMaterial {
+export interface IZkRefMaterial {
     refId: number;
-    texture?: (ZkTexture|null);
+    isReference: boolean;
+    data?: (ZkMaterial|null);
+}
+
+export class ZkRefMaterial implements IZkRefMaterial {
+    constructor(properties?: IZkRefMaterial);
+    public refId: number;
+    public isReference: boolean;
+    public data?: (ZkMaterial|null);
+    public static create(properties?: IZkRefMaterial): ZkRefMaterial;
+    public static encode(message: ZkRefMaterial, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ZkRefMaterial;
+    public static verify(message: { [k: string]: any }): (string|null);
+    public static fromObject(object: { [k: string]: any }): ZkRefMaterial;
+    public static toObject(message: ZkRefMaterial, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public toJSON(): { [k: string]: any };
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
+export interface IZkMaterial {
+    texture?: (ZkRefTexture|null);
 }
 
 export class ZkMaterial implements IZkMaterial {
     constructor(properties?: IZkMaterial);
-    public refId: number;
-    public texture?: (ZkTexture|null);
+    public texture?: (ZkRefTexture|null);
     public static create(properties?: IZkMaterial): ZkMaterial;
     public static encode(message: ZkMaterial, writer?: $protobuf.Writer): $protobuf.Writer;
     public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ZkMaterial;
@@ -578,17 +689,36 @@ export class ZkMaterial implements IZkMaterial {
     public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
-export interface IZkTexture {
+export interface IZkRefTexture {
     refId: number;
-    id: string;
-    width: number;
-    height: number;
-    dataArray: Uint8Array;
+    isReference: boolean;
+    data?: (ZkTexture|null);
+}
+
+export class ZkRefTexture implements IZkRefTexture {
+    constructor(properties?: IZkRefTexture);
+    public refId: number;
+    public isReference: boolean;
+    public data?: (ZkTexture|null);
+    public static create(properties?: IZkRefTexture): ZkRefTexture;
+    public static encode(message: ZkRefTexture, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ZkRefTexture;
+    public static verify(message: { [k: string]: any }): (string|null);
+    public static fromObject(object: { [k: string]: any }): ZkRefTexture;
+    public static toObject(message: ZkRefTexture, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public toJSON(): { [k: string]: any };
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
+export interface IZkTexture {
+    id?: (string|null);
+    width?: (number|null);
+    height?: (number|null);
+    dataArray?: (Uint8Array|null);
 }
 
 export class ZkTexture implements IZkTexture {
     constructor(properties?: IZkTexture);
-    public refId: number;
     public id: string;
     public width: number;
     public height: number;

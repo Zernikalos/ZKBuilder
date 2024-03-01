@@ -1,4 +1,4 @@
-import {BufferAttribute, BufferGeometry, InterleavedBufferAttribute} from "three"
+import {BufferAttribute, BufferGeometry, InterleavedBufferAttribute, Mesh, SkinnedMesh} from "three"
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils"
 import {ZMesh} from "../zernikalos/mesh/ZMesh"
 import {ZRawBuffer} from "../zernikalos/mesh/ZRawBuffer";
@@ -7,6 +7,7 @@ import {ZBufferKey} from "../zernikalos/mesh/ZBufferKey";
 import {ATTR_INDEX, ATTRS} from "../constants";
 import {ZBaseType, ZDataType, ZFormatType} from "../zernikalos/ZDataType";
 import {Attrib} from "../constants/Attribs";
+import {ParserContext} from "./ParserContext";
 
 /**
  * Filters only recognized attributes by the parser
@@ -149,13 +150,19 @@ function parseBuffersAndKeys(geometry: BufferGeometry) {
 
 /**
  * Parses a three geometry and converts it into a {ZMesh}
- * @param geometry
+ * @param ctx
+ * @param mesh
  */
-export function parseMesh(geometry: BufferGeometry): ZMesh {
+export function parseMesh(ctx: ParserContext, mesh: Mesh | SkinnedMesh): ZMesh {
     // const b = BufferGeometryUtils
     // BufferGeometryUtils.mergeBufferAttributes(geometry.attributes)
 
-    const mesh = ZMesh.init()
+    if (ctx.hasComponent(mesh.uuid)) {
+        return ctx.getComponent(mesh.uuid) as ZMesh
+    }
+
+    let geometry = mesh.geometry
+    const zmesh = ZMesh.init()
 
     // TODO: Make this optional with a flag
     // In case no index is reported create it
@@ -164,8 +171,9 @@ export function parseMesh(geometry: BufferGeometry): ZMesh {
     }
 
     const {keys, rawBuffers} = parseBuffersAndKeys(geometry)
-    keys.forEach(key => mesh.addBufferKey(key))
-    rawBuffers.forEach(buff => mesh.addRawBuffer(buff))
+    keys.forEach(key => zmesh.addBufferKey(key))
+    rawBuffers.forEach(buff => zmesh.addRawBuffer(buff))
+    ctx.registerComponent(mesh.uuid, zmesh)
 
-    return mesh
+    return zmesh
 }

@@ -3,6 +3,7 @@ import {ZBone} from "../zernikalos/skeleton/ZBone"
 import {parseTransform} from "./parseTransform"
 import _ from "lodash";
 import {ZSkeleton} from "../zernikalos/skeleton/ZSkeleton"
+import {ZSkinning} from "../zernikalos/skeleton/ZSkinning";
 //import {ZJoint} from "../zernikalos/skeleton/ZJoint";
 
 export class JointNode extends Object3D {
@@ -12,7 +13,13 @@ export class JointNode extends Object3D {
     children: Object3D[] = []
 }
 
-export function parseSkeleton(obj: Skeleton): ZSkeleton {
+export function parseSkeletonAndSkinning(obj: Skeleton): {skeleton: ZSkeleton, skinning: ZSkinning} {
+    const skeleton = parseSkeleton(obj)
+    const skinning = parseSkinning(obj, skeleton)
+    return {skeleton, skinning}
+}
+
+function parseSkeleton(obj: Skeleton): ZSkeleton {
     const boneRoot = findParentBone(obj.bones[0])
     // Only root bones will be processed here
     if (_.isNil(boneRoot) || boneRoot.type !== "Bone") {
@@ -26,6 +33,17 @@ export function parseSkeleton(obj: Skeleton): ZSkeleton {
 
     // return {skeleton, children: [...joints.values()]}
     return skeleton
+}
+
+function parseSkinning(skeleton: Skeleton, zskeleton: ZSkeleton): ZSkinning {
+    const boneIndices = skeleton.bones.map((bone) => zskeleton.findBoneByName(bone.name))
+        .filter((zbone: ZBone) => !_.isNil(zbone))
+        .map((zbone: ZBone) => zbone.idx)
+    boneIndices.sort((a,b) => a - b)
+    const skinning = ZSkinning.init()
+    skinning.boneIndices = boneIndices
+
+    return skinning
 }
 
 function findParentBone(bone: Bone): Bone {

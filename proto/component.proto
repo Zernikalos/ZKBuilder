@@ -1,0 +1,18 @@
+syntax = "proto2";
+
+package Zko;
+
+enum ZkRefType {
+  MESH = 0;
+  TEXTURE = 2;
+  MATERIAL = 3;
+}
+
+message ZkReference {
+  required uint32 refId = 1;
+  required ZkRefType type = 2;
+
+  optional ZkMesh mesh = 10;
+  optional ZkTexture texture = 11;
+  optional ZkMaterial material = 12;
+}
