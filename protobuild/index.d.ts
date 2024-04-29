@@ -303,8 +303,8 @@ export namespace Zko {
         id: string;
         name: string;
         transform: Zko.ZkTransform;
-        shaderProgram: Zko.ZkShaderProgram;
         mesh: Zko.ZkMesh;
+        shaderProgram: Zko.ZkShaderProgram;
         material?: (ZkRefMaterial|null);
         skinning?: (Zko.ZkSkinning|null);
         skeleton?: (Zko.ZkRefSkeleton|null);
@@ -315,8 +315,8 @@ export namespace Zko {
         public id: string;
         public name: string;
         public transform: Zko.ZkTransform;
-        public shaderProgram: Zko.ZkShaderProgram;
         public mesh: Zko.ZkMesh;
+        public shaderProgram: Zko.ZkShaderProgram;
         public material?: (ZkRefMaterial|null);
         public skinning?: (Zko.ZkSkinning|null);
         public skeleton?: (Zko.ZkRefSkeleton|null);
@@ -409,8 +409,6 @@ export namespace Zko {
 
     interface IZkShaderProgram {
         refId: number;
-        vertexShader: Zko.ZkShader;
-        fragmentShader: Zko.ZkShader;
         attributes?: ({ [k: string]: Zko.ZkShaderAttribute }|null);
         uniforms?: ({ [k: string]: Zko.ZkShaderUniform }|null);
     }
@@ -418,8 +416,6 @@ export namespace Zko {
     class ZkShaderProgram implements IZkShaderProgram {
         constructor(properties?: Zko.IZkShaderProgram);
         public refId: number;
-        public vertexShader: Zko.ZkShader;
-        public fragmentShader: Zko.ZkShader;
         public attributes: { [k: string]: Zko.ZkShaderAttribute };
         public uniforms: { [k: string]: Zko.ZkShaderUniform };
         public static create(properties?: Zko.IZkShaderProgram): Zko.ZkShaderProgram;
@@ -428,25 +424,6 @@ export namespace Zko {
         public static verify(message: { [k: string]: any }): (string|null);
         public static fromObject(object: { [k: string]: any }): Zko.ZkShaderProgram;
         public static toObject(message: Zko.ZkShaderProgram, options?: $protobuf.IConversionOptions): { [k: string]: any };
-        public toJSON(): { [k: string]: any };
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
-    interface IZkShader {
-        type: string;
-        source: string;
-    }
-
-    class ZkShader implements IZkShader {
-        constructor(properties?: Zko.IZkShader);
-        public type: string;
-        public source: string;
-        public static create(properties?: Zko.IZkShader): Zko.ZkShader;
-        public static encode(message: Zko.ZkShader, writer?: $protobuf.Writer): $protobuf.Writer;
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Zko.ZkShader;
-        public static verify(message: { [k: string]: any }): (string|null);
-        public static fromObject(object: { [k: string]: any }): Zko.ZkShader;
-        public static toObject(message: Zko.ZkShader, options?: $protobuf.IConversionOptions): { [k: string]: any };
         public toJSON(): { [k: string]: any };
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }

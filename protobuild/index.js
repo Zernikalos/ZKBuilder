@@ -3165,8 +3165,8 @@ export const Zko = $root.Zko = (() => {
          * @property {string} id ZkModel id
          * @property {string} name ZkModel name
          * @property {Zko.ZkTransform} transform ZkModel transform
-         * @property {Zko.ZkShaderProgram} shaderProgram ZkModel shaderProgram
          * @property {Zko.ZkMesh} mesh ZkModel mesh
+         * @property {Zko.ZkShaderProgram} shaderProgram ZkModel shaderProgram
          * @property {ZkRefMaterial|null} [material] ZkModel material
          * @property {Zko.ZkSkinning|null} [skinning] ZkModel skinning
          * @property {Zko.ZkRefSkeleton|null} [skeleton] ZkModel skeleton
@@ -3212,20 +3212,20 @@ export const Zko = $root.Zko = (() => {
         ZkModel.prototype.transform = null;
 
         /**
-         * ZkModel shaderProgram.
-         * @member {Zko.ZkShaderProgram} shaderProgram
-         * @memberof Zko.ZkModel
-         * @instance
-         */
-        ZkModel.prototype.shaderProgram = null;
-
-        /**
          * ZkModel mesh.
          * @member {Zko.ZkMesh} mesh
          * @memberof Zko.ZkModel
          * @instance
          */
         ZkModel.prototype.mesh = null;
+
+        /**
+         * ZkModel shaderProgram.
+         * @member {Zko.ZkShaderProgram} shaderProgram
+         * @memberof Zko.ZkModel
+         * @instance
+         */
+        ZkModel.prototype.shaderProgram = null;
 
         /**
          * ZkModel material.
@@ -3278,8 +3278,8 @@ export const Zko = $root.Zko = (() => {
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
             $root.Zko.ZkTransform.encode(message.transform, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            $root.Zko.ZkShaderProgram.encode(message.shaderProgram, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            $root.Zko.ZkMesh.encode(message.mesh, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            $root.Zko.ZkMesh.encode(message.mesh, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            $root.Zko.ZkShaderProgram.encode(message.shaderProgram, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             if (message.material != null && Object.hasOwnProperty.call(message, "material"))
                 $root.ZkRefMaterial.encode(message.material, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
             if (message.skinning != null && Object.hasOwnProperty.call(message, "skinning"))
@@ -3320,11 +3320,11 @@ export const Zko = $root.Zko = (() => {
                         break;
                     }
                 case 4: {
-                        message.shaderProgram = $root.Zko.ZkShaderProgram.decode(reader, reader.uint32());
+                        message.mesh = $root.Zko.ZkMesh.decode(reader, reader.uint32());
                         break;
                     }
                 case 5: {
-                        message.mesh = $root.Zko.ZkMesh.decode(reader, reader.uint32());
+                        message.shaderProgram = $root.Zko.ZkShaderProgram.decode(reader, reader.uint32());
                         break;
                     }
                 case 6: {
@@ -3350,10 +3350,10 @@ export const Zko = $root.Zko = (() => {
                 throw $util.ProtocolError("missing required 'name'", { instance: message });
             if (!message.hasOwnProperty("transform"))
                 throw $util.ProtocolError("missing required 'transform'", { instance: message });
-            if (!message.hasOwnProperty("shaderProgram"))
-                throw $util.ProtocolError("missing required 'shaderProgram'", { instance: message });
             if (!message.hasOwnProperty("mesh"))
                 throw $util.ProtocolError("missing required 'mesh'", { instance: message });
+            if (!message.hasOwnProperty("shaderProgram"))
+                throw $util.ProtocolError("missing required 'shaderProgram'", { instance: message });
             return message;
         };
 
@@ -3378,14 +3378,14 @@ export const Zko = $root.Zko = (() => {
                     return "transform." + error;
             }
             {
-                let error = $root.Zko.ZkShaderProgram.verify(message.shaderProgram);
-                if (error)
-                    return "shaderProgram." + error;
-            }
-            {
                 let error = $root.Zko.ZkMesh.verify(message.mesh);
                 if (error)
                     return "mesh." + error;
+            }
+            {
+                let error = $root.Zko.ZkShaderProgram.verify(message.shaderProgram);
+                if (error)
+                    return "shaderProgram." + error;
             }
             if (message.material != null && message.hasOwnProperty("material")) {
                 let error = $root.ZkRefMaterial.verify(message.material);
@@ -3426,15 +3426,15 @@ export const Zko = $root.Zko = (() => {
                     throw TypeError(".Zko.ZkModel.transform: object expected");
                 message.transform = $root.Zko.ZkTransform.fromObject(object.transform);
             }
-            if (object.shaderProgram != null) {
-                if (typeof object.shaderProgram !== "object")
-                    throw TypeError(".Zko.ZkModel.shaderProgram: object expected");
-                message.shaderProgram = $root.Zko.ZkShaderProgram.fromObject(object.shaderProgram);
-            }
             if (object.mesh != null) {
                 if (typeof object.mesh !== "object")
                     throw TypeError(".Zko.ZkModel.mesh: object expected");
                 message.mesh = $root.Zko.ZkMesh.fromObject(object.mesh);
+            }
+            if (object.shaderProgram != null) {
+                if (typeof object.shaderProgram !== "object")
+                    throw TypeError(".Zko.ZkModel.shaderProgram: object expected");
+                message.shaderProgram = $root.Zko.ZkShaderProgram.fromObject(object.shaderProgram);
             }
             if (object.material != null) {
                 if (typeof object.material !== "object")
@@ -3471,8 +3471,8 @@ export const Zko = $root.Zko = (() => {
                 object.id = "";
                 object.name = "";
                 object.transform = null;
-                object.shaderProgram = null;
                 object.mesh = null;
+                object.shaderProgram = null;
                 object.material = null;
                 object.skinning = null;
                 object.skeleton = null;
@@ -3483,10 +3483,10 @@ export const Zko = $root.Zko = (() => {
                 object.name = message.name;
             if (message.transform != null && message.hasOwnProperty("transform"))
                 object.transform = $root.Zko.ZkTransform.toObject(message.transform, options);
-            if (message.shaderProgram != null && message.hasOwnProperty("shaderProgram"))
-                object.shaderProgram = $root.Zko.ZkShaderProgram.toObject(message.shaderProgram, options);
             if (message.mesh != null && message.hasOwnProperty("mesh"))
                 object.mesh = $root.Zko.ZkMesh.toObject(message.mesh, options);
+            if (message.shaderProgram != null && message.hasOwnProperty("shaderProgram"))
+                object.shaderProgram = $root.Zko.ZkShaderProgram.toObject(message.shaderProgram, options);
             if (message.material != null && message.hasOwnProperty("material"))
                 object.material = $root.ZkRefMaterial.toObject(message.material, options);
             if (message.skinning != null && message.hasOwnProperty("skinning"))
@@ -4425,8 +4425,6 @@ export const Zko = $root.Zko = (() => {
          * @memberof Zko
          * @interface IZkShaderProgram
          * @property {number} refId ZkShaderProgram refId
-         * @property {Zko.ZkShader} vertexShader ZkShaderProgram vertexShader
-         * @property {Zko.ZkShader} fragmentShader ZkShaderProgram fragmentShader
          * @property {Object.<string,Zko.ZkShaderAttribute>|null} [attributes] ZkShaderProgram attributes
          * @property {Object.<string,Zko.ZkShaderUniform>|null} [uniforms] ZkShaderProgram uniforms
          */
@@ -4455,22 +4453,6 @@ export const Zko = $root.Zko = (() => {
          * @instance
          */
         ZkShaderProgram.prototype.refId = 0;
-
-        /**
-         * ZkShaderProgram vertexShader.
-         * @member {Zko.ZkShader} vertexShader
-         * @memberof Zko.ZkShaderProgram
-         * @instance
-         */
-        ZkShaderProgram.prototype.vertexShader = null;
-
-        /**
-         * ZkShaderProgram fragmentShader.
-         * @member {Zko.ZkShader} fragmentShader
-         * @memberof Zko.ZkShaderProgram
-         * @instance
-         */
-        ZkShaderProgram.prototype.fragmentShader = null;
 
         /**
          * ZkShaderProgram attributes.
@@ -4512,8 +4494,6 @@ export const Zko = $root.Zko = (() => {
         ZkShaderProgram.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            $root.Zko.ZkShader.encode(message.vertexShader, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            $root.Zko.ZkShader.encode(message.fragmentShader, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             if (message.attributes != null && Object.hasOwnProperty.call(message, "attributes"))
                 for (let keys = Object.keys(message.attributes), i = 0; i < keys.length; ++i) {
                     writer.uint32(/* id 3, wireType 2 =*/26).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
@@ -4548,14 +4528,6 @@ export const Zko = $root.Zko = (() => {
                 switch (tag >>> 3) {
                 case 500: {
                         message.refId = reader.uint32();
-                        break;
-                    }
-                case 1: {
-                        message.vertexShader = $root.Zko.ZkShader.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 2: {
-                        message.fragmentShader = $root.Zko.ZkShader.decode(reader, reader.uint32());
                         break;
                     }
                 case 3: {
@@ -4611,10 +4583,6 @@ export const Zko = $root.Zko = (() => {
             }
             if (!message.hasOwnProperty("refId"))
                 throw $util.ProtocolError("missing required 'refId'", { instance: message });
-            if (!message.hasOwnProperty("vertexShader"))
-                throw $util.ProtocolError("missing required 'vertexShader'", { instance: message });
-            if (!message.hasOwnProperty("fragmentShader"))
-                throw $util.ProtocolError("missing required 'fragmentShader'", { instance: message });
             return message;
         };
 
@@ -4631,16 +4599,6 @@ export const Zko = $root.Zko = (() => {
                 return "object expected";
             if (!$util.isInteger(message.refId))
                 return "refId: integer expected";
-            {
-                let error = $root.Zko.ZkShader.verify(message.vertexShader);
-                if (error)
-                    return "vertexShader." + error;
-            }
-            {
-                let error = $root.Zko.ZkShader.verify(message.fragmentShader);
-                if (error)
-                    return "fragmentShader." + error;
-            }
             if (message.attributes != null && message.hasOwnProperty("attributes")) {
                 if (!$util.isObject(message.attributes))
                     return "attributes: object expected";
@@ -4678,16 +4636,6 @@ export const Zko = $root.Zko = (() => {
             let message = new $root.Zko.ZkShaderProgram();
             if (object.refId != null)
                 message.refId = object.refId >>> 0;
-            if (object.vertexShader != null) {
-                if (typeof object.vertexShader !== "object")
-                    throw TypeError(".Zko.ZkShaderProgram.vertexShader: object expected");
-                message.vertexShader = $root.Zko.ZkShader.fromObject(object.vertexShader);
-            }
-            if (object.fragmentShader != null) {
-                if (typeof object.fragmentShader !== "object")
-                    throw TypeError(".Zko.ZkShaderProgram.fragmentShader: object expected");
-                message.fragmentShader = $root.Zko.ZkShader.fromObject(object.fragmentShader);
-            }
             if (object.attributes) {
                 if (typeof object.attributes !== "object")
                     throw TypeError(".Zko.ZkShaderProgram.attributes: object expected");
@@ -4728,15 +4676,8 @@ export const Zko = $root.Zko = (() => {
                 object.attributes = {};
                 object.uniforms = {};
             }
-            if (options.defaults) {
-                object.vertexShader = null;
-                object.fragmentShader = null;
+            if (options.defaults)
                 object.refId = 0;
-            }
-            if (message.vertexShader != null && message.hasOwnProperty("vertexShader"))
-                object.vertexShader = $root.Zko.ZkShader.toObject(message.vertexShader, options);
-            if (message.fragmentShader != null && message.hasOwnProperty("fragmentShader"))
-                object.fragmentShader = $root.Zko.ZkShader.toObject(message.fragmentShader, options);
             let keys2;
             if (message.attributes && (keys2 = Object.keys(message.attributes)).length) {
                 object.attributes = {};
@@ -4780,204 +4721,6 @@ export const Zko = $root.Zko = (() => {
         };
 
         return ZkShaderProgram;
-    })();
-
-    Zko.ZkShader = (function() {
-
-        /**
-         * Properties of a ZkShader.
-         * @memberof Zko
-         * @interface IZkShader
-         * @property {string} type ZkShader type
-         * @property {string} source ZkShader source
-         */
-
-        /**
-         * Constructs a new ZkShader.
-         * @memberof Zko
-         * @classdesc Represents a ZkShader.
-         * @implements IZkShader
-         * @constructor
-         * @param {Zko.IZkShader=} [properties] Properties to set
-         */
-        function ZkShader(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * ZkShader type.
-         * @member {string} type
-         * @memberof Zko.ZkShader
-         * @instance
-         */
-        ZkShader.prototype.type = "";
-
-        /**
-         * ZkShader source.
-         * @member {string} source
-         * @memberof Zko.ZkShader
-         * @instance
-         */
-        ZkShader.prototype.source = "";
-
-        /**
-         * Creates a new ZkShader instance using the specified properties.
-         * @function create
-         * @memberof Zko.ZkShader
-         * @static
-         * @param {Zko.IZkShader=} [properties] Properties to set
-         * @returns {Zko.ZkShader} ZkShader instance
-         */
-        ZkShader.create = function create(properties) {
-            return new ZkShader(properties);
-        };
-
-        /**
-         * Encodes the specified ZkShader message. Does not implicitly {@link Zko.ZkShader.verify|verify} messages.
-         * @function encode
-         * @memberof Zko.ZkShader
-         * @static
-         * @param {Zko.ZkShader} message ZkShader message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ZkShader.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.source);
-            return writer;
-        };
-
-        /**
-         * Decodes a ZkShader message from the specified reader or buffer.
-         * @function decode
-         * @memberof Zko.ZkShader
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Zko.ZkShader} ZkShader
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ZkShader.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Zko.ZkShader();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1: {
-                        message.type = reader.string();
-                        break;
-                    }
-                case 2: {
-                        message.source = reader.string();
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("type"))
-                throw $util.ProtocolError("missing required 'type'", { instance: message });
-            if (!message.hasOwnProperty("source"))
-                throw $util.ProtocolError("missing required 'source'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Verifies a ZkShader message.
-         * @function verify
-         * @memberof Zko.ZkShader
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ZkShader.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isString(message.type))
-                return "type: string expected";
-            if (!$util.isString(message.source))
-                return "source: string expected";
-            return null;
-        };
-
-        /**
-         * Creates a ZkShader message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Zko.ZkShader
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Zko.ZkShader} ZkShader
-         */
-        ZkShader.fromObject = function fromObject(object) {
-            if (object instanceof $root.Zko.ZkShader)
-                return object;
-            let message = new $root.Zko.ZkShader();
-            if (object.type != null)
-                message.type = String(object.type);
-            if (object.source != null)
-                message.source = String(object.source);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a ZkShader message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Zko.ZkShader
-         * @static
-         * @param {Zko.ZkShader} message ZkShader
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ZkShader.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults) {
-                object.type = "";
-                object.source = "";
-            }
-            if (message.type != null && message.hasOwnProperty("type"))
-                object.type = message.type;
-            if (message.source != null && message.hasOwnProperty("source"))
-                object.source = message.source;
-            return object;
-        };
-
-        /**
-         * Converts this ZkShader to JSON.
-         * @function toJSON
-         * @memberof Zko.ZkShader
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ZkShader.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for ZkShader
-         * @function getTypeUrl
-         * @memberof Zko.ZkShader
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        ZkShader.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/Zko.ZkShader";
-        };
-
-        return ZkShader;
     })();
 
     Zko.ZkShaderAttribute = (function() {

@@ -1,19 +1,19 @@
 import {ZModel} from "../zernikalos/ZModel";
-import {ShaderType, ZShader} from "../zernikalos/shader/ZShader";
-import {generateFragmentShaderSource, generateVertexShaderSource} from "./shadersourcegenerator";
+// import {ZShaderType, ZShader} from "../zernikalos/shader/ZShader";
+// import {generateFragmentShaderSource, generateVertexShaderSource} from "./shadersourcegenerator";
 
-export function postShaderProgramSource(obj: ZModel): void {
-    obj.shaderProgram.vertexShader = postShader("vertex", obj)
-    obj.shaderProgram.fragmentShader = postShader("fragment", obj)
+export function postShaderProgramSource(_obj: ZModel): void {
+    // obj.shaderProgram.vertexShader = postShader(ZShaderType.VERTEX_SHADER, obj)
+    // obj.shaderProgram.fragmentShader = postShader(ZShaderType.FRAGMENT_SHADER, obj)
 }
 
-function postShader(type: ShaderType, obj: ZModel): ZShader {
-    const shader = ZShader.init()
-    shader.type = type
-    if (type === "vertex") {
-        shader.source = generateVertexShaderSource(obj)
-    } else {
-        shader.source = generateFragmentShaderSource(obj)
-    }
-    return shader
-}
+// function postShader(type: ZShaderType, _obj: ZModel): ZShader {
+//     const shader = ZShader.init()
+//     shader.type = type
+//     if (type === ZShaderType.VERTEX_SHADER) {
+//         // shader.source = generateVertexShaderSource(obj)
+//     } else {
+//         // shader.source = generateFragmentShaderSource(obj)
+//     }
+//     return shader
+// }
