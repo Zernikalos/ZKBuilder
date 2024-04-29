@@ -82,7 +82,7 @@ function createShaderUniform(uniform: Uniform, uniformCounter: number): ZUniform
 
 function addAttribute(shaderProgram: ZShaderProgram, attribute: Attrib, bufferKey: ZBufferKey) {
     const shaderAtrib = createShaderAttribute(attribute, bufferKey)
-    shaderProgram.addAttribute(attribute.name, shaderAtrib)
+    shaderProgram.addAttributeByName(attribute.name, shaderAtrib)
 }
 
 function createShaderAttribute(attribute: Attrib, bufferKey: ZBufferKey): ZAttribute {
