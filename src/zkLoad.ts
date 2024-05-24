@@ -4,10 +4,11 @@ import {gltfLoader} from "./formats/gltfLoader";
 import {ZkoParseableObject} from "./formats/ZkoParseableObject";
 import _ from "lodash";
 import {fbxLoader} from "./formats/fbxLoader";
+import {colladaLoader} from "./formats/colladaLoader";
 
 export interface LoadOptions {
     filePath: string
-    format?: 'obj' | 'gltf' | 'fbx'
+    format?: "obj" | "gltf" | "fbx" | "collada"
 }
 
 export const DEFAULT_LOAD_OPTIONS: Partial<LoadOptions> = {
@@ -33,6 +34,9 @@ export async function zkLoad(options: LoadOptions): Promise<ZkoParseableObject> 
             break
         case "fbx":
             result = await fbxLoader(filePath)
+            break
+        case "collada":
+            result = await colladaLoader(filePath)
             break
     }
     return result

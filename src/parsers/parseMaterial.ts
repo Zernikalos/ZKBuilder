@@ -31,17 +31,31 @@ async function parseTexture(ctx: ParserContext, tex: Texture): Promise<ZTexture>
         return ctx.getComponent(tex.uuid) as unknown as ZTexture
     }
 
-    const imgElement: HTMLImageElement = tex.source.data
-    const response = await fetch(imgElement.src)
-    const data = await response.arrayBuffer()
+    const internalParseTexture = async (tex: Texture): Promise<ZTexture> => {
+        const texture = ZTexture.init()
 
-    const texture = ZTexture.init()
-    texture.dataArray = new Int8Array(data)
-    // TODO: Is this field required any longer?
-    texture.id = `${hash(texture.dataArray)}`
-    texture.width = imgElement.width
-    texture.height = imgElement.height
+        const imgElement: HTMLImageElement = tex.source.data
+        const response = await fetch(imgElement.src)
+        const data = await response.arrayBuffer()
+        texture.dataArray = new Int8Array(data)
+        // TODO: Is this field required any longer?
+        texture.id = `${hash(texture.dataArray)}`
+        texture.width = imgElement.width
+        texture.height = imgElement.height
+        ctx.registerComponent(tex.uuid, texture)
+        return texture
+    }
 
-    ctx.registerComponent(tex.uuid, texture)
-    return texture
+    if (!_.isNil(tex?.source?.data)) {
+        return await internalParseTexture(tex)
+    }
+
+    return new Promise((resolve) => {
+        const interval = setInterval(async () => {
+            if (!_.isNil(tex?.source?.data)) {
+                resolve(internalParseTexture(tex))
+                clearInterval(interval)
+            }
+        }, 500)
+    })
 }
