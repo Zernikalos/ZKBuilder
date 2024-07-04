@@ -1,3 +1,7 @@
+import {setupEnv} from "./src/setupEnv";
+
+setupEnv()
+
 export {ZObject} from "./src/zernikalos/ZObject"
 export {ZObjectType} from "./src/zernikalos/ZObjectType"
 export {ZModel} from "./src/zernikalos/ZModel"

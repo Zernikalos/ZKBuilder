@@ -41,6 +41,7 @@ export async function zkParse(parseableObject: ZkoParseableObject, _options: Par
         return {root: zObj, actions: zactions}
     } catch (e) {
         console.error(`Error parsing the object. Error: ${e}`)
+        throw e
     }
 
 }

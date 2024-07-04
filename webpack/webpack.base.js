@@ -7,7 +7,10 @@ const ROOT_PATH = path.join(__dirname, '..');
 const INDEX_DIR = 'index.ts';
 
 const tsLoaderRule = {
-    loader: 'ts-loader'
+    loader: 'ts-loader',
+    options: {
+        transpileOnly: false
+    }
 }
 
 function buildBaseConfig({entryName} = {entryName: ENTRY_NAME}) {
@@ -37,16 +40,12 @@ function buildBaseConfig({entryName} = {entryName: ENTRY_NAME}) {
         output: {
             path: outputPath,
             filename: "[name].js",
-            library: {
-                type: "module"
-            }
+            libraryTarget: "umd"
         },
         resolve: {
             extensions: ['.ts', '.js'],
             symlinks: true
         },
-        node: false,
-        target: ['web'],
         devtool: 'source-map',
         experiments: {
             outputModule: true

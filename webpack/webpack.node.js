@@ -75,12 +75,12 @@ const { merge } = require('webpack-merge');
 const path = require('path');
 const {buildBaseConfig, ROOT_PATH, ENTRY_NAME} = require('./webpack.base')
 
-const baseConfig = buildBaseConfig({entryName: `${ENTRY_NAME}-node`})
+//const baseConfig = buildBaseConfig({entryName: `${ENTRY_NAME}-node`})
 const devConfig = require('./webpack.dev')
 
 const nodeConfig = {
     target: 'node',
 }
 
-module.exports =  merge(baseConfig, devConfig, nodeConfig)
+module.exports =  merge(devConfig, nodeConfig)
 

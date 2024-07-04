@@ -6,11 +6,11 @@ import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader"
 export async function gltfLoader(filePath: string): Promise<ZkoParseableObject> {
 
     // Disables this in order to skip the use of createImageBitmap function
-    const originalCreateImageBitmap = window.createImageBitmap
-    window.createImageBitmap = undefined
+    //const originalCreateImageBitmap = window.createImageBitmap
+    //window.createImageBitmap = undefined
 
-    const originalRevokeURL = URL.revokeObjectURL
-    URL.revokeObjectURL = () => {}
+    //const originalRevokeURL = URL.revokeObjectURL
+    //URL.revokeObjectURL = () => {}
 
     const loader = new GLTFLoader()
 
@@ -24,8 +24,7 @@ export async function gltfLoader(filePath: string): Promise<ZkoParseableObject> 
     //     }
     // }
 
-    window.createImageBitmap = originalCreateImageBitmap
-    URL.revokeObjectURL = originalRevokeURL
-
+    // window.createImageBitmap = originalCreateImageBitmap
+    // URL.revokeObjectURL = originalRevokeURL
     return new ZkoParseableObject(threeObj.scene, threeObj?.animations)
 }
