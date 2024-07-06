@@ -47,7 +47,6 @@ function convertToProto(ctx: WriterContext, obj: ZObject) {
             })
             break
         case ZObjectType.GROUP:
-        case ZObjectType.OBJECT:
             auxNode = new Zko.ProtoZkObject({
                 type: ZObjectType.GROUP.name,
                 group: Zko.ZkGroup.fromObject(obj)
