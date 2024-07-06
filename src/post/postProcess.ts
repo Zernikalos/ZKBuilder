@@ -8,7 +8,6 @@ export function postProcess(obj: ZObject) {
     let postObj: ZObject
     switch (obj.type) {
         case ZObjectType.SCENE:
-        case ZObjectType.OBJECT:
         case ZObjectType.GROUP:
         case ZObjectType.CAMERA:
         //case ZObjectType.BONE:
