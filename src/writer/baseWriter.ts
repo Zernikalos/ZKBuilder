@@ -1,10 +1,10 @@
-import {ZObject} from "../zernikalos/ZObject";
-import {Zko} from "../proto";
-import _ from "lodash";
-import {ZObjectType} from "../zernikalos/ZObjectType";
-import {modelWriter} from "./sceneobjects/modelWriter";
-import {ZModel} from "../zernikalos/ZModel";
-import {WriterContext} from "./WriterContext";
+import {ZObject} from "../zernikalos/ZObject"
+import {Zko} from "../proto"
+import _ from "lodash"
+import {ZObjectType} from "../zernikalos/ZObjectType"
+import {modelWriter} from "./sceneobjects/modelWriter"
+import {ZModel} from "../zernikalos/ZModel"
+import {WriterContext} from "./WriterContext"
 
 export async function writeTree(obj: ZObject): Promise<Zko.ProtoZkObject> {
     const ctx = new WriterContext()
@@ -39,32 +39,32 @@ function asyncConvertToProto(ctx: WriterContext, obj: ZObject): Promise<Zko.Prot
 function convertToProto(ctx: WriterContext, obj: ZObject) {
     // TODO: The use of fromObject affects a lot to the performance
     let auxNode: Zko.ProtoZkObject
-    switch (obj.type) {
-        case ZObjectType.SCENE:
+    switch (obj.type.name) {
+        case ZObjectType.SCENE.name:
             auxNode = new Zko.ProtoZkObject({
                 type: ZObjectType.SCENE.name,
                 scene: Zko.ZkScene.fromObject(obj)
             })
             break
-        case ZObjectType.GROUP:
+        case ZObjectType.GROUP.name:
             auxNode = new Zko.ProtoZkObject({
                 type: ZObjectType.GROUP.name,
                 group: Zko.ZkGroup.fromObject(obj)
             })
             break
-        case ZObjectType.MODEL:
+        case ZObjectType.MODEL.name:
             auxNode = new Zko.ProtoZkObject({
                 type: ZObjectType.MODEL.name,
                 model: modelWriter(ctx, obj as ZModel)
             })
             break
-        case ZObjectType.CAMERA:
+        case ZObjectType.CAMERA.name:
             auxNode = new Zko.ProtoZkObject({
                 type: ZObjectType.CAMERA.name,
                 camera: Zko.ZkCamera.fromObject(obj)
             })
             break
-        case ZObjectType.SKELETON:
+        case ZObjectType.SKELETON.name:
             auxNode = new Zko.ProtoZkObject({
                 type: ZObjectType.SKELETON.name,
                 skeleton: Zko.ZkSkeleton.fromObject(obj)
