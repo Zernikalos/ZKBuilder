@@ -42,6 +42,8 @@ async function parseTexture(ctx: ParserContext, tex: Texture): Promise<ZTexture>
         texture.id = `${hash(texture.dataArray)}`
         texture.width = imgElement.width
         texture.height = imgElement.height
+        texture.flipX = (tex as any).flipX ?? false
+        texture.flipY = tex.flipY
         ctx.registerComponent(tex.uuid, texture)
         return texture
     }

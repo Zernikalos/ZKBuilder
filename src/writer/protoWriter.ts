@@ -1,6 +1,7 @@
 import {ZObject} from "../zernikalos/ZObject"
 import {Zko} from "../proto"
 import {writeTree} from "./baseWriter";
+import {ZKO_VERSION} from "../constants/ZkoVersion";
 
 export async function protoWrite(root: ZObject): Promise<Uint8Array> {
     const header = headerWrite()
@@ -16,6 +17,6 @@ export async function protoWrite(root: ZObject): Promise<Uint8Array> {
 
 function headerWrite(): Zko.ZkoHeader {
     return Zko.ZkoHeader.create({
-        version: "0.1"
+        version: ZKO_VERSION
     })
 }

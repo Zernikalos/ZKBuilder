@@ -19,7 +19,9 @@ message ZkRefTexture {
 
 message ZkTexture {
   optional string id = 1;
-  optional int32 width = 2;
-  optional int32 height = 3;
-  optional bytes dataArray = 4;
+  required int32 width = 2;
+  required int32 height = 3;
+  required bool flipX = 4;
+  required bool flipY = 5;
+  optional bytes dataArray = 10;
 }

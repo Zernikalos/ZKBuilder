@@ -1,13 +1,13 @@
 import {BufferAttribute, BufferGeometry, InterleavedBufferAttribute, Mesh, SkinnedMesh} from "three"
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils"
 import {ZMesh} from "../zernikalos/mesh/ZMesh"
-import {ZRawBuffer} from "../zernikalos/mesh/ZRawBuffer";
-import _, {isNil} from "lodash";
-import {ZBufferKey} from "../zernikalos/mesh/ZBufferKey";
+import {ZRawBuffer} from "../zernikalos/mesh/ZRawBuffer"
+import _, {isNil} from "lodash"
+import {ZBufferKey} from "../zernikalos/mesh/ZBufferKey"
 import {ATTR_INDEX, ATTRS} from "../constants";
-import {ZBaseType, ZDataType, ZFormatType} from "../zernikalos/ZDataType";
-import {Attrib} from "../constants/Attribs";
-import {ParserContext} from "./ParserContext";
+import {ZBaseType, ZDataType, ZFormatType} from "../zernikalos/ZDataType"
+import {Attrib} from "../constants/Attribs"
+import {ParserContext} from "./ParserContext"
 
 /**
  * Filters only recognized attributes by the parser
