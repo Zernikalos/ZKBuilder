@@ -689,8 +689,10 @@ export class ZkRefTexture implements IZkRefTexture {
 
 export interface IZkTexture {
     id?: (string|null);
-    width?: (number|null);
-    height?: (number|null);
+    width: number;
+    height: number;
+    flipX: boolean;
+    flipY: boolean;
     dataArray?: (Uint8Array|null);
 }
 
@@ -699,6 +701,8 @@ export class ZkTexture implements IZkTexture {
     public id: string;
     public width: number;
     public height: number;
+    public flipX: boolean;
+    public flipY: boolean;
     public dataArray: Uint8Array;
     public static create(properties?: IZkTexture): ZkTexture;
     public static encode(message: ZkTexture, writer?: $protobuf.Writer): $protobuf.Writer;

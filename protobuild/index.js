@@ -7556,8 +7556,10 @@ export const ZkTexture = $root.ZkTexture = (() => {
      * @exports IZkTexture
      * @interface IZkTexture
      * @property {string|null} [id] ZkTexture id
-     * @property {number|null} [width] ZkTexture width
-     * @property {number|null} [height] ZkTexture height
+     * @property {number} width ZkTexture width
+     * @property {number} height ZkTexture height
+     * @property {boolean} flipX ZkTexture flipX
+     * @property {boolean} flipY ZkTexture flipY
      * @property {Uint8Array|null} [dataArray] ZkTexture dataArray
      */
 
@@ -7601,6 +7603,22 @@ export const ZkTexture = $root.ZkTexture = (() => {
     ZkTexture.prototype.height = 0;
 
     /**
+     * ZkTexture flipX.
+     * @member {boolean} flipX
+     * @memberof ZkTexture
+     * @instance
+     */
+    ZkTexture.prototype.flipX = false;
+
+    /**
+     * ZkTexture flipY.
+     * @member {boolean} flipY
+     * @memberof ZkTexture
+     * @instance
+     */
+    ZkTexture.prototype.flipY = false;
+
+    /**
      * ZkTexture dataArray.
      * @member {Uint8Array} dataArray
      * @memberof ZkTexture
@@ -7634,12 +7652,12 @@ export const ZkTexture = $root.ZkTexture = (() => {
             writer = $Writer.create();
         if (message.id != null && Object.hasOwnProperty.call(message, "id"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-        if (message.width != null && Object.hasOwnProperty.call(message, "width"))
-            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.width);
-        if (message.height != null && Object.hasOwnProperty.call(message, "height"))
-            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.height);
+        writer.uint32(/* id 2, wireType 0 =*/16).int32(message.width);
+        writer.uint32(/* id 3, wireType 0 =*/24).int32(message.height);
+        writer.uint32(/* id 4, wireType 0 =*/32).bool(message.flipX);
+        writer.uint32(/* id 5, wireType 0 =*/40).bool(message.flipY);
         if (message.dataArray != null && Object.hasOwnProperty.call(message, "dataArray"))
-            writer.uint32(/* id 4, wireType 2 =*/34).bytes(message.dataArray);
+            writer.uint32(/* id 10, wireType 2 =*/82).bytes(message.dataArray);
         return writer;
     };
 
@@ -7674,6 +7692,14 @@ export const ZkTexture = $root.ZkTexture = (() => {
                     break;
                 }
             case 4: {
+                    message.flipX = reader.bool();
+                    break;
+                }
+            case 5: {
+                    message.flipY = reader.bool();
+                    break;
+                }
+            case 10: {
                     message.dataArray = reader.bytes();
                     break;
                 }
@@ -7682,6 +7708,14 @@ export const ZkTexture = $root.ZkTexture = (() => {
                 break;
             }
         }
+        if (!message.hasOwnProperty("width"))
+            throw $util.ProtocolError("missing required 'width'", { instance: message });
+        if (!message.hasOwnProperty("height"))
+            throw $util.ProtocolError("missing required 'height'", { instance: message });
+        if (!message.hasOwnProperty("flipX"))
+            throw $util.ProtocolError("missing required 'flipX'", { instance: message });
+        if (!message.hasOwnProperty("flipY"))
+            throw $util.ProtocolError("missing required 'flipY'", { instance: message });
         return message;
     };
 
@@ -7699,12 +7733,14 @@ export const ZkTexture = $root.ZkTexture = (() => {
         if (message.id != null && message.hasOwnProperty("id"))
             if (!$util.isString(message.id))
                 return "id: string expected";
-        if (message.width != null && message.hasOwnProperty("width"))
-            if (!$util.isInteger(message.width))
-                return "width: integer expected";
-        if (message.height != null && message.hasOwnProperty("height"))
-            if (!$util.isInteger(message.height))
-                return "height: integer expected";
+        if (!$util.isInteger(message.width))
+            return "width: integer expected";
+        if (!$util.isInteger(message.height))
+            return "height: integer expected";
+        if (typeof message.flipX !== "boolean")
+            return "flipX: boolean expected";
+        if (typeof message.flipY !== "boolean")
+            return "flipY: boolean expected";
         if (message.dataArray != null && message.hasOwnProperty("dataArray"))
             if (!(message.dataArray && typeof message.dataArray.length === "number" || $util.isString(message.dataArray)))
                 return "dataArray: buffer expected";
@@ -7729,6 +7765,10 @@ export const ZkTexture = $root.ZkTexture = (() => {
             message.width = object.width | 0;
         if (object.height != null)
             message.height = object.height | 0;
+        if (object.flipX != null)
+            message.flipX = Boolean(object.flipX);
+        if (object.flipY != null)
+            message.flipY = Boolean(object.flipY);
         if (object.dataArray != null)
             if (typeof object.dataArray === "string")
                 $util.base64.decode(object.dataArray, message.dataArray = $util.newBuffer($util.base64.length(object.dataArray)), 0);
@@ -7754,6 +7794,8 @@ export const ZkTexture = $root.ZkTexture = (() => {
             object.id = "";
             object.width = 0;
             object.height = 0;
+            object.flipX = false;
+            object.flipY = false;
             if (options.bytes === String)
                 object.dataArray = "";
             else {
@@ -7768,6 +7810,10 @@ export const ZkTexture = $root.ZkTexture = (() => {
             object.width = message.width;
         if (message.height != null && message.hasOwnProperty("height"))
             object.height = message.height;
+        if (message.flipX != null && message.hasOwnProperty("flipX"))
+            object.flipX = message.flipX;
+        if (message.flipY != null && message.hasOwnProperty("flipY"))
+            object.flipY = message.flipY;
         if (message.dataArray != null && message.hasOwnProperty("dataArray"))
             object.dataArray = options.bytes === String ? $util.base64.encode(message.dataArray, 0, message.dataArray.length) : options.bytes === Array ? Array.prototype.slice.call(message.dataArray) : message.dataArray;
         return object;
