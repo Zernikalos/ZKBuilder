@@ -8,19 +8,17 @@ import {preProcess} from "./pre";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ParseOptions {
-    defaultScene?: boolean
-    defaultCamera?: boolean
+
 }
 
 export const DEFAULT_PARSE_OPTIONS: ParseOptions = {
-    defaultScene: false,
-    defaultCamera: false
+
 }
 
-export async function zkParse(parseableObject: ZkoParseableObject, options: ParseOptions): Promise<ZObject> {
+export async function zkParse(parseableObject: ZkoParseableObject, _options: ParseOptions): Promise<ZObject> {
 
     // @ts-ignore
-    const mergedOptions = _.merge({}, DEFAULT_PARSE_OPTIONS, options)
+    const mergedOptions = _.merge({}, DEFAULT_PARSE_OPTIONS)
 
     IdGenerator.parseBegin()
 
