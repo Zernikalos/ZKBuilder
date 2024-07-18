@@ -1,10 +1,10 @@
-import {ZRefComponent} from "../zernikalos/ZRefComponent"
+import {ZComponent} from "../zernikalos/ZComponent"
 
 export class ParserContext {
 
-    private components = new Map<number | string, ZRefComponent>()
+    private components = new Map<number | string, ZComponent>()
 
-    registerComponent(id: number | string, component: ZRefComponent) {
+    registerComponent(id: number | string, component: ZComponent) {
         if (this.components.has(id)) {
             console.error("Re-registering component", component.refId)
         }
@@ -15,7 +15,7 @@ export class ParserContext {
         return this.components.has(id)
     }
 
-    getComponent(id: number | string): ZRefComponent {
+    getComponent(id: number | string): ZComponent {
         return this.components.get(id)
     }
 }
