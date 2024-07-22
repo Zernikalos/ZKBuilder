@@ -26,13 +26,13 @@
     "three": "0.166.1"
   },
   "devDependencies": {
-    "@types/lodash": "4.17.6",
+    "@types/lodash": "4.17.7",
     "@types/object-hash": "3.0.6",
     "@types/three": "0.166.0",
     "protobufjs-cli": "1.1.2",
     "ts-loader": "9.5.1",
     "typescript": "5.5.3",
-    "webpack": "5.92.1",
+    "webpack": "5.93.0",
     "webpack-bundle-analyzer": "4.10.2",
     "webpack-cli": "5.1.4",
     "webpack-merge": "6.0.1"
