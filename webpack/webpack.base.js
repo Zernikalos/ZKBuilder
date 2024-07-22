@@ -6,14 +6,6 @@ const ENTRY_NAME = 'zkbuilder'
 const ROOT_PATH = path.join(__dirname, '..');
 const INDEX_DIR = 'index.ts';
 
-const babelLoaderRule = {
-    loader: 'babel-loader',
-    options: {
-        cacheDirectory: true,
-        configFile: path.join(ROOT_PATH, 'babel.config.js')
-    }
-};
-
 const tsLoaderRule = {
     loader: 'ts-loader'
 }
@@ -49,17 +41,9 @@ function buildBaseConfig({entryName} = {entryName: ENTRY_NAME}) {
                 {
                     test: /\.ts?$/,
                     use: [
-                        babelLoaderRule,
                         tsLoaderRule
                     ],
                     exclude: []
-                },
-                {
-                    test: /\.js?$/,
-                    use: [
-                        babelLoaderRule
-                    ],
-                    exclude: [/node_modules/]
                 }
             ]
         },
