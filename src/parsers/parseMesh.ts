@@ -2,6 +2,7 @@ import {BufferAttribute, BufferGeometry, InterleavedBufferAttribute, Mesh, Skinn
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils"
 import {ZMesh} from "../zernikalos/mesh/ZMesh"
 import {ZRawBuffer} from "../zernikalos/mesh/ZRawBuffer"
+import {ZBuffer} from "../zernikalos/mesh/ZBuffer"
 import _, {isNil} from "lodash"
 import {ZBufferKey} from "../zernikalos/mesh/ZBufferKey"
 import {ATTR_INDEX, ATTRS} from "../constants";
@@ -92,7 +93,7 @@ function parseBufferKey(attr: BufferAttribute | InterleavedBufferAttribute, zatt
     if (isNil(attr)) {
         throw new Error("Attributes must be defined when exported")
     }
-    const zKey = ZBufferKey.init()
+    const zKey = new ZBufferKey()
     zKey.id = zattr.id
     zKey.dataType = detectDataType(attr)
     zKey.name = zattr.name
@@ -108,7 +109,7 @@ function parseBufferKey(attr: BufferAttribute | InterleavedBufferAttribute, zatt
 
 function parseBuffer(buffAttr: BufferAttribute | InterleavedBufferAttribute, zattr: Attrib): ZRawBuffer {
     const data = new Int8Array(buffAttr.array.buffer)
-    return ZRawBuffer.initWithArgs(zattr.id, data)
+    return new ZRawBuffer(zattr.id, data)
 }
 
 /**
@@ -171,9 +172,29 @@ export function parseMesh(ctx: ParserContext, mesh: Mesh | SkinnedMesh): ZMesh {
     }
 
     const {keys, rawBuffers} = parseBuffersAndKeys(geometry)
-    keys.forEach(key => zmesh.addBufferKey(key))
-    rawBuffers.forEach(buff => zmesh.addRawBuffer(buff))
+
+    const buffers = buildZBuffers(keys, rawBuffers)
+    buffers.forEach(buff => zmesh.addBuffer(buff))
     ctx.registerComponent(mesh.uuid, zmesh)
 
     return zmesh
+}
+
+function buildZBuffers(keys: ZBufferKey[], rawBuffers: ZRawBuffer[]): ZBuffer[] {
+    return keys.map(key => {
+        const rawBuffer = _.find(rawBuffers, (rawBuff) => rawBuff.id === key.bufferId)
+        return ZBuffer.initWithArgs(
+            key.id,
+            key.dataType,
+            key.name,
+            key.size,
+            key.count,
+            key.normalized,
+            key.offset,
+            key.stride,
+            key.isIndexBuffer,
+            rawBuffer.id,
+            rawBuffer.dataArray
+        )
+    })
 }
