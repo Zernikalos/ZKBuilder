@@ -3,7 +3,7 @@ import {ZCamera} from "../zernikalos/ZCamera";
 import {ZPerspectiveLens} from "../zernikalos/camera/ZPerspectiveLens";
 
 export function parseCamera(obj: Camera): { camera: ZCamera, children: Object3D[] } {
-    const camera = ZCamera.init()
+    const camera = new ZCamera()
 
     let lens
     if (obj.type.toLowerCase().includes("perspective")) {
