@@ -5,5 +5,6 @@ export async function colladaLoader(filePath: string): Promise<ZkoParseableObjec
     const loader = new ColladaLoader()
     const threeObj =  await loader.loadAsync(filePath)
 
-    return new ZkoParseableObject(threeObj.scene)
+    // @ts-ignore
+    return new ZkoParseableObject(threeObj.scene, threeObj?.animations)
 }
