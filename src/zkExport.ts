@@ -18,7 +18,7 @@ export const DEFAULT_EXPORT_OPTIONS: ExportOptions = {
     stringify: false
 }
 
-export async function zkExport(zkObj: ZObject, options: ExportOptions = DEFAULT_EXPORT_OPTIONS) {
+export async function zkExport(zkObj: ZObject, options: ExportOptions = DEFAULT_EXPORT_OPTIONS): Promise<string | Uint8Array | Zko.ProtoZkObject> {
     let result
 
     const mergedOptions = merge({}, DEFAULT_EXPORT_OPTIONS, options)
