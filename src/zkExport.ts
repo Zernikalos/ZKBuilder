@@ -5,6 +5,7 @@ import {protoWrite} from "./writer/protoWriter";
 import {objectWrite} from "./writer/objectWriter";
 import {Zko} from "../protobuild";
 import {ZkoParsed} from "./zkParse";
+import {ZkoFile} from "./proto";
 
 export interface ExportOptions {
     format: 'json' | 'proto' | 'object'
@@ -18,7 +19,7 @@ export const DEFAULT_EXPORT_OPTIONS: ExportOptions = {
     stringify: false
 }
 
-export async function zkExport(zkParsed: ZkoParsed, options: ExportOptions = DEFAULT_EXPORT_OPTIONS): Promise<string | Uint8Array | Zko.Zko> {
+export async function zkExport(zkParsed: ZkoParsed, options: ExportOptions = DEFAULT_EXPORT_OPTIONS): Promise<string | Uint8Array | ZkoFile> {
     let result
 
     const mergedOptions = merge({}, DEFAULT_EXPORT_OPTIONS, options)
@@ -40,7 +41,7 @@ export async function zkExport(zkParsed: ZkoParsed, options: ExportOptions = DEF
     return result
 }
 
-function stringify(parsed: string | Uint8Array | Zko.Zko): string {
+function stringify(parsed: string | Uint8Array | ZkoFile): string {
     if (typeof parsed === 'string') {
         return parsed
     } else if (parsed instanceof Uint8Array) {

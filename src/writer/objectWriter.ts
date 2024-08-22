@@ -1,7 +1,7 @@
 import {writeZko} from "./baseWriter";
 import {ZkoParsed} from "../zkParse";
-import {Zko} from "../proto";
+import {ZkoFile} from "../proto";
 
-export async function objectWrite(zkParsed: ZkoParsed): Promise<Zko.Zko> {
+export async function objectWrite(zkParsed: ZkoParsed): Promise<ZkoFile> {
     return writeZko(zkParsed)
 }

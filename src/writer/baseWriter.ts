@@ -1,5 +1,5 @@
 import {ZObject} from "../zernikalos/ZObject"
-import {Zko} from "../proto"
+import {Zko, ZkoFile} from "../proto"
 import _ from "lodash"
 import {ZObjectType} from "../zernikalos/ZObjectType"
 import {modelWriter} from "./sceneobjects/modelWriter"
@@ -8,11 +8,11 @@ import {WriterContext} from "./WriterContext"
 import {ZkoParsed} from "../zkParse";
 import {ZKO_VERSION} from "../constants/ZkoVersion";
 
-export async function writeZko(zkoParsed: ZkoParsed): Promise<Zko.Zko> {
+export async function writeZko(zkoParsed: ZkoParsed): Promise<ZkoFile> {
     const tree = await writeTree(zkoParsed.root)
-    return new Zko.Zko({
+    return new Zko.ZkoFile({
         header: headerWrite(),
-        data: tree
+        root: tree
     })
 }
 

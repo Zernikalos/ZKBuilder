@@ -11,9 +11,9 @@ import "./model.proto";
 import "./camera.proto";
 import "./skeleton.proto";
 
-message Zko {
+message ZkoFile {
   required ZkoHeader header = 1;
-  required ProtoZkObject data = 2;
+  required ProtoZkObject root = 2;
 }
 
 message ZkoHeader {
