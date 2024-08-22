@@ -1,10 +1,10 @@
-import {ZObject} from "./zernikalos/ZObject";
 import {buf2hex} from "./utils/buf2hex";
 import merge from "lodash/merge";
 import {jsonWrite} from "./writer/jsonWriter";
 import {protoWrite} from "./writer/protoWriter";
 import {objectWrite} from "./writer/objectWriter";
 import {Zko} from "../protobuild";
+import {ZkoParsed} from "./zkParse";
 
 export interface ExportOptions {
     format: 'json' | 'proto' | 'object'
@@ -18,20 +18,20 @@ export const DEFAULT_EXPORT_OPTIONS: ExportOptions = {
     stringify: false
 }
 
-export async function zkExport(zkObj: ZObject, options: ExportOptions = DEFAULT_EXPORT_OPTIONS): Promise<string | Uint8Array | Zko.ProtoZkObject> {
+export async function zkExport(zkParsed: ZkoParsed, options: ExportOptions = DEFAULT_EXPORT_OPTIONS): Promise<string | Uint8Array | Zko.Zko> {
     let result
 
     const mergedOptions = merge({}, DEFAULT_EXPORT_OPTIONS, options)
     const {format} = mergedOptions
     switch (format) {
         case "json":
-            result = await jsonWrite(zkObj, mergedOptions)
+            result = await jsonWrite(zkParsed, mergedOptions)
             break
         case "proto":
-            result = await protoWrite(zkObj)
+            result = await protoWrite(zkParsed)
             break
         case "object":
-            result = await objectWrite(zkObj)
+            result = await objectWrite(zkParsed)
             break
     }
     if (options.stringify) {
@@ -40,7 +40,7 @@ export async function zkExport(zkObj: ZObject, options: ExportOptions = DEFAULT_
     return result
 }
 
-function stringify(parsed: string | Uint8Array | Zko.ProtoZkObject): string {
+function stringify(parsed: string | Uint8Array | Zko.Zko): string {
     if (typeof parsed === 'string') {
         return parsed
     } else if (parsed instanceof Uint8Array) {

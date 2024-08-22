@@ -1,9 +1,8 @@
-import _ from "lodash"
 import stringifyObject from '../utils/stringifyObject'
 
-import {ZObject} from "../zernikalos/ZObject"
-import {writeTree} from "./baseWriter"
+import {writeZko} from "./baseWriter"
 import {ExportOptions} from "../zkExport"
+import {ZkoParsed} from "../zkParse";
 
 function jsonReplacer(_key: string, value: any) {
     if (value instanceof Map) {
@@ -16,12 +15,12 @@ function jsonReplacer(_key: string, value: any) {
     return value
 }
 
-export async function jsonWrite(node: ZObject, options: ExportOptions): Promise<string> {
+export async function jsonWrite(zkParsed: ZkoParsed, options: ExportOptions): Promise<string> {
     const {beauty} = options
-    const treeNode = await writeTree(node)
+    const zkoFile = await writeZko(zkParsed)
 
     if (beauty) {
-        return stringifyObject(treeNode)
+        return stringifyObject(zkoFile)
     }
-    return JSON.stringify(treeNode, jsonReplacer)
+    return JSON.stringify(zkoFile, jsonReplacer)
 }

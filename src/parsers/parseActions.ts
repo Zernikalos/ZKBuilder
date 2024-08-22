@@ -19,7 +19,7 @@ class ZKeyFrame {
     }
 }
 
-class ZSkeletalAction {
+export class ZSkeletalAction {
     keyFrames: ZKeyFrame[] = []
 }
 

@@ -5,7 +5,7 @@ import {ZObject} from "./zernikalos/ZObject";
 import _ from "lodash";
 import {IdGenerator} from "./utils/IdGenerator";
 import {preProcess} from "./pre";
-import {parseActions} from "./parsers/parseActions";
+import {parseActions, ZSkeletalAction} from "./parsers/parseActions";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ParseOptions {
@@ -16,8 +16,12 @@ export const DEFAULT_PARSE_OPTIONS: ParseOptions = {
 
 }
 
-export async function zkParse(parseableObject: ZkoParseableObject, _options: ParseOptions): Promise<ZObject> {
+export interface ZkoParsed {
+    root: ZObject
+    actions?: ZSkeletalAction[]
+}
 
+export async function zkParse(parseableObject: ZkoParseableObject, _options: ParseOptions): Promise<ZkoParsed> {
     // @ts-ignore
     const mergedOptions = _.merge({}, DEFAULT_PARSE_OPTIONS)
 
@@ -33,7 +37,7 @@ export async function zkParse(parseableObject: ZkoParseableObject, _options: Par
         zObj = postProcess(zObj)
 
         IdGenerator.reset()
-        return zObj
+        return {root: zObj, actions: zactions}
     } catch (e) {
         console.error(`Error parsing the object. Error: ${e}`)
     }

@@ -1,7 +1,7 @@
-import {ZObject} from "../zernikalos/ZObject";
-import {writeTree} from "./baseWriter";
-import {ProtoZkObject} from "../proto";
+import {writeZko} from "./baseWriter";
+import {ZkoParsed} from "../zkParse";
+import {Zko} from "../proto";
 
-export async function objectWrite(node: ZObject): Promise<ProtoZkObject> {
-    return writeTree(node)
+export async function objectWrite(zkParsed: ZkoParsed): Promise<Zko.Zko> {
+    return writeZko(zkParsed)
 }
