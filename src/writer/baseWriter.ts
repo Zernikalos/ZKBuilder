@@ -10,9 +10,14 @@ import {ZKO_VERSION} from "../constants/ZkoVersion";
 
 export async function writeZko(zkoParsed: ZkoParsed): Promise<ZkoFile> {
     const tree = await writeTree(zkoParsed.root)
+    let actions: Zko.ZkSkeletalAction[] = []
+    if (!_.isNil(zkoParsed.actions)) {
+        actions = zkoParsed.actions.map((action) => Zko.ZkSkeletalAction.fromObject(action))
+    }
     return new Zko.ZkoFile({
         header: headerWrite(),
-        root: tree
+        root: tree,
+        actions
     })
 }
 

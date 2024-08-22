@@ -11,7 +11,7 @@ message ZkBoneFrameTransform {
 }
 
 message ZkKeyFrame {
-  required int32 time = 1;
+  required float time = 1;
   map<string, ZkBoneFrameTransform> pose = 10;
 }
 
