@@ -3,25 +3,9 @@ import {ZVector3} from "../zernikalos/math/ZVector3";
 import {ZQuaternion} from "../zernikalos/math/ZQuaternion";
 import _ from "lodash";
 import {ZTypes} from "../zernikalos/ZDataType";
-
-class ZBoneFrameTransform {
-    position: ZVector3
-    rotation: ZQuaternion
-    scale: ZVector3
-}
-
-class ZKeyFrame {
-    time: number
-    pose: Map<string, ZBoneFrameTransform> = new Map()
-
-    constructor(time: number) {
-        this.time = time
-    }
-}
-
-export class ZSkeletalAction {
-    keyFrames: ZKeyFrame[] = []
-}
+import {ZKeyFrame} from "../zernikalos/action/ZKeyFrame";
+import {ZBoneFrameTransform} from "../zernikalos/action/ZBoneFrameTransform";
+import {ZSkeletalAction} from "../zernikalos/action/ZSkeletalAction";
 
 type RotPosScaleTypes = "position" | "rotation" | "scale"
 

@@ -5,7 +5,8 @@ import {ZObject} from "./zernikalos/ZObject";
 import _ from "lodash";
 import {IdGenerator} from "./utils/IdGenerator";
 import {preProcess} from "./pre";
-import {parseActions, ZSkeletalAction} from "./parsers/parseActions";
+import {parseActions} from "./parsers/parseActions";
+import {ZSkeletalAction} from "./zernikalos/action/ZSkeletalAction";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ParseOptions {
