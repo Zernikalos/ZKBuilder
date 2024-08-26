@@ -31,7 +31,7 @@ export function generateVertexShaderSource(obj: ZModel): string {
 
     const HAS_TEXTURES = !_.isNil(obj.material?.texture)
     // TODO: This false here is intentional until completing the bones and armatures feature
-    const HAS_SKINNING = !_.isNil(obj.skeleton) && !_.isNil(obj.skinning) && false
+    const HAS_SKINNING = !_.isNil(obj.skeleton) && false
     // const uniforms: Map<string, ZUniform> = obj.shaderProgram.uniformsMap
     const uniforms = kotlinMapToJsMap(obj.shaderProgram.uniforms)
     const buffers: {key: string, value: ZBufferKey}[] = mapFlatJs(obj.mesh.buffers)

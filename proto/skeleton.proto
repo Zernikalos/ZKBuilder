@@ -31,10 +31,6 @@ message ZkBone {
   repeated ZkBone children = 5;
 }
 
-message ZkSkinning {
-  repeated uint32 boneIndices = 1;
-}
-
 message ZkJoint {
   required string id = 1;
   required string name = 2;
