@@ -23,7 +23,7 @@ function extractTrackNameAndTarget(track: KeyframeTrack): {boneName: string, tar
             target = "scale"
             break
     }
-    return {boneName: nameSplit[0], target: target}
+    return {boneName: String(nameSplit[0]), target: target}
 }
 
 function getSizePerTarget(target: RotPosScaleTypes) {
@@ -64,20 +64,20 @@ function parseZSkeletalAction(track: KeyframeTrack, boneName: string, target: Ro
         const data = dataFrames[i]
         const kf = timesBasedKeyframesMap.get(t)
 
-        if (!kf.pose.has(boneName)) {
-            kf.pose.set(boneName,  new ZBoneFrameTransform())
+        if (!kf.hasBone(boneName)) {
+            kf.setBoneTransform(boneName, new ZBoneFrameTransform())
         }
-        const bone = kf.pose.get(boneName)
+        const boneFrameTransform = kf.getBoneTransform(boneName)
 
         switch (target) {
             case "position":
-                bone.position = data as ZVector3
+                boneFrameTransform.position = data as ZVector3
                 break
             case "scale":
-                bone.scale = data as ZVector3
+                boneFrameTransform.scale = data as ZVector3
                 break
             case "rotation":
-                bone.rotation = data as ZQuaternion
+                boneFrameTransform.rotation = data as ZQuaternion
                 break
         }
     }
@@ -94,7 +94,7 @@ function parseAction(action: AnimationClip) {
 
     const keyframes: ZKeyFrame[] = _.sortBy([...timesBasedKeyframesMap.values()], "time")
     const skeletalAction = new ZSkeletalAction()
-    skeletalAction.keyFrames = keyframes
+    keyframes.forEach((kf) => skeletalAction.addKeyFrame(kf))
 
     return skeletalAction
 }

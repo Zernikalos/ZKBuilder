@@ -1,14 +1,9 @@
-import {ZBoneFrameTransform} from "./ZBoneFrameTransform";
-import {Zko} from "../../../protobuild";
+import {zernikalos} from "@zernikalos/zernikalos"
+import {Zko} from "../../proto";
+import ZKeyFrame = zernikalos.action.ZKeyFrame
+import {kotlinMapToJsObject} from "../../utils/mapFlatJs";
 
-export class ZKeyFrame {
-    time: number
-    pose: Map<string, ZBoneFrameTransform> = new Map()
-
-    constructor(time: number) {
-        this.time = time
-    }
-}
+export {ZKeyFrame}
 
 const ogFromObject = Zko.ZkKeyFrame.fromObject
 Zko.ZkKeyFrame.fromObject = (obj: any) => {
@@ -17,7 +12,7 @@ Zko.ZkKeyFrame.fromObject = (obj: any) => {
     }
     const newObj = {
         time: obj.time,
-        pose: Object.fromEntries(obj.pose)
+        pose: kotlinMapToJsObject(obj.pose),
     }
     return ogFromObject(newObj)
 }

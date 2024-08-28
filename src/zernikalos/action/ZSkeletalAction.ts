@@ -1,5 +1,4 @@
-import {ZKeyFrame} from "./ZKeyFrame";
+import {zernikalos} from "@zernikalos/zernikalos"
+import ZSkeletalAction = zernikalos.action.ZSkeletalAction
 
-export class ZSkeletalAction {
-    keyFrames: ZKeyFrame[] = []
-}
+export {ZSkeletalAction}

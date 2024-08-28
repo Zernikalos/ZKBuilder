@@ -135,9 +135,10 @@ export default function stringifyObject(input, options, pad) {
             seen.push(input);
 
             const returnValue = '{' + tokens.newline + objectKeys.map((element, i) => {
+                const jsonValidKeyRegex = /^[a-zA-Z0-9-]+$|^(?!".*")[\s\S]*$/
                 const eol = objectKeys.length - 1 === i ? tokens.newline : ',' + tokens.newlineOrSpace;
                 const isSymbol = typeof element === 'symbol';
-                const isClassic = !isSymbol && /^[a-z$_][$\w]*$/i.test(element);
+                const isClassic = !isSymbol && jsonValidKeyRegex.test(element);
                 const key = isSymbol || isClassic ? element : stringify(element, options);
 
                 const inputElement = (input instanceof Map) ? input.get(element) : input[element]

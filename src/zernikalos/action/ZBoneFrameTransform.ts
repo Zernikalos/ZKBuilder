@@ -1,8 +1,4 @@
-import {ZVector3} from "../math/ZVector3";
-import {ZQuaternion} from "../math/ZQuaternion";
+import {zernikalos} from "@zernikalos/zernikalos"
+import ZBoneFrameTransform = zernikalos.action.ZBoneFrameTransform
 
-export class ZBoneFrameTransform {
-    position: ZVector3
-    rotation: ZQuaternion
-    scale: ZVector3
-}
+export {ZBoneFrameTransform}
