@@ -93,7 +93,8 @@ function parseAction(action: AnimationClip) {
     })
 
     const keyframes: ZKeyFrame[] = _.sortBy([...timesBasedKeyframesMap.values()], "time")
-    const skeletalAction = new ZSkeletalAction()
+    const skeletalAction = new ZSkeletalAction(action.name)
+    skeletalAction.duration = action.duration
     keyframes.forEach((kf) => skeletalAction.addKeyFrame(kf))
 
     return skeletalAction

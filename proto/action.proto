@@ -1,4 +1,4 @@
-syntax = "proto3";
+syntax = "proto2";
 
 package Zko;
 
@@ -16,6 +16,8 @@ message ZkKeyFrame {
 }
 
 message ZkSkeletalAction {
+  required string name = 1;
+  required float duration = 2;
   repeated ZkKeyFrame keyFrames = 10;
 }
 
