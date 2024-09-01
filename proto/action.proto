@@ -5,7 +5,7 @@ package Zko;
 import "./math.proto";
 
 message ZkBoneFrameTransform {
-  optional ZkVector3 location = 1;
+  optional ZkVector3 position = 1;
   optional ZkQuaternion rotation = 2;
   optional ZkVector3 scale = 3;
 }

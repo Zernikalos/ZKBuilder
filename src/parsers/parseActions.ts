@@ -51,7 +51,7 @@ function parseZSkeletalAction(track: KeyframeTrack, boneName: string, target: Ro
             case "scale":
                 return new ZVector3(chunk[0], chunk[1], chunk[2])
             case "rotation":
-                return new ZQuaternion(chunk[0], chunk[1], chunk[2], chunk[3])
+                return new ZQuaternion(chunk[3], chunk[0], chunk[1], chunk[2])
         }
     })
 
