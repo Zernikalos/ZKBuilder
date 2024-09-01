@@ -7,7 +7,7 @@ export function parseTransform(obj: Object3D): ZTransform {
     const transform = new ZTransform()
 
     const position = obj.position
-    transform.location = new ZVector3(position.x, position.y, position.z)
+    transform.position = new ZVector3(position.x, position.y, position.z)
 
     const quaternion = obj.quaternion
     transform.rotation = new ZQuaternion(quaternion.w, quaternion.x, quaternion.y, quaternion.z)
