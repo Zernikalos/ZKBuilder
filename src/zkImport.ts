@@ -15,5 +15,5 @@ export function zkImport(options: ImportOptions): ZObject {
     const mergedOptions = merge({}, DEFAULT_IMPORT_OPTIONS, options)
     const {data} = mergedOptions
 
-    return loadFromProto(data as Int8Array)
+    return loadFromProto(data as Int8Array).root
 }

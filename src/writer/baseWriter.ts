@@ -1,14 +1,35 @@
 import {ZObject} from "../zernikalos/ZObject"
-import {Zko} from "../proto"
+import {Zko, ZkoFile} from "../proto"
 import _ from "lodash"
 import {ZObjectType} from "../zernikalos/ZObjectType"
 import {modelWriter} from "./sceneobjects/modelWriter"
 import {ZModel} from "../zernikalos/ZModel"
 import {WriterContext} from "./WriterContext"
+import {ZkoParsed} from "../zkParse";
+import {ZKO_VERSION} from "../constants/ZkoVersion";
 
-export async function writeTree(obj: ZObject): Promise<Zko.ProtoZkObject> {
+export async function writeZko(zkoParsed: ZkoParsed): Promise<ZkoFile> {
+    const tree = await writeTree(zkoParsed.root)
+    let actions: Zko.ZkSkeletalAction[] = []
+    if (!_.isNil(zkoParsed.actions)) {
+        actions = zkoParsed.actions.map((action) => Zko.ZkSkeletalAction.fromObject(action))
+    }
+    return new Zko.ZkoFile({
+        header: headerWrite(),
+        root: tree,
+        actions
+    })
+}
+
+async function writeTree(obj: ZObject): Promise<Zko.ProtoZkObject> {
     const ctx = new WriterContext()
     return innerWriteTree(ctx, obj)
+}
+
+function headerWrite(): Zko.ZkoHeader {
+    return Zko.ZkoHeader.create({
+        version: ZKO_VERSION
+    })
 }
 
 async function innerWriteTree(ctx: WriterContext, obj: ZObject): Promise<Zko.ProtoZkObject> {

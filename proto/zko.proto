@@ -10,10 +10,12 @@ import "./scene.proto";
 import "./model.proto";
 import "./camera.proto";
 import "./skeleton.proto";
+import "./action.proto";
 
-message Zko {
+message ZkoFile {
   required ZkoHeader header = 1;
-  required ProtoZkObject data = 2;
+  required ProtoZkObject root = 2;
+  repeated ZkSkeletalAction actions = 3;
 }
 
 message ZkoHeader {

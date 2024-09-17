@@ -3,7 +3,6 @@ import {ZBone} from "../zernikalos/skeleton/ZBone"
 import {parseTransform} from "./parseTransform"
 import _ from "lodash";
 import {ZSkeleton} from "../zernikalos/skeleton/ZSkeleton"
-import {ZSkinning} from "../zernikalos/skeleton/ZSkinning";
 //import {ZJoint} from "../zernikalos/skeleton/ZJoint";
 
 export class JointNode extends Object3D {
@@ -13,13 +12,7 @@ export class JointNode extends Object3D {
     children: Object3D[] = []
 }
 
-export function parseSkeletonAndSkinning(obj: Skeleton): {skeleton: ZSkeleton, skinning: ZSkinning} {
-    const skeleton = parseSkeleton(obj)
-    const skinning = parseSkinning(obj, skeleton)
-    return {skeleton, skinning}
-}
-
-function parseSkeleton(obj: Skeleton): ZSkeleton {
+export function parseSkeleton(obj: Skeleton): ZSkeleton {
     const boneRoot = findParentBone(obj.bones[0])
     // Only root bones will be processed here
     if (_.isNil(boneRoot) || boneRoot.type !== "Bone") {
@@ -27,7 +20,7 @@ function parseSkeleton(obj: Skeleton): ZSkeleton {
     }
 
     // const root = recursiveParseSkeleton(boneRoot, 0)
-    const root = parseBonesFromRoot(boneRoot)
+    const root = parseBonesFromRoot(boneRoot, obj.bones)
     const skeleton = ZSkeleton.init()
     skeleton.root = root
 
@@ -35,15 +28,8 @@ function parseSkeleton(obj: Skeleton): ZSkeleton {
     return skeleton
 }
 
-function parseSkinning(skeleton: Skeleton, zskeleton: ZSkeleton): ZSkinning {
-    const boneIndices = skeleton.bones.map((bone) => zskeleton.findBoneByName(bone.name))
-        .filter((zbone: ZBone) => !_.isNil(zbone))
-        .map((zbone: ZBone) => zbone.idx)
-    boneIndices.sort((a,b) => a - b)
-    const skinning = ZSkinning.init()
-    skinning.boneIndices = boneIndices
-
-    return skinning
+function getBoneIdx(bone: Bone, bones: Bone[]) {
+    return bones.findIndex((b) => b.id === bone.id)
 }
 
 function findParentBone(bone: Bone): Bone {
@@ -61,16 +47,17 @@ function findParentBone(bone: Bone): Bone {
 //     return {joint: zjoint, children: joint.children}
 // }
 
-function parseBonesFromRoot(rootBone: Bone): ZBone {
-    let idx = 0
+function parseBonesFromRoot(rootBone: Bone, bones: Bone[]): ZBone {
     let root: ZBone | undefined = undefined
     const q: [ZBone | undefined, Bone][] = []
     q.push([undefined, rootBone])
 
     while (!_.isEmpty(q)) {
         const [parent, bone] = q.shift()
-        const zbone: ZBone = parseBone(bone, idx)
-        idx++
+        const realIdx = getBoneIdx(bone, bones)
+
+        const zbone: ZBone = parseBone(bone, realIdx)
+
         if (!_.isNil(parent)) {
             parent.addChild(zbone)
         } else {

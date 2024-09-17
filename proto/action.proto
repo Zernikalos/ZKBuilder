@@ -1,0 +1,23 @@
+syntax = "proto2";
+
+package Zko;
+
+import "./math.proto";
+
+message ZkBoneFrameTransform {
+  optional ZkVector3 position = 1;
+  optional ZkQuaternion rotation = 2;
+  optional ZkVector3 scale = 3;
+}
+
+message ZkKeyFrame {
+  required float time = 1;
+  map<string, ZkBoneFrameTransform> pose = 10;
+}
+
+message ZkSkeletalAction {
+  required string name = 1;
+  required float duration = 2;
+  repeated ZkKeyFrame keyFrames = 10;
+}
+

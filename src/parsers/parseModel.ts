@@ -3,7 +3,7 @@ import {parseMesh} from "./parseMesh"
 import {ZModel} from "../zernikalos/ZModel"
 import _ from "lodash";
 import {parseMaterial} from "./parseMaterial";
-import {parseSkeletonAndSkinning} from "./parseSkeleton";
+import {parseSkeleton} from "./parseSkeleton";
 import {ParserContext} from "./ParserContext";
 
 export async function parseModel(ctx: ParserContext, obj: Mesh | SkinnedMesh): Promise<{ model: ZModel, children: Object3D[] }> {
@@ -15,9 +15,7 @@ export async function parseModel(ctx: ParserContext, obj: Mesh | SkinnedMesh): P
     }
     if (!_.isNil((obj as SkinnedMesh).skeleton)) {
         const threeSkeleton: Skeleton = (obj as SkinnedMesh).skeleton
-        const {skeleton, skinning} = parseSkeletonAndSkinning(threeSkeleton)
-        model.skeleton = skeleton
-        model.skinning = skinning
+        model.skeleton = parseSkeleton(threeSkeleton)
     }
 
     return {model, children: obj.children}
