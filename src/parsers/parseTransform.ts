@@ -7,13 +7,13 @@ export function parseTransform(obj: Object3D): ZTransform {
     const transform = new ZTransform()
 
     const position = obj.position
-    transform.position = new ZVector3(position.x, position.y, position.z)
+    transform.position = ZVector3.initWithValues(position.x, position.y, position.z)
 
     const quaternion = obj.quaternion
-    transform.rotation = new ZQuaternion(quaternion.w, quaternion.x, quaternion.y, quaternion.z)
+    transform.rotation = ZQuaternion.initWithValues(quaternion.w, quaternion.x, quaternion.y, quaternion.z)
 
     const scale = obj.scale
-    transform.scale = new ZVector3(scale.x, scale.y, scale.z)
+    transform.scale = ZVector3.initWithValues(scale.x, scale.y, scale.z)
 
     return transform
 }
