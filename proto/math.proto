@@ -28,3 +28,10 @@ message ZkQuaternion {
   required float y = 3;
   required float z = 4;
 }
+
+message ZkColor {
+  required float r = 1;
+  required float g = 2;
+  required float b = 3;
+  required float a = 4;
+}
