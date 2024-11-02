@@ -17,7 +17,10 @@ function buildBaseConfig({entryName} = {entryName: ENTRY_NAME}) {
 
     return {
         entry: {
-            [entryName]: entries
+            zkbuilder: './index.ts',
+            'zernikalos': '@zernikalos/zernikalos',
+            'zkoproto': './protobuild/index.js',
+            'vendor': ['lodash', 'three']
         },
         output: {
             path: outputPath,
