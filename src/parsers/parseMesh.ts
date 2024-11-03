@@ -100,6 +100,7 @@ function parseBufferKey(attr: BufferAttribute | InterleavedBufferAttribute, zatt
     zKey.size = attr.itemSize
     zKey.count = attr.count
     zKey.normalized = attr.normalized
+    // @ts-ignore
     zKey.offset = (attr as BufferAttribute)?.updateRange?.offset ?? 0
     zKey.stride = (attr as InterleavedBufferAttribute)?.data?.stride ?? 0
     // TODO: This is not correct if there are less buffers, interleaved

@@ -32,7 +32,7 @@ function getSizePerTarget(target: RotPosScaleTypes) {
         case "scale":
             return ZTypes.VEC3F.size
         case "rotation":
-            return ZTypes.QUATERNIONF.size
+            return ZTypes.QUATERNION.size
     }
 }
 
@@ -49,9 +49,9 @@ function parseZSkeletalAction(track: KeyframeTrack, boneName: string, target: Ro
         switch (target) {
             case "position":
             case "scale":
-                return new ZVector3(chunk[0], chunk[1], chunk[2])
+                return ZVector3.initWithValues(chunk[0], chunk[1], chunk[2])
             case "rotation":
-                return new ZQuaternion(chunk[3], chunk[0], chunk[1], chunk[2])
+                return ZQuaternion.initWithValues(chunk[3], chunk[0], chunk[1], chunk[2])
         }
     })
 
