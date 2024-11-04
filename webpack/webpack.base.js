@@ -17,7 +17,10 @@ function buildBaseConfig({entryName} = {entryName: ENTRY_NAME}) {
 
     return {
         entry: {
-            'zkbuilder': './index.ts',
+            'index': {
+                import: './index.ts',
+                dependOn: ['zernikalos', 'zkoproto', 'vendor'],
+            },
             'zernikalos': '@zernikalos/zernikalos',
             'zkoproto': './protobuild/index.js',
             'vendor': [
@@ -47,6 +50,9 @@ function buildBaseConfig({entryName} = {entryName: ENTRY_NAME}) {
         devtool: 'source-map',
         experiments: {
             outputModule: true
+        },
+        optimization: {
+            runtimeChunk: 'single',
         },
         module: {
             rules: [

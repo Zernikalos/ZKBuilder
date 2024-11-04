@@ -3,8 +3,15 @@
   "version": "0.0.1",
   "license": "MPL 2.0",
   "author": "Aaron Negrin",
-  "main": "dist/zkbuilder.js",
-  "browser": "dist/zkbuilder.js",
+  "main": "dist/index.js",
+  "browser": "dist/index.js",
+  "exports": [
+    "dist/index.js",
+    "dist/runtime.js",
+    "dist/vendor.js",
+    "dist/zernikalos.js",
+    "dist/zkoproto.js"
+  ],
   "types": "./build/index.d.ts",
   "scripts": {
     "start": "webpack watch --mode=development",
