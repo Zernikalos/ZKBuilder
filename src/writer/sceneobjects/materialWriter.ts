@@ -1,10 +1,10 @@
-import {ZMaterial} from "../../zernikalos/material/ZMaterial";
-import _ from "lodash";
-import {ZTexture} from "../../zernikalos/material/ZTexture";
-import {ZkMaterial, ZkRefMaterial, ZkRefTexture, ZkTexture} from "../../../protobuild";
-import {WriterContext} from "../WriterContext";
+import {ZMaterial} from "../../zernikalos/material/ZMaterial"
+import _ from "lodash"
+import {ZTexture} from "../../zernikalos/material/ZTexture"
+import {Zko} from "../../proto"
+import {WriterContext} from "../WriterContext"
 
-export function materialWriter(ctx: WriterContext, material: ZMaterial): ZkRefMaterial {
+export function materialWriter(ctx: WriterContext, material: ZMaterial): Zko.ZkRefMaterial {
     if (_.isNil(material)) {
         return
     }
@@ -13,30 +13,30 @@ export function materialWriter(ctx: WriterContext, material: ZMaterial): ZkRefMa
     if (!_.isNil(texture)) {
         zkTexture = textureWriter(ctx, texture)
     }
-    return ZkRefMaterial.create({
+    return Zko.ZkRefMaterial.create({
         refId: material.refId,
         isReference: false,
-        data: ZkMaterial.create({
+        data: Zko.ZkMaterial.create({
             texture: zkTexture
         })
     })
 
 }
 
-function textureWriter(ctx: WriterContext, texture: ZTexture): ZkRefTexture {
+function textureWriter(ctx: WriterContext, texture: ZTexture): Zko.ZkRefTexture {
     if (_.isNil(texture)) {
         return
     }
     if (ctx.hasWrittenComponent(texture)) {
-        return ZkRefTexture.create({
+        return Zko.ZkRefTexture.create({
             refId: texture.refId,
             isReference: true
         })
     }
     ctx.registerComponent(texture)
-    return ZkRefTexture.create({
+    return Zko.ZkRefTexture.create({
         refId: texture.refId,
         isReference: false,
-        data: ZkTexture.fromObject(texture)
+        data: Zko.ZkTexture.fromObject(texture)
     })
 }

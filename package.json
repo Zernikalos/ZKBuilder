@@ -8,15 +8,21 @@
   "types": "./build/index.d.ts",
   "scripts": {
     "start": "webpack watch --mode=development",
-    "build": "pnpm run generate && pnpm run webpack",
+    "build": "npm-run-all protobuild:prod",
     "build:dev": "webpack --mode=development",
-    "webpack": "webpack --mode=production",
+    "build:prod": "webpack --mode=production",
     "build:profile": "webpack --env useMode=profile",
+    "prebuild": "npm-run-all clean:build",
     "parse": "babel-node index.js",
-    "generate": "npm run generate:clean && npm run generate:folder && npm run generate:proto",
-    "generate:clean": "rimraf protobuild",
-    "generate:folder": "make-dir protobuild",
-    "generate:proto": "pbjs --target static-module --wrap es6 --es6 --force-message --no-delimited --out protobuild/index.js proto/zko.proto && pbts --no-comments --out protobuild/index.d.ts protobuild/index.js"
+    "generate": "run-s clean:proto proto:folder proto:generate",
+    "proto:folder": "make-dir protobuild",
+    "proto:generate": "run-s proto:generate:pbjs proto:generate:pbts",
+    "proto:generate:pbjs": "pbjs --target static-module --wrap es6 --es6 --force-message --no-delimited --out protobuild/index.js proto/zko.proto",
+    "proto:generate:pbts": "pbts --no-comments --out protobuild/index.d.ts protobuild/index.js",
+    "clean": "run-s clean:proto clean:build clean:modules",
+    "clean:proto": "rimraf protobuild",
+    "clean:build": "rimraf dist build",
+    "clean:modules": "rimraf node_modules"
   },
   "dependencies": {
     "@zernikalos/zernikalos": "../Zernikalos/build/js/packages/@zernikalos/zernikalos",
@@ -40,6 +46,7 @@
     "webpack-cli": "5.1.4",
     "webpack-merge": "6.0.1",
     "make-dir-cli": "4.0.0",
-    "rimraf": "6.0.1"
+    "rimraf": "6.0.1",
+    "npm-run-all2": "7.0.1"
   }
 }

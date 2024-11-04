@@ -1,6 +1,6 @@
 import {zernikalos} from "@zernikalos/zernikalos"
 import ZMesh = zernikalos.components.mesh.ZMesh
-import {Zko} from "../../../protobuild";
+import {Zko} from "../../proto";
 import {mapFlatJs} from "../../utils/mapFlatJs";
 import ZBuffer = zernikalos.components.mesh.ZBuffer;
 import {ZBufferKey} from "./ZBufferKey";

@@ -1,5 +1,5 @@
 import {ZSkeleton} from "../../zernikalos/skeleton/ZSkeleton";
-import {Zko} from "../../../protobuild";
+import {Zko} from "../../proto";
 import ZkSkeleton = Zko.ZkSkeleton;
 import _ from "lodash";
 import ZkRefSkeleton = Zko.ZkRefSkeleton;

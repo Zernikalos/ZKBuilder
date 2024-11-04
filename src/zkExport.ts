@@ -1,11 +1,10 @@
 import {buf2hex} from "./utils/buf2hex";
-import merge from "lodash/merge";
+import {merge} from "lodash";
 import {jsonWrite} from "./writer/jsonWriter";
 import {protoWrite} from "./writer/protoWriter";
 import {objectWrite} from "./writer/objectWriter";
-import {Zko} from "../protobuild";
 import {ZkoParsed} from "./zkParse";
-import {ZkoFile} from "./proto";
+import {Zko, ZkoFile} from "./proto";
 
 export interface ExportOptions {
     format: 'json' | 'proto' | 'object'
