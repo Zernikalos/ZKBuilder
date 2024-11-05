@@ -1,3 +1,4 @@
+package Zko;
 
 message ZkRefMaterial {
   required int32 refId = 1;

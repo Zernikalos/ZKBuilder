@@ -17,10 +17,22 @@ function buildBaseConfig({entryName} = {entryName: ENTRY_NAME}) {
 
     return {
         entry: {
-            zkbuilder: './index.ts',
+            'index': {
+                import: './index.ts',
+                dependOn: ['zernikalos', 'zkoproto', 'vendor'],
+            },
             'zernikalos': '@zernikalos/zernikalos',
             'zkoproto': './protobuild/index.js',
-            'vendor': ['lodash', 'three']
+            'vendor': [
+                'lodash',
+                'three',
+                'hash-it',
+                'is-obj',
+                'three/examples/jsm/loaders/ColladaLoader',
+                'three/examples/jsm/loaders/FBXLoader',
+                'three/examples/jsm/loaders/GLTFLoader',
+                'three/examples/jsm/loaders/OBJLoader'
+            ]
         },
         output: {
             path: outputPath,
@@ -38,6 +50,9 @@ function buildBaseConfig({entryName} = {entryName: ENTRY_NAME}) {
         devtool: 'source-map',
         experiments: {
             outputModule: true
+        },
+        optimization: {
+            runtimeChunk: 'single',
         },
         module: {
             rules: [

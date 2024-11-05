@@ -1,4 +1,4 @@
-import merge from "lodash/merge"
+import {merge} from "lodash"
 import {zernikalos} from "@zernikalos/zernikalos"
 import loadFromProto = zernikalos.loader.loadFromProto
 import {ZObject} from "./zernikalos/ZObject";

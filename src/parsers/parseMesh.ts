@@ -3,7 +3,7 @@ import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUti
 import {ZMesh} from "../zernikalos/mesh/ZMesh"
 import {ZRawBuffer} from "../zernikalos/mesh/ZRawBuffer"
 import {ZBuffer} from "../zernikalos/mesh/ZBuffer"
-import _, {isNil} from "lodash"
+import _ from "lodash"
 import {ZBufferKey} from "../zernikalos/mesh/ZBufferKey"
 import {ATTR_INDEX, ATTRS} from "../constants";
 import {ZBaseType, ZDataType, ZFormatType} from "../zernikalos/ZDataType"
@@ -90,7 +90,7 @@ function detectDataType(attr: BufferAttribute | InterleavedBufferAttribute): ZDa
  * @param zattr
  */
 function parseBufferKey(attr: BufferAttribute | InterleavedBufferAttribute, zattr: Attrib): ZBufferKey {
-    if (isNil(attr)) {
+    if (_.isNil(attr)) {
         throw new Error("Attributes must be defined when exported")
     }
     const zKey = new ZBufferKey()
