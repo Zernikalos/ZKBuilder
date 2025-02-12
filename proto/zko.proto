@@ -12,26 +12,30 @@ import "./camera.proto";
 import "./skeleton.proto";
 import "./action.proto";
 
-message ZkoFile {
+message ZkoFormat {
   required ZkoHeader header = 1;
-  required ProtoZkObject root = 2;
-  repeated ZkSkeletalAction actions = 3;
+  map<string, ZkoObjectProto> objects = 3;
+  required ZkoHierarchyNode hierarchy = 4;
+  repeated ZkSkeletalAction actions = 5;
 }
 
 message ZkoHeader {
   required string version = 1;
 }
 
-message ProtoZkObject {
+message ZkoObjectProto {
   required string type = 1;
+  required string refId = 2;
 
-  optional ZkScene scene = 2;
-  optional ZkGroup group = 3;
-  optional ZkModel model = 4;
-  optional ZkCamera camera = 5;
-  optional ZkSkeleton skeleton = 6;
-  optional ZkJoint joint = 7;
-
-  repeated ProtoZkObject children = 100;
+  optional ZkScene scene = 3;
+  optional ZkGroup group = 4;
+  optional ZkModel model = 5;
+  optional ZkCamera camera = 6;
+  optional ZkSkeleton skeleton = 7;
+  optional ZkJoint joint = 8;
 }
 
+message ZkoHierarchyNode {
+  required string refId = 1;
+  repeated ZkoHierarchyNode children = 100;
+}
