@@ -17,6 +17,8 @@ import {ZUniform} from "../zernikalos/shader/ZUniform";
 import {ZBufferKey} from "../zernikalos/mesh/ZBufferKey";
 import {Uniform} from "../constants/Uniforms";
 import {mapFlatJs} from "../utils/mapFlatJs";
+import {zernikalos} from "@zernikalos/zernikalos";
+import MapPairJs = zernikalos.utils.MapPairJs;
 
 export function postShaderProgram(obj: ZModel): ZShaderProgram {
     const shaderProgram = ZShaderProgram.init()
@@ -26,7 +28,7 @@ export function postShaderProgram(obj: ZModel): ZShaderProgram {
     const bufferKeys = mapFlatJs(obj.mesh.buffers)
 
     ATTRS.list.forEach((attr: Attrib) => {
-        const buff = bufferKeys.find((buff) => buff.key === attr.name)
+        const buff = bufferKeys.find((buff: MapPairJs) => buff.key === attr.name)
         if (!_.isNil(buff)) {
             // TODO: Temporal implementation for checks
             if (attr === ATTR_UV && !obj.hasTextures) {
@@ -76,7 +78,7 @@ function createShaderUniform(uniform: Uniform, uniformCounter: number): ZUniform
     shaderUniform.dataType = uniform.dataType
     // TODO: This might be incorrect in the future
     shaderUniform.count = 1
-    shaderUniform.idx = uniformCounter
+    shaderUniform.id = uniformCounter
     return shaderUniform
 }
 
