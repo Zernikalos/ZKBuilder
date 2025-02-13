@@ -5,33 +5,31 @@ import {isBinaryFile} from "isbinaryfile"
 import fs from "node:fs/promises"
 import _ from "lodash"
 import {DOMParser} from "@xmldom/xmldom"
+import path from "node:path";
 
 function loadFromDataUriScheme(url: string): ArrayBuffer | undefined {
     if ( url.slice( 0, 5 ) === 'data:' ) {
         const match = url.match(/base64,(.+)/)
         if (match && match[1]) {
             const encodedData = match[1]
-            return Uint8Array.from(atob(encodedData), c => c.charCodeAt(0))
+            return Uint8Array.from(atob(encodedData), c => c.charCodeAt(0)) as any as ArrayBuffer
         }
     }
 }
 
-async function loadFromFile(path: string): Promise<ArrayBuffer | string> {
-    let fileExists = true
+async function loadFromFile(pathStr: string): Promise<ArrayBuffer | string> {
+    const fullPath = path.resolve(__dirname, pathStr)
     try {
-        await fs.access(path)
+        await fs.access(fullPath, fs.constants.R_OK)
     } catch (err) {
-        fileExists = false
+        return undefined
     }
-    if (!fileExists) {
-        return
-    }
-    const isBinary = await isBinaryFile(path)
-    const file = await fs.open(path)
+    const isBinary = await isBinaryFile(fullPath)
+    const file = await fs.open(fullPath)
     const options = isBinary ? undefined : "utf-8"
     const data: Buffer | string = await file.readFile(options)
     await file.close()
-    return isBinary ? (data as unknown as Buffer).buffer : data
+    return isBinary ? (data as unknown as Buffer).buffer as any as ArrayBuffer: data
 }
 
 async function loadFromUrl(url: string): Promise<ArrayBuffer | undefined> {
@@ -93,7 +91,7 @@ export function setupEnv() {
 
         }
 
-        //@ts-ignore
+        // @ts-ignore
         global.self = {
             URL: URL
         }
