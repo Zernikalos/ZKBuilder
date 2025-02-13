@@ -1,7 +1,3 @@
-const { merge } = require('webpack-merge');
-const {buildBaseConfig} = require('./webpack.base')
-
-const baseConfig = buildBaseConfig()
 
 const prodConfig = {
     mode: 'production',
@@ -9,4 +5,4 @@ const prodConfig = {
     ],
 }
 
-module.exports = merge(baseConfig, prodConfig)
+module.exports = prodConfig

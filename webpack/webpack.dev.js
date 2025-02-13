@@ -1,8 +1,5 @@
-const { merge } = require('webpack-merge');
 const path = require('path');
-const {buildBaseConfig, ROOT_PATH} = require('./webpack.base')
-
-const baseConfig = buildBaseConfig()
+const {ROOT_PATH} = require('./webpack.base')
 
 const devConfig = {
     mode: 'development',
@@ -12,4 +9,4 @@ const devConfig = {
     },
 }
 
-module.exports =  merge(baseConfig, devConfig)
+module.exports = devConfig
