@@ -52,6 +52,9 @@ export function setupEnv() {
                 if (_.isNil(data))  {
                     data = await loadFromFile(url)
                 }
+                if (_.isNil(data)) {
+                    throw new Error(`File ${url} not found`)
+                }
                 onLoad?.(data)
             }
             try {
@@ -74,6 +77,9 @@ export function setupEnv() {
                 }
                 if (_.isNil(data)) {
                     data = await loadFromUrl(url)
+                }
+                if (_.isNil(data)) {
+                    throw new Error(`File ${url} not found`)
                 }
 
                 texture.image = data

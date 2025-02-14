@@ -20,12 +20,12 @@ export {zkImport, DEFAULT_IMPORT_OPTIONS} from "./src/zkImport"
 export type { ImportOptions } from "./src/zkImport"
 
 export {zkLoad, DEFAULT_LOAD_OPTIONS} from "./src/zkLoad"
-export type { LoadOptions } from "./src/zkLoad"
+export type { LoadOptions, InputFileFormat } from "./src/zkLoad"
 
 export {zkParse, DEFAULT_PARSE_OPTIONS, ZkoParsed} from "./src/zkParse"
 export type { ParseOptions } from "./src/zkParse"
 
 export {zkExport, DEFAULT_EXPORT_OPTIONS} from "./src/zkExport"
-export type { ExportOptions } from "./src/zkExport"
+export type { ExportOptions, ExportFormat } from "./src/zkExport"
 
 export {findById} from "./src/tools"

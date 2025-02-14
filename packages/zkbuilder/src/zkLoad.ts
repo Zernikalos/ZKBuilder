@@ -5,9 +5,11 @@ import _ from "lodash";
 import {fbxLoader} from "./formats/fbxLoader";
 import {colladaLoader} from "./formats/colladaLoader";
 
+export type InputFileFormat = "obj" | "gltf" | "fbx" | "collada"
+
 export interface LoadOptions {
     filePath: string
-    format?: "obj" | "gltf" | "fbx" | "collada"
+    format?: InputFileFormat
 }
 
 export const DEFAULT_LOAD_OPTIONS: Partial<LoadOptions> = {
