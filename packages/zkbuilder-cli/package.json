@@ -1,0 +1,31 @@
+{
+  "name": "@zernikalos/zkbuilder-cli",
+  "version": "1.0.0",
+  "description": "CLI utility for ZkBuilder",
+  "main": "index.js",
+  "type": "commonjs",
+  "bin": {
+    "zkcli": "./bin/zkcli"
+  },
+  "scripts": {
+    "build:node": "pnpm build",
+    "build": "webpack",
+    "prebuild": "rimraf dist",
+    "postbuild": "chmod +x dist/zkcli.js"
+  },
+  "dependencies": {
+    "@zernikalos/zkbuilder": "workspace:*",
+    "commander": "13.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.13.4",
+    "typescript": "5.7.3",
+    "webpack": "5.98.0",
+    "webpack-cli": "6.0.1",
+    "ts-loader": "9.5.2",
+    "rimraf": "6.0.1"
+  },
+  "keywords": [],
+  "license": "MPL 2.0",
+  "author": "Aaron Negrin"
+}

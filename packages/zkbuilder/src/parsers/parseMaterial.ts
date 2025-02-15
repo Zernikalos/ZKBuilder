@@ -34,9 +34,15 @@ async function parseTexture(ctx: ParserContext, tex: Texture): Promise<ZTexture>
     const internalParseTexture = async (tex: Texture): Promise<ZTexture> => {
         const texture = ZTexture.init()
 
-        const imgElement: HTMLImageElement = tex.source.data
-        const response = await fetch(imgElement.src)
-        const data = await response.arrayBuffer()
+        let data
+        const imgElement = tex.source.data
+        if (imgElement.src !== undefined) {
+            const response = await fetch(imgElement.src)
+            data = await response.arrayBuffer()
+        } else {
+            data = imgElement
+        }
+
         texture.dataArray = new Int8Array(data)
         // TODO: Is this field required any longer?
         texture.id = `${hash(texture.dataArray)}`

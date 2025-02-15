@@ -6,8 +6,10 @@ import {objectWrite} from "./writer/objectWriter";
 import {ZkoParsed} from "./zkParse";
 import {Zko, ZkoFormat} from "./proto";
 
+export type ExportFormat = 'json' | 'proto' | 'object'
+
 export interface ExportOptions {
-    format: 'json' | 'proto' | 'object'
+    format: ExportFormat
     beauty?: boolean
     stringify?: boolean
 }

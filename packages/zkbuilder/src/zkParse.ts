@@ -22,7 +22,7 @@ export interface ZkoParsed {
     actions?: ZSkeletalAction[]
 }
 
-export async function zkParse(parseableObject: ZkoParseableObject, _options: ParseOptions): Promise<ZkoParsed> {
+export async function zkParse(parseableObject: ZkoParseableObject, _options: ParseOptions = {}): Promise<ZkoParsed> {
     // @ts-ignore
     const mergedOptions = _.merge({}, DEFAULT_PARSE_OPTIONS)
 
@@ -41,6 +41,7 @@ export async function zkParse(parseableObject: ZkoParseableObject, _options: Par
         return {root: zObj, actions: zactions}
     } catch (e) {
         console.error(`Error parsing the object. Error: ${e}`)
+        throw e
     }
 
 }
