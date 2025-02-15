@@ -18,5 +18,6 @@ export async function processFile(options: ZkBuilderCliOptions): Promise<void> {
     });
 
     // Write the result to the output file
+    // @ts-ignore
     writeFileSync(options.output, result);
 }

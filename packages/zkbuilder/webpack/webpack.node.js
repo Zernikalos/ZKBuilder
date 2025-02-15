@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const nodeConfig = {
     target: 'node',
     entry: {
-        'index': './index.ts'
+        'index': './src-node/index.ts'
     },
     plugins: [
         new webpack.DefinePlugin({

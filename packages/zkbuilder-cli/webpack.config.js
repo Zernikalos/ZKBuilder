@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
     target: 'node',
-    //mode: 'production',
+    mode: 'production',
     entry: './src/index.ts',
     output: {
         filename: 'zkcli.js',

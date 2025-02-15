@@ -16,7 +16,7 @@
   "scripts": {
     "start": "webpack watch --mode=development",
     "build": "npm-run-all build:prod",
-    "build:dev": "webpack --mode=development",
+    "build:browser": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "build:profile": "webpack --env useMode=profile",
     "build:node": "webpack --mode=development --target=node",

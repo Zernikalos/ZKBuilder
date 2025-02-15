@@ -19,7 +19,9 @@ function buildBaseConfig({entryName} = {entryName: ENTRY_NAME}) {
         output: {
             path: outputPath,
             filename: "[name].js",
-            libraryTarget: "umd"
+            library: {
+                type: 'umd',
+            }
         },
         resolve: {
             extensions: ['.ts', '.js'],

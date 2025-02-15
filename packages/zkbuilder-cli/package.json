@@ -8,10 +8,10 @@
     "zkcli": "./bin/zkcli"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:node": "pnpm build",
     "build": "webpack",
     "prebuild": "rimraf dist",
-    "postbuild": "chmod +x dist/index.js"
+    "postbuild": "chmod +x dist/zkcli.js"
   },
   "dependencies": {
     "@zernikalos/zkbuilder": "workspace:*",

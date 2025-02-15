@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:node": "pnpm -r build:node"
+    "build:node": "pnpm build:node:builder && pnpm build:node:cli",
+    "build:node:builder": "pnpm --filter=@zernikalos/zkbuilder build:node",
+    "build:node:cli": "pnpm --filter=@zernikalos/zkbuilder-cli build:node",
+    "build:browser": "pnpm --filter=@zernikalos/zkbuilder build:browser",
+    "generate": "pnpm --filter=@zernikalos/zkbuilder generate",
+    "clean": "pnpm -r clean"
   },
   "repository": {
     "type": "git",
