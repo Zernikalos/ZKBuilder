@@ -3,11 +3,12 @@ import {ZGroup} from "../zernikalos/ZGroup"
 import {parseGroup} from "./parseGroup"
 import {parseModel} from "./parseModel"
 import {isNil} from "lodash"
-import {Camera, Group, Mesh, Object3D, Scene} from "three"
+import {Bone, Camera, Group, Mesh, Object3D, Scene} from "three"
 import {parseTransform} from "./parseTransform"
 import {parseScene} from "./parseScene"
 import {parseCamera} from "./parseCamera"
 import {ParserContext} from "./ParserContext";
+import {parseSkeletonObject} from "./parseSkeleton";
 
 export async function parseObject(threeObj: Object3D): Promise<ZObject | undefined> {
     const ctx = new ParserContext()
@@ -19,13 +20,13 @@ export async function parseObject(threeObj: Object3D): Promise<ZObject | undefin
 async function parseObjectRecursive(ctx: ParserContext, threeObj: Object3D): Promise<ZObject | undefined> {
     const {zObject, children} = await parseObjectByType(ctx, threeObj)
 
-    const parsedChilden = []
+    const parsedChildren = []
     for (const child of children) {
         const parsed = await parseObjectRecursive(ctx, child)
-        parsedChilden.push(parsed)
+        parsedChildren.push(parsed)
     }
 
-    zObject.children = parsedChilden.filter((child: ZObject) => !isNil(child))
+    zObject.children = parsedChildren.filter((child: ZObject) => !isNil(child))
     return zObject
 }
 
@@ -57,11 +58,11 @@ async function parseObjectByType(ctx: ParserContext, threeObj: Object3D): Promis
             zObject = res.scene
             children = res.children
             break
-        // case "Bone":
-        //     res = parseSkeleton(threeObj as Bone)
-        //     zObject = res.skeleton
-        //     children = res.children
-        //     break
+        case "Bone":
+            res = parseSkeletonObject(threeObj as Bone)
+            zObject = res.skeleton
+            children = res.children
+            break
         // case "Joint":
         //     res = parseJoint(threeObj as JointNode)
         //     zObject = res.joint

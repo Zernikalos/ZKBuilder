@@ -1,4 +1,4 @@
 import {zernikalos} from "@zernikalos/zernikalos"
-import ZSkeleton = zernikalos.components.skeleton.ZSkeleton
+import ZSkeleton = zernikalos.objects.ZSkeleton
 
 export {ZSkeleton}
