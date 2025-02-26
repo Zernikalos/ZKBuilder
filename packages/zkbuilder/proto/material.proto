@@ -1,7 +1,7 @@
 package Zko;
 
 message ZkRefMaterial {
-  required int32 refId = 1;
+  required string refId = 1;
   required bool isReference = 2;
 
   optional ZkMaterial data = 100;
@@ -12,7 +12,7 @@ message ZkMaterial {
 }
 
 message ZkRefTexture {
-  required int32 refId = 1;
+  required string refId = 1;
   required bool isReference = 2;
 
   optional ZkTexture data = 100;

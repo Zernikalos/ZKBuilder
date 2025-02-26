@@ -1,7 +1,7 @@
 import {ZComponent} from "../zernikalos/ZComponent"
 
 export class WriterContext {
-    private writtenComponents: Map<Number, ZComponent> = new Map()
+    private writtenComponents: Map<String, ZComponent> = new Map()
     registerComponent(comp: ZComponent) {
         if (this.writtenComponents.has(comp.refId)) {
             throw new Error("Component already registered")

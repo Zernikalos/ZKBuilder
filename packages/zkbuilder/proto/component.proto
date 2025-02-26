@@ -9,7 +9,7 @@ enum ZkRefType {
 }
 
 message ZkReference {
-  required uint32 refId = 1;
+  required string refId = 1;
   required ZkRefType type = 2;
 
   optional ZkMesh mesh = 10;

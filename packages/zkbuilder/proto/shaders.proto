@@ -3,7 +3,7 @@ syntax = "proto2";
 package Zko;
 
 message ZkShaderProgram {
-  required uint32 refId = 500;
+  required string refId = 500;
 
   map<string, ZkShaderAttribute> attributes = 3;
   map<string, ZkShaderUniform> uniforms = 4;
