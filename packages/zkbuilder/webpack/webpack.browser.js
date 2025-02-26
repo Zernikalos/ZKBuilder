@@ -2,7 +2,7 @@
 const browserConfig = {
     entry: {
         'index': {
-            import: './src/index.ts',
+            import: './src-browser/index.ts',
             dependOn: ['zernikalos', 'zkoproto', 'vendor'],
         },
         'zernikalos': '@zernikalos/zernikalos',
