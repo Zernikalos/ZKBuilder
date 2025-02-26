@@ -10,7 +10,7 @@ export {ZTransform} from "./zernikalos/ZTransform"
 export {ZShaderProgram} from "./zernikalos/shader/ZShaderProgram"
 
 export {ZkoParseableObject} from "./formats/ZkoParseableObject"
-export {ZkoObjectProto, ZkoFormat} from "./proto"
+export {ZkoObjectProto, ZkoFormat, ZkObjectTypes} from "./proto"
 
 export {zkImport, DEFAULT_IMPORT_OPTIONS} from "./zkImport"
 export type { ImportOptions } from "./zkImport"

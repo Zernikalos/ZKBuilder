@@ -9,7 +9,7 @@ Mesh will provide:
 A relationship between the BufferKey and its Buffers
  */
 message ZkMesh {
-  required uint32 refId = 1;
+  required string refId = 1;
   required bool isReference = 2;
 
   repeated ZkBufferKey bufferKeys = 101;
