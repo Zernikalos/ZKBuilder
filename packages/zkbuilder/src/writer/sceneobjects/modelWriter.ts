@@ -9,7 +9,7 @@ import {WriterContext} from "../WriterContext";
 
 export function modelWriter(ctx: WriterContext, model: ZModel) {
     return Zko.ZkModel.create({
-        id: model.id,
+        id: model.refId,
         name: model.name,
         transform: ZkTransform.fromObject(model.transform),
         mesh: ZkMesh.fromObject(model.mesh),
