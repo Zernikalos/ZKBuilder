@@ -37,7 +37,11 @@ async function parseTexture(ctx: ParserContext, tex: Texture): Promise<ZTexture>
         let data
         const imgElement = tex.source.data
         if (imgElement.src !== undefined) {
-            const response = await fetch(imgElement.src)
+            let imageSrc = imgElement.src
+            if (imageSrc.startsWith("blob:")) {
+                imageSrc = imageSrc.replace("blob:", "")
+            }
+            const response = await fetch(imageSrc)
             data = await response.arrayBuffer()
         } else {
             data = imgElement
