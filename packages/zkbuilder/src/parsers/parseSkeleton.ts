@@ -3,6 +3,7 @@ import {ZBone} from "../zernikalos/skeleton/ZBone"
 import {parseTransform} from "./parseTransform"
 import _ from "lodash";
 import {ZSkeleton} from "../zernikalos/ZSkeleton"
+import {ParserContext} from "./ParserContext";
 //import {ZJoint} from "../zernikalos/skeleton/ZJoint";
 
 export class JointNode extends Object3D {
@@ -28,7 +29,7 @@ export class JointNode extends Object3D {
 //     return skeleton
 // }
 
-export function parseSkeletonObject(obj: Bone): { skeleton: ZSkeleton, children: Object3D[]} {
+export function parseSkeletonObject(ctx: ParserContext, obj: Bone): { skeleton: ZSkeleton, children: Object3D[]} {
     const boneRoot = findParentBone(obj)
     // Only root bones will be processed here
     if (_.isNil(boneRoot) || boneRoot.type !== "Bone") {
@@ -39,6 +40,8 @@ export function parseSkeletonObject(obj: Bone): { skeleton: ZSkeleton, children:
     const {root, children} = parseBonesObjectFromRoot(boneRoot)
     const skeleton = new ZSkeleton()
     skeleton.root = root
+
+    ctx.registerComponent(boneRoot.uuid, skeleton)
 
     return {skeleton, children}
     // return skeleton
@@ -73,9 +76,9 @@ function parseBonesObjectFromRoot(rootBone: Bone): {root: ZBone, children: Objec
     return {root, children}
 }
 
-function getBoneIdx(bone: Bone, bones: Bone[]) {
-    return bones.findIndex((b) => b.id === bone.id)
-}
+// function getBoneIdx(bone: Bone, bones: Bone[]) {
+//     return bones.findIndex((b) => b.id === bone.id)
+// }
 
 function findParentBone(bone: Bone): Bone {
     let boneRoot = bone
@@ -92,28 +95,28 @@ function findParentBone(bone: Bone): Bone {
 //     return {joint: zjoint, children: joint.children}
 // }
 
-function parseBonesFromRoot(rootBone: Bone, bones: Bone[]): ZBone {
-    let root: ZBone | undefined = undefined
-    const q: [ZBone | undefined, Bone][] = []
-    q.push([undefined, rootBone])
-
-    while (!_.isEmpty(q)) {
-        const [parent, bone] = q.shift()
-        const realIdx = getBoneIdx(bone, bones)
-
-        const zbone: ZBone = parseBone(bone, realIdx)
-
-        if (!_.isNil(parent)) {
-            parent.addChild(zbone)
-        } else {
-            root = zbone
-        }
-        const boneChildren: Bone[] = bone.children.filter((child) => child.type === "Bone") as Bone[]
-        const boneChildrenWithParent: [ZBone | undefined, Bone][] = boneChildren.map((bone) => [zbone, bone])
-        q.push(...boneChildrenWithParent)
-    }
-    return root
-}
+// function parseBonesFromRoot(rootBone: Bone, bones: Bone[]): ZBone {
+//     let root: ZBone | undefined = undefined
+//     const q: [ZBone | undefined, Bone][] = []
+//     q.push([undefined, rootBone])
+//
+//     while (!_.isEmpty(q)) {
+//         const [parent, bone] = q.shift()
+//         const realIdx = getBoneIdx(bone, bones)
+//
+//         const zbone: ZBone = parseBone(bone, realIdx)
+//
+//         if (!_.isNil(parent)) {
+//             parent.addChild(zbone)
+//         } else {
+//             root = zbone
+//         }
+//         const boneChildren: Bone[] = bone.children.filter((child) => child.type === "Bone") as Bone[]
+//         const boneChildrenWithParent: [ZBone | undefined, Bone][] = boneChildren.map((bone) => [zbone, bone])
+//         q.push(...boneChildrenWithParent)
+//     }
+//     return root
+// }
 
 // @ts-ignore
 // function recursiveParseSkeleton(obj: Object3D, idx: number, nextIdx: number) {

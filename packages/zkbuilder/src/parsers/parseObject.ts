@@ -59,7 +59,7 @@ async function parseObjectByType(ctx: ParserContext, threeObj: Object3D): Promis
             children = res.children
             break
         case "Bone":
-            res = parseSkeletonObject(threeObj as Bone)
+            res = parseSkeletonObject(ctx, threeObj as Bone)
             zObject = res.skeleton
             children = res.children
             break
