@@ -1,15 +1,15 @@
-import {ZComponent} from "../zernikalos/ZComponent"
+import {ZRef} from "../zernikalos/ZRef";
 
 export class WriterContext {
-    private writtenComponents: Map<String, ZComponent> = new Map()
-    registerComponent(comp: ZComponent) {
+    private writtenComponents: Map<String, ZRef> = new Map()
+    registerComponent(comp: ZRef) {
         if (this.writtenComponents.has(comp.refId)) {
             throw new Error("Component already registered")
         }
         this.writtenComponents.set(comp.refId, comp)
     }
 
-    hasWrittenComponent(comp: ZComponent): boolean {
+    hasWrittenComponent(comp: ZRef): boolean {
         return this.writtenComponents.has(comp.refId)
     }
 }

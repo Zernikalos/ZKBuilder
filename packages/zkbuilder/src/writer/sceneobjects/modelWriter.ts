@@ -5,6 +5,7 @@ import ZkShaderProgram = Zko.ZkShaderProgram;
 import ZkTransform = Zko.ZkTransform;
 import {materialWriter} from "./materialWriter";
 import {WriterContext} from "../WriterContext";
+import {skeletonWriter} from "./skeletonWriter";
 
 export function modelWriter(ctx: WriterContext, model: ZModel) {
     return Zko.ZkModel.create({
@@ -14,6 +15,6 @@ export function modelWriter(ctx: WriterContext, model: ZModel) {
         mesh: ZkMesh.fromObject(model.mesh),
         shaderProgram: ZkShaderProgram.fromObject(model.shaderProgram),
         material: materialWriter(ctx, model.material),
-        refSkeleton: model.skeleton?.refId// skeletonWriter(ctx, model.skeleton),
+        skeleton: skeletonWriter(ctx, model.skeleton),
     })
 }

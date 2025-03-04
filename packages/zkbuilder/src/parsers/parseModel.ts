@@ -19,7 +19,7 @@ export async function parseModel(ctx: ParserContext, obj: Mesh | SkinnedMesh): P
         ctx.getComponentAsync(threeSkeleton.bones[0].uuid).then((skeleton: ZRef) => {
             model.skeleton = skeleton as ZSkeleton
         })
-        // model.skeleton = await ctx.getComponentAsync(threeSkeleton.bones[0].uuid) as ZSkeleton
+        //model.skeleton = await ctx.getComponentAsync(threeSkeleton.bones[0].uuid) as ZSkeleton
     }
 
     return {model, children: obj.children}

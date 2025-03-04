@@ -5,10 +5,11 @@ package Zko;
 import "./math.proto";
 
 message ZkRefSkeleton {
-  required string refId = 1;
-  required bool isReference = 2;
+  required string type = 1;
+  required string refId = 2;
+  required bool isReference = 3;
 
-  optional ZkSkeleton data = 100;
+  optional ZkSkeleton skeleton = 7;
 }
 
 message ZkSkeleton {
