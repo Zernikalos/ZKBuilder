@@ -9,7 +9,6 @@ import {ZkoParsed} from "../zkParse";
 import {ZKO_VERSION} from "../constants/ZkoVersion";
 import ZkoObjectProto = Zko.ZkoObjectProto;
 import ZkoHierarchyNode = Zko.ZkoHierarchyNode;
-import {mapToObject} from "../utils/mapToObject";
 
 export async function writeZko(zkoParsed: ZkoParsed): Promise<ZkoFormat> {
     const {hierarchy, objectMap} = await writeTree(zkoParsed.root)
@@ -17,10 +16,11 @@ export async function writeZko(zkoParsed: ZkoParsed): Promise<ZkoFormat> {
     if (!_.isNil(zkoParsed.actions)) {
         actions = zkoParsed.actions.map((action) => Zko.ZkSkeletalAction.fromObject(action))
     }
+    const objects = [...objectMap.values()].reverse()
     return new Zko.ZkoFormat({
         header: headerWrite(),
         hierarchy,
-        objects: mapToObject(objectMap),
+        objects,
         actions
     })
 }
@@ -92,6 +92,7 @@ function convertToProto(ctx: WriterContext, obj: ZObject): Zko.ZkoObjectProto {
             auxNode = new Zko.ZkoObjectProto({
                 type: ZObjectType.SCENE.name,
                 refId: obj.refId,
+                isReference: false,
                 scene: Zko.ZkScene.fromObject(obj)
             })
             break
@@ -99,6 +100,7 @@ function convertToProto(ctx: WriterContext, obj: ZObject): Zko.ZkoObjectProto {
             auxNode = new Zko.ZkoObjectProto({
                 type: ZObjectType.GROUP.name,
                 refId: obj.refId,
+                isReference: false,
                 group: Zko.ZkGroup.fromObject(obj)
             })
             break
@@ -106,6 +108,7 @@ function convertToProto(ctx: WriterContext, obj: ZObject): Zko.ZkoObjectProto {
             auxNode = new Zko.ZkoObjectProto({
                 type: ZObjectType.MODEL.name,
                 refId: obj.refId,
+                isReference: false,
                 model: modelWriter(ctx, obj as ZModel)
             })
             break
@@ -113,6 +116,7 @@ function convertToProto(ctx: WriterContext, obj: ZObject): Zko.ZkoObjectProto {
             auxNode = new Zko.ZkoObjectProto({
                 type: ZObjectType.CAMERA.name,
                 refId: obj.refId,
+                isReference: false,
                 camera: Zko.ZkCamera.fromObject(obj)
             })
             break
@@ -120,6 +124,7 @@ function convertToProto(ctx: WriterContext, obj: ZObject): Zko.ZkoObjectProto {
             auxNode = new Zko.ZkoObjectProto({
                 type: ZObjectType.SKELETON.name,
                 refId: obj.refId,
+                isReference: false,
                 skeleton: Zko.ZkSkeleton.fromObject(obj)
             })
             break

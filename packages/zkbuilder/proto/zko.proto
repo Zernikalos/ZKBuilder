@@ -8,7 +8,7 @@ import "./action.proto";
 
 message ZkoFormat {
   required ZkoHeader header = 1;
-  map<string, ZkoObjectProto> objects = 3;
+  repeated ZkoObjectProto objects = 3;
   required ZkoHierarchyNode hierarchy = 4;
   repeated ZkSkeletalAction actions = 5;
 }

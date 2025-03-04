@@ -11,6 +11,7 @@ import "./skeleton.proto";
 message ZkoObjectProto {
   required string type = 1;
   required string refId = 2;
+  required bool isReference = 3;
 
   optional ZkScene scene = 100;
   optional ZkGroup group = 101;

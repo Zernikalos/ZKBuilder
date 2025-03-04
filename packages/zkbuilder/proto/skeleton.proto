@@ -9,7 +9,7 @@ message ZkRefSkeleton {
   required string refId = 2;
   required bool isReference = 3;
 
-  optional ZkSkeleton skeleton = 7;
+  optional ZkSkeleton skeleton = 104;
 }
 
 message ZkSkeleton {
