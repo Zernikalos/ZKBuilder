@@ -4,6 +4,7 @@ import {ZkoParseableObject} from "./formats/ZkoParseableObject";
 import _ from "lodash";
 import {fbxLoader} from "./formats/fbxLoader";
 import {colladaLoader} from "./formats/colladaLoader";
+import {EnvSetup} from "./EnvSetup";
 
 export type InputFileFormat = "obj" | "gltf" | "fbx" | "collada"
 
@@ -17,6 +18,7 @@ export const DEFAULT_LOAD_OPTIONS: Partial<LoadOptions> = {
 }
 
 export async function zkLoad(options: LoadOptions): Promise<ZkoParseableObject> {
+    EnvSetup.setupEnv()
     let result: ZkoParseableObject
 
     const mergedOptions: LoadOptions = _.merge({}, DEFAULT_LOAD_OPTIONS, options)
@@ -40,5 +42,6 @@ export async function zkLoad(options: LoadOptions): Promise<ZkoParseableObject> 
             result = await colladaLoader(filePath)
             break
     }
+    EnvSetup.cleanEnv()
     return result
 }

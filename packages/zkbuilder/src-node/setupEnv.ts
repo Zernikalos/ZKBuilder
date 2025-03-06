@@ -1,11 +1,15 @@
-import {isBrowser, isNode} from "browser-or-node"
 import * as THREE from "three"
 import {Texture} from "three"
 import {isBinaryFile} from "isbinaryfile"
 import fs from "node:fs/promises"
 import _ from "lodash"
 import {DOMParser} from "@xmldom/xmldom"
-import path from "node:path";
+import path from "node:path"
+import {Env, EnvSetup} from "../src/EnvSetup";
+
+export function setupEnv() {
+    EnvSetup.configureEnv(new NodeEnv())
+}
 
 function loadFromDataUriScheme(url: string): ArrayBuffer | undefined {
     if ( url.slice( 0, 5 ) === 'data:' ) {
@@ -37,12 +41,8 @@ async function loadFromUrl(url: string): Promise<ArrayBuffer | undefined> {
     return await response.arrayBuffer()
 }
 
-export function setupEnv() {
-    if (isBrowser) {
-
-    }
-
-    if (isNode) {
+class NodeEnv extends Env {
+    setup(): void {
         // @ts-ignore
         global.DOMParser = DOMParser
 
@@ -102,4 +102,8 @@ export function setupEnv() {
             URL: URL
         }
     }
+
+    clean() {
+    }
 }
+

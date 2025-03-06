@@ -7,6 +7,7 @@ import {IdGenerator} from "./utils/IdGenerator";
 import {preProcess} from "./pre";
 import {parseActions} from "./parsers/parseActions";
 import {ZSkeletalAction} from "./zernikalos/action/ZSkeletalAction";
+import {EnvSetup} from "./EnvSetup";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ParseOptions {
@@ -23,6 +24,7 @@ export interface ZkoParsed {
 }
 
 export async function zkParse(parseableObject: ZkoParseableObject, _options: ParseOptions = {}): Promise<ZkoParsed> {
+    EnvSetup.setupEnv()
     // @ts-ignore
     const mergedOptions = _.merge({}, DEFAULT_PARSE_OPTIONS)
 
@@ -42,6 +44,8 @@ export async function zkParse(parseableObject: ZkoParseableObject, _options: Par
     } catch (e) {
         console.error(`Error parsing the object. Error: ${e}`)
         throw e
+    } finally {
+        EnvSetup.cleanEnv()
     }
 
 }
