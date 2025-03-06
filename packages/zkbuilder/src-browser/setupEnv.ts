@@ -1,21 +1,25 @@
-import {GLTF, GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader"
+import {Env, EnvSetup} from "../src/EnvSetup";
 
 export function setupEnv() {
-    const originalLoad = GLTFLoader.prototype.load
-    GLTFLoader.prototype.load = function(url, onLoad, onProgress, onError) {
+    EnvSetup.configureEnv(new BrowserEnv())
+}
+
+class BrowserEnv extends Env {
+
+    private ogCreateImageBitmap: any;
+    private ogRevokeURL: any;
+
+    setup(): void {
+        this.ogCreateImageBitmap = window.createImageBitmap
         window.createImageBitmap = undefined
 
-        const originalRevokeURL = URL.revokeObjectURL
+        this.ogRevokeURL = URL.revokeObjectURL
         URL.revokeObjectURL = () => {}
-
-        originalLoad.call(this,
-            url,
-            (args: GLTF) => {
-                onLoad(args)
-                URL.revokeObjectURL = originalRevokeURL
-            },
-            onProgress,
-            onError
-        )
     }
+
+    clean(): void {
+        window.createImageBitmap = this.ogCreateImageBitmap
+        URL.revokeObjectURL = this.ogRevokeURL
+    }
+
 }

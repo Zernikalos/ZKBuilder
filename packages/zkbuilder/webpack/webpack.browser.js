@@ -1,3 +1,5 @@
+const path = require("path");
+const {ROOT_PATH} = require("./webpack.base");
 
 const browserConfig = {
     entry: {
@@ -19,6 +21,7 @@ const browserConfig = {
         ]
     },
     output: {
+        path: path.join(ROOT_PATH, 'dist-browser'),
         library: {
             type: 'module'
         }

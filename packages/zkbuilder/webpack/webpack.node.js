@@ -1,7 +1,12 @@
 const webpack = require('webpack');
+const path = require("path");
+const {ROOT_PATH} = require("./webpack.base");
 
 const nodeConfig = {
     target: 'node',
+    output: {
+        path: path.join(ROOT_PATH, 'dist-node'),
+    },
     entry: {
         'index': './src-node/index.ts'
     },
