@@ -4,8 +4,8 @@ import ZkMesh = Zko.ZkMesh;
 import ZkShaderProgram = Zko.ZkShaderProgram;
 import ZkTransform = Zko.ZkTransform;
 import {materialWriter} from "./materialWriter";
-import {skeletonWriter} from "./skeletonWriter";
 import {WriterContext} from "../WriterContext";
+import {skeletonWriter} from "./skeletonWriter";
 
 export function modelWriter(ctx: WriterContext, model: ZModel) {
     return Zko.ZkModel.create({

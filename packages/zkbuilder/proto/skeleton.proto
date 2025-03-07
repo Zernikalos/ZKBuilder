@@ -5,22 +5,20 @@ package Zko;
 import "./math.proto";
 
 message ZkRefSkeleton {
-  required string refId = 1;
-  required bool isReference = 2;
+  required string type = 1;
+  required string refId = 2;
+  required bool isReference = 3;
 
-  optional ZkSkeleton data = 100;
+  optional ZkSkeleton skeleton = 104;
 }
 
 message ZkSkeleton {
   required string refId = 1;
-  required bool isReference = 2;
+  required string name = 2;
 
-  optional string id = 101;
-  optional string name = 102;
+  required ZkTransform transform = 3;
 
-  // required ZkTransform transform = 3;
-
-  optional ZkBone root = 104;
+  optional ZkBone root = 101;
 }
 
 message ZkBone {

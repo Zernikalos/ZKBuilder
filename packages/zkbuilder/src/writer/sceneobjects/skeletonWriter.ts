@@ -1,24 +1,18 @@
-import {ZSkeleton} from "../../zernikalos/skeleton/ZSkeleton";
+import {ZSkeleton} from "../../zernikalos/ZSkeleton";
 import {Zko} from "../../proto";
-import ZkSkeleton = Zko.ZkSkeleton;
 import _ from "lodash";
 import ZkRefSkeleton = Zko.ZkRefSkeleton;
 import {WriterContext} from "../WriterContext";
+import {ZObjectType} from "../../zernikalos/ZObjectType";
 
-export function skeletonWriter(ctx: WriterContext, skeleton: ZSkeleton): ZkRefSkeleton {
+export function skeletonWriter(_ctx: WriterContext, skeleton: ZSkeleton): ZkRefSkeleton {
     if (_.isNil(skeleton)) {
         return
     }
-    if (ctx.hasWrittenComponent(skeleton)) {
-        return ZkRefSkeleton.create({
-            refId: skeleton.refId,
-            isReference: true
-        })
-    }
-    ctx.registerComponent(skeleton)
+
     return ZkRefSkeleton.create({
+        type: ZObjectType.SKELETON.name,
         refId: skeleton.refId,
-        isReference: false,
-        data: ZkSkeleton.fromObject(skeleton)
+        isReference: true
     })
 }
