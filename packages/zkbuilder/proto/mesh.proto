@@ -4,6 +4,14 @@ import "./commons.proto";
 
 package Zko;
 
+enum ZkDrawingMode {
+  POINTS = 0;
+  LINES = 1;
+  TRIANGLES = 2;
+  LINE_STRIP = 3;
+  TRIANGLE_STRIP = 4;
+}
+
 /**
 Mesh will provide:
 A relationship between the BufferKey and its Buffers
@@ -11,6 +19,8 @@ A relationship between the BufferKey and its Buffers
 message ZkMesh {
   required string refId = 1;
   required bool isReference = 2;
+
+  optional ZkDrawingMode drawingMode = 11;
 
   repeated ZkBufferKey bufferKeys = 101;
   repeated ZkRawBuffer rawBuffers = 102;
