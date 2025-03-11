@@ -16,10 +16,10 @@ export async function parseModel(ctx: ParserContext, obj: Mesh | SkinnedMesh): P
     }
     if (!_.isNil((obj as SkinnedMesh).skeleton)) {
         const threeSkeleton: Skeleton = (obj as SkinnedMesh).skeleton
+        // TODO: This could potentially fail
         ctx.getComponentAsync(threeSkeleton.bones[0].uuid).then((skeleton: ZRef) => {
             model.skeleton = skeleton as ZSkeleton
         })
-        //model.skeleton = await ctx.getComponentAsync(threeSkeleton.bones[0].uuid) as ZSkeleton
     }
 
     return {model, children: obj.children}
