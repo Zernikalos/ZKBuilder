@@ -16,7 +16,7 @@ export async function writeZko(zkoParsed: ZkoParsed): Promise<ZkoFormat> {
     if (!_.isNil(zkoParsed.actions)) {
         actions = zkoParsed.actions.map((action) => Zko.ZkSkeletalAction.fromObject(action))
     }
-    const objects = [...objectMap.values()].reverse()
+    const objects = sortObjectList([...objectMap.values()])
     return new Zko.ZkoFormat({
         header: headerWrite(),
         hierarchy,
@@ -135,4 +135,17 @@ function convertToProto(ctx: WriterContext, obj: ZObject): Zko.ZkoObjectProto {
         //     })
     }
     return auxNode
+}
+
+function sortObjectList(list: ZkoObjectProto[]): ZkoObjectProto[] {
+    return list.sort((a, b) => {
+        if (a.type === ZObjectType.SKELETON.name && b.type === ZObjectType.SKELETON.name) {
+            return a.refId.localeCompare(b.refId);
+        }
+
+        if (a.type === ZObjectType.SKELETON.name) return -1;
+        if (b.type === ZObjectType.SKELETON.name) return 1;
+
+        return a.refId.localeCompare(b.refId);
+    })
 }

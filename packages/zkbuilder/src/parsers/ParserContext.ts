@@ -4,7 +4,7 @@ export class ParserContext {
 
     private components = new Map<string, ZRef>()
 
-    private componentRegisterCallbacks: Map<string, () => void> = new Map()
+    private componentRegisterCallbacks: Map<string, (() => void)[]> = new Map()
 
     registerComponent(id: string, component: ZRef) {
         if (this.components.has(id)) {
@@ -12,7 +12,11 @@ export class ParserContext {
         }
         this.components.set(id, component)
         if (this.componentRegisterCallbacks.has(id)) {
-            this.componentRegisterCallbacks.get(id)()
+            this.componentRegisterCallbacks.get(id)
+                .forEach((callback) => {
+                    callback()
+                })
+            this.componentRegisterCallbacks.delete(id)
         }
     }
 
@@ -25,13 +29,17 @@ export class ParserContext {
     }
 
     private registerCallback(id: string, callback: () => void) {
-        this.componentRegisterCallbacks.set(id, () => {
-            callback()
-            this.componentRegisterCallbacks.delete(id)
-        })
+        if (this.componentRegisterCallbacks.has(id)) {
+            this.componentRegisterCallbacks.get(id).push(callback)
+            return
+        }
+        this.componentRegisterCallbacks.set(id, [callback])
     }
 
-    getComponentAsync(id: string): Promise<ZRef> {
+    async getComponentAsync(id: string): Promise<ZRef> {
+        if (this.hasComponent(id)) {
+            return this.getComponent(id)
+        }
         return new Promise((resolve, _reject) => {
             this.registerCallback(id, () => {
                 resolve(this.getComponent(id))
