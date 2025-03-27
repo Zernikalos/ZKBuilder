@@ -11,11 +11,11 @@ importers:
   packages/zkbuilder:
     dependencies:
       '@xmldom/xmldom':
-        specifier: 0.9.7
-        version: 0.9.7
+        specifier: 0.9.8
+        version: 0.9.8
       '@zernikalos/zernikalos':
-        specifier: ../../../Zernikalos/build/js/packages/@zernikalos/zernikalos
-        version: link:../../../Zernikalos/build/js/packages/@zernikalos/zernikalos
+        specifier: 0.0.2
+        version: 0.0.2
       get-own-enumerable-property-symbols:
         specifier: 3.0.2
         version: 3.0.2
@@ -38,21 +38,21 @@ importers:
         specifier: 7.4.0
         version: 7.4.0
       three:
-        specifier: 0.173.0
-        version: 0.173.0
+        specifier: 0.174.0
+        version: 0.174.0
     devDependencies:
       '@types/lodash':
-        specifier: 4.17.15
-        version: 4.17.15
+        specifier: 4.17.16
+        version: 4.17.16
       '@types/node':
-        specifier: 22.13.4
-        version: 22.13.4
+        specifier: 22.13.13
+        version: 22.13.13
       '@types/object-hash':
         specifier: 3.0.6
         version: 3.0.6
       '@types/three':
-        specifier: 0.173.0
-        version: 0.173.0
+        specifier: 0.174.0
+        version: 0.174.0
       make-dir-cli:
         specifier: 4.0.0
         version: 4.0.0
@@ -67,10 +67,10 @@ importers:
         version: 6.0.1
       ts-loader:
         specifier: 9.5.2
-        version: 9.5.2(typescript@5.7.3)(webpack@5.98.0(webpack-cli@6.0.1))
+        version: 9.5.2(typescript@5.8.2)(webpack@5.98.0(webpack-cli@6.0.1))
       typescript:
-        specifier: 5.7.3
-        version: 5.7.3
+        specifier: 5.8.2
+        version: 5.8.2
       webpack:
         specifier: 5.98.0
         version: 5.98.0(webpack-cli@6.0.1)
@@ -94,17 +94,17 @@ importers:
         version: 13.1.0
     devDependencies:
       '@types/node':
-        specifier: 22.13.4
-        version: 22.13.4
+        specifier: 22.13.13
+        version: 22.13.13
       rimraf:
         specifier: 6.0.1
         version: 6.0.1
       ts-loader:
         specifier: 9.5.2
-        version: 9.5.2(typescript@5.7.3)(webpack@5.98.0(webpack-cli@6.0.1))
+        version: 9.5.2(typescript@5.8.2)(webpack@5.98.0(webpack-cli@6.0.1))
       typescript:
-        specifier: 5.7.3
-        version: 5.7.3
+        specifier: 5.8.2
+        version: 5.8.2
       webpack:
         specifier: 5.98.0
         version: 5.98.0(webpack-cli@6.0.1)
@@ -219,8 +219,8 @@ packages:
   '@types/linkify-it@5.0.0':
     resolution: {integrity: sha512-sVDA58zAw4eWAffKOaQH5/5j3XeayukzDk+ewSsnv3p4yJEZHCCzMDiZM8e0OUrRvmpGZ85jf4yDHkHsgBNr9Q==}
 
-  '@types/lodash@4.17.15':
-    resolution: {integrity: sha512-w/P33JFeySuhN6JLkysYUK2gEmy9kHHFN7E8ro0tkfmlDOgxBDzWEZ/J8cWA+fHqFevpswDTFZnDx+R9lbL6xw==}
+  '@types/lodash@4.17.16':
+    resolution: {integrity: sha512-HX7Em5NYQAXKW+1T+FiuG27NGwzJfCX3s1GjOa7ujxZa52kjJLOr4FUxT+giF6Tgxv1e+/czV/iTtBw27WTU9g==}
 
   '@types/markdown-it@14.1.2':
     resolution: {integrity: sha512-promo4eFwuiW+TfGxhi+0x3czqTYJkG8qB17ZUJiVF10Xm7NLVRSLUsfRTU/6h1e24VvRnXCx+hG7li58lkzog==}
@@ -228,8 +228,8 @@ packages:
   '@types/mdurl@2.0.0':
     resolution: {integrity: sha512-RGdgjQUZba5p6QEFAVx2OGb8rQDL/cPRG7GiedRzMcJ1tYnUANBncjbSB1NRGwbvjcPeikRABz2nshyPk1bhWg==}
 
-  '@types/node@22.13.4':
-    resolution: {integrity: sha512-ywP2X0DYtX3y08eFVx5fNIw7/uIv8hYUKgXoK8oayJlLnKcRfEYCxWMVE1XagUdVtCJlZT1AU4LXEABW+L1Peg==}
+  '@types/node@22.13.13':
+    resolution: {integrity: sha512-ClsL5nMwKaBRwPcCvH8E7+nU4GxHVx1axNvMZTFHMEfNI7oahimt26P5zjVCRrjiIWj6YFXfE1v3dEp94wLcGQ==}
 
   '@types/object-hash@3.0.6':
     resolution: {integrity: sha512-fOBV8C1FIu2ELinoILQ+ApxcUKz4ngq+IWUYrxSGjXzzjUALijilampwkMgEtJ+h2njAW3pi853QpzNVCHB73w==}
@@ -237,8 +237,8 @@ packages:
   '@types/stats.js@0.17.3':
     resolution: {integrity: sha512-pXNfAD3KHOdif9EQXZ9deK82HVNaXP5ZIF5RP2QG6OQFNTaY2YIetfrE9t528vEreGQvEPRDDc8muaoYeK0SxQ==}
 
-  '@types/three@0.173.0':
-    resolution: {integrity: sha512-KtNjfI/CRB6JVKIVeZM1R3GYDX2wkoV2itNcQu2j4d7qkhjGOuB+s2oF6jl9mztycDLGMtrAnJQYxInC8Bb20A==}
+  '@types/three@0.174.0':
+    resolution: {integrity: sha512-De/+vZnfg2aVWNiuy1Ldu+n2ydgw1osinmiZTAn0necE++eOfsygL8JpZgFjR2uHmAPo89MkxBj3JJ+2BMe+Uw==}
 
   '@types/webxr@0.5.21':
     resolution: {integrity: sha512-geZIAtLzjGmgY2JUi6VxXdCrTb99A7yP49lxLr2Nm/uIK0PkkxcEi4OGhoGDO4pxCf3JwGz2GiJL2Ej4K2bKaA==}
@@ -316,8 +316,8 @@ packages:
       webpack-dev-server:
         optional: true
 
-  '@xmldom/xmldom@0.9.7':
-    resolution: {integrity: sha512-syvR8iIJjpTZ/stv7l89UAViwGFh6lbheeOaqSxkYx9YNmIVvPTRH+CT/fpykFtUx5N+8eSMDRvggF9J8GEPzQ==}
+  '@xmldom/xmldom@0.9.8':
+    resolution: {integrity: sha512-p96FSY54r+WJ50FIOsCOjyj/wavs8921hG5+kVMmZgKcvIKxMXHTrjNJvRgWa/zuX3B6t2lijLNFaOyuxUH+2A==}
     engines: {node: '>=14.6'}
 
   '@xtuc/ieee754@1.2.0':
@@ -325,6 +325,10 @@ packages:
 
   '@xtuc/long@4.2.2':
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
+
+  '@zernikalos/zernikalos@0.0.2':
+    resolution: {integrity: sha1-ydT24n2Q92g2yu8TZXmw6KeOIIM=, tarball: https://gitlab.com/api/v4/projects/67293086/packages/npm/@zernikalos/zernikalos/-/@zernikalos/zernikalos-0.0.2.tgz}
+    bundledDependencies: []
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -1038,8 +1042,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  three@0.173.0:
-    resolution: {integrity: sha512-AUwVmViIEUgBwxJJ7stnF0NkPpZxx1aZ6WiAbQ/Qq61h6I9UR4grXtZDmO8mnlaNORhHnIBlXJ1uBxILEKuVyw==}
+  three@0.174.0:
+    resolution: {integrity: sha512-p+WG3W6Ov74alh3geCMkGK9NWuT62ee21cV3jEnun201zodVF4tCE5aZa2U122/mkLRmhJJUQmLLW1BH00uQJQ==}
 
   tmp@0.2.3:
     resolution: {integrity: sha512-nZD7m9iCPC5g0pYmcaxogYKggSfLsdxl8of3Q/oIbqCqLLIO9IAF0GWjX1z9NZRHPiXv8Wex4yDCaZsgEw0Y8w==}
@@ -1064,10 +1068,13 @@ packages:
     resolution: {integrity: sha512-ZCmOJdvOWDBYJlzAoFkC+Q0+bUyEOS1ltgp1MGU03fqHG+dbi9tBFU2Rd9QKiDZFAYrhPh2JUf7rZRIuHRKtOg==}
     engines: {node: '>= 0.8.0'}
 
-  typescript@5.7.3:
-    resolution: {integrity: sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==}
+  typescript@5.8.2:
+    resolution: {integrity: sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  ua-parser-js@1.0.37:
+    resolution: {integrity: sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==}
 
   uc.micro@2.1.0:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
@@ -1270,7 +1277,7 @@ snapshots:
 
   '@types/linkify-it@5.0.0': {}
 
-  '@types/lodash@4.17.15': {}
+  '@types/lodash@4.17.16': {}
 
   '@types/markdown-it@14.1.2':
     dependencies:
@@ -1279,7 +1286,7 @@ snapshots:
 
   '@types/mdurl@2.0.0': {}
 
-  '@types/node@22.13.4':
+  '@types/node@22.13.13':
     dependencies:
       undici-types: 6.20.0
 
@@ -1287,7 +1294,7 @@ snapshots:
 
   '@types/stats.js@0.17.3': {}
 
-  '@types/three@0.173.0':
+  '@types/three@0.174.0':
     dependencies:
       '@tweenjs/tween.js': 23.1.3
       '@types/stats.js': 0.17.3
@@ -1406,11 +1413,15 @@ snapshots:
       webpack: 5.98.0(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.98.0)
 
-  '@xmldom/xmldom@0.9.7': {}
+  '@xmldom/xmldom@0.9.8': {}
 
   '@xtuc/ieee754@1.2.0': {}
 
   '@xtuc/long@4.2.2': {}
+
+  '@zernikalos/zernikalos@0.0.2':
+    dependencies:
+      ua-parser-js: 1.0.37
 
   acorn-jsx@5.3.2(acorn@8.14.0):
     dependencies:
@@ -1690,7 +1701,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 22.13.4
+      '@types/node': 22.13.13
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -1906,7 +1917,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 22.13.4
+      '@types/node': 22.13.13
       long: 5.3.0
 
   punycode.js@2.3.1: {}
@@ -2041,7 +2052,7 @@ snapshots:
       commander: 2.20.3
       source-map-support: 0.5.21
 
-  three@0.173.0: {}
+  three@0.174.0: {}
 
   tmp@0.2.3: {}
 
@@ -2051,21 +2062,23 @@ snapshots:
 
   totalist@3.0.1: {}
 
-  ts-loader@9.5.2(typescript@5.7.3)(webpack@5.98.0(webpack-cli@6.0.1)):
+  ts-loader@9.5.2(typescript@5.8.2)(webpack@5.98.0(webpack-cli@6.0.1)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.18.1
       micromatch: 4.0.8
       semver: 7.7.1
       source-map: 0.7.4
-      typescript: 5.7.3
+      typescript: 5.8.2
       webpack: 5.98.0(webpack-cli@6.0.1)
 
   type-check@0.3.2:
     dependencies:
       prelude-ls: 1.1.2
 
-  typescript@5.7.3: {}
+  typescript@5.8.2: {}
+
+  ua-parser-js@1.0.37: {}
 
   uc.micro@2.1.0: {}
 
@@ -2174,7 +2187,7 @@ snapshots:
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     optionalDependencies:
-      webpack-cli: 6.0.1(webpack-bundle-analyzer@4.10.2)(webpack@5.98.0)
+      webpack-cli: 6.0.1(webpack@5.98.0)
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
