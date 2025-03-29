@@ -3,9 +3,9 @@ import {ZVector3} from "../zernikalos/math/ZVector3";
 import {ZQuaternion} from "../zernikalos/math/ZQuaternion";
 import _ from "lodash";
 import {ZTypes} from "../zernikalos/ZDataType";
-import {ZKeyFrame} from "../zernikalos/action/ZKeyFrame";
-import {ZBoneFrameTransform} from "../zernikalos/action/ZBoneFrameTransform";
+import {ZPositionFrame, ZRotationFrame, ZScaleFrame} from "../zernikalos/action/ZKeyFrame";
 import {ZSkeletalAction} from "../zernikalos/action/ZSkeletalAction";
+import {ZBoneTrack} from "../zernikalos/action/ZBoneTrack";
 
 type RotPosScaleTypes = "position" | "rotation" | "scale"
 
@@ -36,66 +36,96 @@ function getSizePerTarget(target: RotPosScaleTypes) {
     }
 }
 
-function parseZSkeletalAction(track: KeyframeTrack, boneName: string, target: RotPosScaleTypes, timesBasedKeyframesMap: Map<number, ZKeyFrame>) {
-    _.forEach(track.times, t => {
-        if (timesBasedKeyframesMap.has(t)) {
-            return
-        }
-        timesBasedKeyframesMap.set(t, new ZKeyFrame(t))
-    })
-
+function chunkifyKeyFrameTrack(track: KeyframeTrack, target: RotPosScaleTypes): (ZPositionFrame | ZScaleFrame | ZRotationFrame)[] {
     const chunks = _.chunk(track.values, getSizePerTarget(target))
-    const dataFrames = chunks.map((chunk) => {
-        switch (target) {
-            case "position":
-            case "scale":
-                return ZVector3.initWithValues(chunk[0], chunk[1], chunk[2])
-            case "rotation":
-                return ZQuaternion.initWithValues(chunk[3], chunk[0], chunk[1], chunk[2])
-        }
-    })
-
-    if (track.times.length !== dataFrames.length) {
-        return
-    }
-
-    for (let i = 0; i < track.times.length; i++) {
-        const t = track.times[i]
-        const data = dataFrames[i]
-        const kf = timesBasedKeyframesMap.get(t)
-
-        if (!kf.hasBone(boneName)) {
-            kf.setBoneTransform(boneName, new ZBoneFrameTransform())
-        }
-        const boneFrameTransform = kf.getBoneTransform(boneName)
-
-        switch (target) {
-            case "position":
-                boneFrameTransform.position = data as ZVector3
-                break
-            case "scale":
-                boneFrameTransform.scale = data as ZVector3
-                break
-            case "rotation":
-                boneFrameTransform.rotation = data as ZQuaternion
-                break
-        }
-    }
+    return chunks
+        .map((chunk, index) => {
+            const time = track.times[index]
+            switch (target) {
+                case "position":
+                case "scale":
+                    return {
+                        time,
+                        value: ZVector3.initWithValues(chunk[0], chunk[1], chunk[2])
+                    }
+                case "rotation":
+                    return {
+                        time,
+                        value: ZQuaternion.initWithValues(chunk[3], chunk[0], chunk[1], chunk[2])
+                    }
+        }})
+        .map((data) => {
+            switch (target) {
+                case "position":
+                    return new ZPositionFrame(
+                        data.time,
+                        data.value as ZVector3
+                    )
+                case "scale":
+                    return new ZScaleFrame(
+                        data.time,
+                        data.value as ZVector3
+                    )
+                case "rotation":
+                    return new ZRotationFrame(
+                        data.time,
+                        data.value as ZQuaternion
+                    )
+            }
+        })
 }
 
-function parseAction(action: AnimationClip) {
-    //const boneMap = new Map<String, ZKeyFrame>()
-    const timesBasedKeyframesMap = new Map<number, ZKeyFrame>()
+function selectTracksByBones(tracks: KeyframeTrack[]): Map<string, Map<RotPosScaleTypes, KeyframeTrack>> {
+    const organizedTracks = new Map<string, Map<RotPosScaleTypes, KeyframeTrack>>();
 
-    action.tracks.forEach(track => {
-        const {boneName, target} = extractTrackNameAndTarget(track)
-        parseZSkeletalAction(track, boneName, target, timesBasedKeyframesMap)
+    tracks.forEach(track => {
+        const {boneName, target} = extractTrackNameAndTarget(track);
+
+        if (!organizedTracks.has(boneName)) {
+            organizedTracks.set(boneName, new Map<RotPosScaleTypes, KeyframeTrack>());
+        }
+
+        organizedTracks.get(boneName).set(target, track);
+    });
+
+    return organizedTracks;
+}
+
+
+function parseAction(action: AnimationClip) {
+    const tracksByBones = selectTracksByBones(action.tracks)
+
+    const ztracks = tracksByBones.entries().map(([boneName, tracksByType]) => {
+        const zBoneTrack = new ZBoneTrack(boneName)
+        if (tracksByType.has("position")) {
+            const positionTrack = tracksByType.get("position");
+            const positionFrames = chunkifyKeyFrameTrack(positionTrack, "position")
+            positionFrames.forEach((positionFrame) => {
+                zBoneTrack.addPositionFrame(positionFrame as ZPositionFrame)
+            })
+        }
+
+        if (tracksByType.has("rotation")) {
+            const rotationTrack = tracksByType.get("rotation");
+            const rotationFrames = chunkifyKeyFrameTrack(rotationTrack, "rotation")
+            rotationFrames.forEach((rotationFrame) => {
+                zBoneTrack.addRotationFrame(rotationFrame as ZRotationFrame)
+            })
+        }
+
+        if (tracksByType.has("scale")) {
+            const scaleTrack = tracksByType.get("scale");
+            const scaleFrames = chunkifyKeyFrameTrack(scaleTrack, "scale")
+            scaleFrames.forEach((scaleFrame) => {
+                zBoneTrack.addScaleFrame(scaleFrame as ZScaleFrame)
+            })
+        }
+        return zBoneTrack
     })
 
-    const keyframes: ZKeyFrame[] = _.sortBy([...timesBasedKeyframesMap.values()], "time")
     const skeletalAction = new ZSkeletalAction(action.name)
     skeletalAction.duration = action.duration
-    keyframes.forEach((kf) => skeletalAction.addKeyFrame(kf))
+    ztracks.forEach(ztrack => skeletalAction.addTrack(ztrack))
 
     return skeletalAction
 }
