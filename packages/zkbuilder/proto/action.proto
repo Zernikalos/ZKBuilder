@@ -4,20 +4,31 @@ package Zko;
 
 import "./math.proto";
 
-message ZkBoneFrameTransform {
-  optional ZkVector3 position = 1;
-  optional ZkQuaternion rotation = 2;
-  optional ZkVector3 scale = 3;
-}
-
-message ZkKeyFrame {
-  required float time = 1;
-  map<string, ZkBoneFrameTransform> pose = 10;
-}
-
 message ZkSkeletalAction {
   required string name = 1;
   required float duration = 2;
-  repeated ZkKeyFrame keyFrames = 10;
+  repeated ZkBoneTrack tracks = 10;
+}
+
+message ZkBoneTrack {
+  required string boneName = 1;
+  repeated ZkPositionFrame positionTrack = 100;
+  repeated ZkRotationFrame rotationTrack = 101;
+  repeated ZkScaleFrame scaleTrack = 102;
+}
+
+message ZkPositionFrame {
+  required float time = 1;
+  required ZkVector3 position = 10;
+}
+
+message ZkRotationFrame {
+  required float time = 1;
+  required ZkQuaternion rotation = 10;
+}
+
+message ZkScaleFrame {
+  required float time = 1;
+  required ZkVector3 scale = 10;
 }
 
