@@ -18,4 +18,5 @@ message ZkModel {
   required ZkShaderProgram shaderProgram = 5;
   optional ZkRefMaterial material = 6;
   optional ZkRefSkeleton skeleton = 7;
+  optional ZkSkinning skinning = 8;
 }

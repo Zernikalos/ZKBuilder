@@ -19,29 +19,30 @@ export function parseSkeletonObject(ctx: ParserContext, obj: Bone): { skeleton: 
         return
     }
 
-    // const root = recursiveParseSkeleton(boneRoot, 0)
-    const {root, children} = parseBonesObjectFromRoot(boneRoot)
+    const {root, children} = parseBonesObjectFromRoot(ctx, boneRoot)
     const skeleton = new ZSkeleton()
     skeleton.root = root
 
     ctx.registerComponent(boneRoot.uuid, skeleton)
 
     return {skeleton, children}
-    // return skeleton
 }
 
-function parseBonesObjectFromRoot(rootBone: Bone): {root: ZBone, children: Object3D[]} {
+/**
+ * Parses a root bone and all its children into a ZSkeleton
+ * @param rootBone
+ * @returns
+ */
+function parseBonesObjectFromRoot(ctx: ParserContext, rootBone: Bone): {root: ZBone, children: Object3D[]} {
     let root: ZBone | undefined = undefined
     const queue: [ZBone | undefined, Bone][] = []
     queue.push([undefined, rootBone])
     const children: Object3D[] = []
 
-    let idx = 0
     while (!_.isEmpty(queue)) {
         const [parent, bone] = queue.shift()
 
-        const zbone: ZBone = parseBone(bone, idx)
-        idx++
+        const zbone: ZBone = parseBone(ctx, bone)
 
         if (!_.isNil(parent)) {
             parent.addChild(zbone)
@@ -109,15 +110,20 @@ function findParentBone(bone: Bone): Bone {
 //     return zbone
 // }
 
-function parseBone(bone: Bone, idx: number): ZBone {
-    if (bone.type !== "Bone") {
+export function parseBone(ctx: ParserContext, bone: Bone): ZBone | undefined {
+    if (_.isNil(bone) || bone.type !== "Bone") {
         return
     }
 
+    if (ctx.hasComponent(bone.uuid + ".Bone")) {
+        return ctx.getComponent(bone.uuid + ".Bone") as ZBone
+    }
+
     const zbone = ZBone.init()
-    zbone.idx = idx
+    zbone.id = bone.uuid
     zbone.name = bone.name
     zbone.transform = parseTransform(bone)
 
+    ctx.registerComponent(bone.uuid + ".Bone", zbone)
     return zbone
 }
