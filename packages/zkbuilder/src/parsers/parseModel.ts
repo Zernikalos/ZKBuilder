@@ -6,6 +6,7 @@ import {parseMaterial} from "./parseMaterial";
 import {ParserContext} from "./ParserContext";
 import {ZSkeleton} from "../zernikalos/ZSkeleton";
 import {ZRef} from "../zernikalos/ZRef";
+import { parseSkinning } from "./parseSkinning";
 
 export async function parseModel(ctx: ParserContext, obj: Mesh | SkinnedMesh): Promise<{ model: ZModel, children: Object3D[] }> {
     const model = new ZModel()
@@ -20,6 +21,7 @@ export async function parseModel(ctx: ParserContext, obj: Mesh | SkinnedMesh): P
         ctx.getComponentAsync(threeSkeleton.bones[0].uuid).then((skeleton: ZRef) => {
             model.skeleton = skeleton as ZSkeleton
         })
+        model.skinning = parseSkinning(ctx, obj as SkinnedMesh)
     }
 
     return {model, children: obj.children}
