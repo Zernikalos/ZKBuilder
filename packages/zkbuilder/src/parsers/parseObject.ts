@@ -9,12 +9,19 @@ import {parseScene} from "./parseScene"
 import {parseCamera} from "./parseCamera"
 import {ParserContext} from "./ParserContext";
 import {parseSkeletonObject} from "./parseSkeleton";
+import { ZTexture } from "../zernikalos/material/ZTexture"
 
-export async function parseObject(threeObj: Object3D): Promise<ZObject | undefined> {
+export interface ParseResult {
+    zObject: ZObject,
+    textures: ZTexture[]
+}
+
+export async function parseObject(threeObj: Object3D): Promise<ParseResult> {
     const ctx = new ParserContext()
 
     const zobj = await parseObjectRecursive(ctx, threeObj)
-    return zobj
+    const textures = ctx.getComponentsByTag("Texture") as ZTexture[]
+    return {zObject: zobj, textures}
 }
 
 async function parseObjectRecursive(ctx: ParserContext, threeObj: Object3D): Promise<ZObject | undefined> {

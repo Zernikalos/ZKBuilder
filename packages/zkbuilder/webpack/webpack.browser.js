@@ -12,7 +12,6 @@ const browserConfig = {
         'vendor': [
             'lodash',
             'three',
-            'hash-it',
             'is-obj',
             'three/examples/jsm/loaders/ColladaLoader',
             'three/examples/jsm/loaders/FBXLoader',

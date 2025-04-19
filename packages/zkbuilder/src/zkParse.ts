@@ -8,6 +8,7 @@ import {preProcess} from "./pre";
 import {parseActions} from "./parsers/parseActions";
 import {ZSkeletalAction} from "./zernikalos/action/ZSkeletalAction";
 import {EnvSetup} from "./EnvSetup";
+import { ZTexture } from "./zernikalos/material/ZTexture";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ParseOptions {
@@ -19,7 +20,8 @@ export const DEFAULT_PARSE_OPTIONS: ParseOptions = {
 }
 
 export interface ZkoParsed {
-    root: ZObject
+    root: ZObject,
+    textures: ZTexture[],
     actions?: ZSkeletalAction[]
 }
 
@@ -34,13 +36,13 @@ export async function zkParse(parseableObject: ZkoParseableObject, _options: Par
     const actions  = parseableObject._actions
 
     try {
-        let zObj = await parseObject(threeObj)
+        const {zObject, textures} = await parseObject(threeObj)
         const zactions = parseActions(actions)
 
-        zObj = postProcess(zObj)
+        const resultZObject = postProcess(zObject)
 
         IdGenerator.reset()
-        return {root: zObj, actions: zactions}
+        return {root: resultZObject, textures, actions: zactions}
     } catch (e) {
         console.error(`Error parsing the object. Error: ${e}`)
         throw e

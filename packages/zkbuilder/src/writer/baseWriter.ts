@@ -13,13 +13,18 @@ import ZkoHierarchyNode = Zko.ZkoHierarchyNode;
 export async function writeZko(zkoParsed: ZkoParsed): Promise<ZkoFormat> {
     const {hierarchy, objectMap} = await writeTree(zkoParsed.root)
     let actions: Zko.ZkSkeletalAction[] = []
+    let textures: Zko.ZkTexture[] = []
     if (!_.isNil(zkoParsed.actions)) {
         actions = zkoParsed.actions.map((action) => Zko.ZkSkeletalAction.fromObject(action))
+    }
+    if (!_.isNil(zkoParsed.textures)) {
+     textures = zkoParsed.textures.map((texture) => Zko.ZkTexture.fromObject(texture))
     }
     const objects = sortObjectList([...objectMap.values()])
     return new Zko.ZkoFormat({
         header: headerWrite(),
         hierarchy,
+        textures,
         objects,
         actions
     })

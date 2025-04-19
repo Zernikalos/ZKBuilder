@@ -19,7 +19,7 @@ message ZkRefTexture {
 }
 
 message ZkTexture {
-  optional string id = 1;
+  required string refId = 1;
   required int32 width = 2;
   required int32 height = 3;
   required bool flipX = 4;
