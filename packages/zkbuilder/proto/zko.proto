@@ -5,9 +5,11 @@ package Zko;
 import "./commons.proto";
 import "./object.proto";
 import "./action.proto";
+import "./material.proto";
 
 message ZkoFormat {
   required ZkoHeader header = 1;
+  repeated ZkTexture textures = 2;
   repeated ZkoObjectProto objects = 3;
   required ZkoHierarchyNode hierarchy = 4;
   repeated ZkSkeletalAction actions = 5;

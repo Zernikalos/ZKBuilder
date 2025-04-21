@@ -2,7 +2,6 @@ import {ZMaterial} from "../zernikalos/material/ZMaterial";
 import {Material, Texture} from "three";
 import _ from "lodash";
 import {ZTexture} from "../zernikalos/material/ZTexture";
-import hash from "hash-it";
 import {ParserContext} from "./ParserContext";
 
 export async function parseMaterial(ctx: ParserContext,mat: Material): Promise<ZMaterial | undefined> {
@@ -27,12 +26,12 @@ export async function parseMaterial(ctx: ParserContext,mat: Material): Promise<Z
 }
 
 async function parseTexture(ctx: ParserContext, tex: Texture): Promise<ZTexture> {
-    if (ctx.hasComponent(tex.uuid)) {
-        return ctx.getComponent(tex.uuid) as unknown as ZTexture
+    if (ctx.hasComponent(tex.uuid + ".Texture")) {
+        return ctx.getComponent(tex.uuid + ".Texture") as ZTexture
     }
 
     const internalParseTexture = async (tex: Texture): Promise<ZTexture> => {
-        const texture = ZTexture.init()
+        const zTexture = ZTexture.init()
 
         let data
         const imgElement = tex.source.data
@@ -44,15 +43,14 @@ async function parseTexture(ctx: ParserContext, tex: Texture): Promise<ZTexture>
             data = imgElement
         }
 
-        texture.dataArray = new Int8Array(data)
+        zTexture.dataArray = new Int8Array(data)
         // TODO: Is this field required any longer?
-        texture.id = `${hash(texture.dataArray)}`
-        texture.width = imgElement.width
-        texture.height = imgElement.height
-        texture.flipX = (tex as any).flipX ?? false
-        texture.flipY = tex.flipY
-        ctx.registerComponent(tex.uuid, texture)
-        return texture
+        zTexture.width = imgElement.width
+        zTexture.height = imgElement.height
+        zTexture.flipX = (tex as any).flipX ?? false
+        zTexture.flipY = tex.flipY
+        ctx.registerComponent(tex.uuid + ".Texture", zTexture)
+        return zTexture
     }
 
     if (!_.isNil(tex?.source?.data)) {

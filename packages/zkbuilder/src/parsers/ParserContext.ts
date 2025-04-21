@@ -27,6 +27,10 @@ export class ParserContext {
     getComponent(id: string): ZRef {
         return this.components.get(id)
     }
+    
+    getComponentsByTag(tag: string): ZRef[] {
+        return [...this.components].filter(([id]) => id.endsWith(`.${tag}`)).map(([_, component]) => component)
+    }
 
     private registerCallback(id: string, callback: () => void) {
         if (this.componentRegisterCallbacks.has(id)) {

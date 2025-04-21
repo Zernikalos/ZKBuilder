@@ -23,20 +23,13 @@ export function materialWriter(ctx: WriterContext, material: ZMaterial): Zko.ZkR
 
 }
 
-function textureWriter(ctx: WriterContext, texture: ZTexture): Zko.ZkRefTexture {
+function textureWriter(_ctx: WriterContext, texture: ZTexture): Zko.ZkRefTexture {
     if (_.isNil(texture)) {
         return
     }
-    if (ctx.hasWrittenComponent(texture)) {
-        return Zko.ZkRefTexture.create({
-            refId: texture.refId,
-            isReference: true
-        })
-    }
-    ctx.registerComponent(texture)
+
     return Zko.ZkRefTexture.create({
         refId: texture.refId,
-        isReference: false,
-        data: Zko.ZkTexture.fromObject(texture)
+        isReference: true
     })
 }
