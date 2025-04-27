@@ -1,4 +1,4 @@
-import {BufferAttribute, BufferGeometry, InterleavedBufferAttribute, Mesh, SkinnedMesh} from "three"
+import {BufferAttribute, BufferGeometry, InterleavedBufferAttribute, Mesh, SkinnedMesh, TrianglesDrawMode} from "three"
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils"
 import {ZMesh} from "../zernikalos/mesh/ZMesh"
 import {ZRawBuffer} from "../zernikalos/mesh/ZRawBuffer"
@@ -109,7 +109,9 @@ function parseBufferKey(attr: BufferAttribute | InterleavedBufferAttribute, zatt
 }
 
 function parseBuffer(buffAttr: BufferAttribute | InterleavedBufferAttribute, zattr: Attrib): ZRawBuffer {
-    const data = new Int8Array(buffAttr.array.buffer)
+    // Creating a copy first is required in order to avoid issues with shared memory
+    const copyData = buffAttr.array.slice()
+    const data = new Int8Array(copyData.buffer)
     return new ZRawBuffer(zattr.id, data)
 }
 
@@ -171,6 +173,7 @@ export function parseMesh(ctx: ParserContext, mesh: Mesh | SkinnedMesh): ZMesh {
     if (_.isNil(geometry.index)) {
         geometry = BufferGeometryUtils.mergeVertices(geometry)
     }
+    geometry = BufferGeometryUtils.toTrianglesDrawMode(geometry, TrianglesDrawMode)
 
     const {keys, rawBuffers} = parseBuffersAndKeys(geometry)
 
