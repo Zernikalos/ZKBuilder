@@ -7,8 +7,6 @@ export {ZVector4} from "./zernikalos/math/ZVector4"
 export {ZQuaternion} from "./zernikalos/math/ZQuaternion"
 export {ZTransform} from "./zernikalos/ZTransform"
 
-export {ZShaderProgram} from "./zernikalos/shader/ZShaderProgram"
-
 export {ZkoParseableObject} from "./formats/ZkoParseableObject"
 export {ZkoObjectProto, ZkoFormat, ZkObjectTypes} from "./proto"
 

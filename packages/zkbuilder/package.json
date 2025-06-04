@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@xmldom/xmldom": "0.9.8",
-    "@zernikalos/zernikalos": "0.0.4",
+    "@zernikalos/zernikalos": "file:../../../Zernikalos/build/js/packages/@zernikalos/zernikalos",
     "get-own-enumerable-property-symbols": "3.0.2",
     "is-obj": "3.0.0",
     "is-regexp": "3.1.0",
