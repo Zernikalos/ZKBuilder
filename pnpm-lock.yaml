@@ -14,8 +14,8 @@ importers:
         specifier: 0.9.8
         version: 0.9.8
       '@zernikalos/zernikalos':
-        specifier: 0.0.4
-        version: 0.0.4
+        specifier: file:../../../Zernikalos/build/js/packages/@zernikalos/zernikalos
+        version: file:../Zernikalos/build/js/packages/@zernikalos/zernikalos
       get-own-enumerable-property-symbols:
         specifier: 3.0.2
         version: 3.0.2
@@ -64,7 +64,7 @@ importers:
         version: 6.0.1
       ts-loader:
         specifier: 9.5.2
-        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7(webpack-cli@6.0.1))
       typescript:
         specifier: 5.8.3
         version: 5.8.3
@@ -98,7 +98,7 @@ importers:
         version: 6.0.1
       ts-loader:
         specifier: 9.5.2
-        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7(webpack-cli@6.0.1))
       typescript:
         specifier: 5.8.3
         version: 5.8.3
@@ -107,7 +107,7 @@ importers:
         version: 5.99.7(webpack-cli@6.0.1)
       webpack-cli:
         specifier: 6.0.1
-        version: 6.0.1(webpack-bundle-analyzer@4.10.2)(webpack@5.99.7)
+        version: 6.0.1(webpack@5.99.7)
 
 packages:
 
@@ -326,8 +326,9 @@ packages:
   '@xtuc/long@4.2.2':
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
 
-  '@zernikalos/zernikalos@0.0.4':
-    resolution: {integrity: sha1-HZE+J633+5+EHjqr+7UVsX4jbHM=, tarball: https://gitlab.com/api/v4/projects/67293086/packages/npm/@zernikalos/zernikalos/-/@zernikalos/zernikalos-0.0.4.tgz}
+  '@zernikalos/zernikalos@file:../Zernikalos/build/js/packages/@zernikalos/zernikalos':
+    resolution: {directory: ../Zernikalos/build/js/packages/@zernikalos/zernikalos, type: directory}
+    bundledDependencies: []
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -1382,20 +1383,35 @@ snapshots:
 
   '@webgpu/types@0.1.54': {}
 
-  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)':
+  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1(webpack-bundle-analyzer@4.10.2)(webpack@5.99.7))(webpack@5.99.7(webpack-cli@6.0.1))':
     dependencies:
       webpack: 5.99.7(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack-bundle-analyzer@4.10.2)(webpack@5.99.7)
 
-  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)':
+  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(webpack-cli@6.0.1))':
+    dependencies:
+      webpack: 5.99.7(webpack-cli@6.0.1)
+      webpack-cli: 6.0.1(webpack@5.99.7)
+
+  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1(webpack-bundle-analyzer@4.10.2)(webpack@5.99.7))(webpack@5.99.7(webpack-cli@6.0.1))':
     dependencies:
       webpack: 5.99.7(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack-bundle-analyzer@4.10.2)(webpack@5.99.7)
 
-  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)':
+  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(webpack-cli@6.0.1))':
+    dependencies:
+      webpack: 5.99.7(webpack-cli@6.0.1)
+      webpack-cli: 6.0.1(webpack@5.99.7)
+
+  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1(webpack-bundle-analyzer@4.10.2)(webpack@5.99.7))(webpack@5.99.7(webpack-cli@6.0.1))':
     dependencies:
       webpack: 5.99.7(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack-bundle-analyzer@4.10.2)(webpack@5.99.7)
+
+  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(webpack-cli@6.0.1))':
+    dependencies:
+      webpack: 5.99.7(webpack-cli@6.0.1)
+      webpack-cli: 6.0.1(webpack@5.99.7)
 
   '@xmldom/xmldom@0.9.8': {}
 
@@ -1403,7 +1419,7 @@ snapshots:
 
   '@xtuc/long@4.2.2': {}
 
-  '@zernikalos/zernikalos@0.0.4':
+  '@zernikalos/zernikalos@file:../Zernikalos/build/js/packages/@zernikalos/zernikalos':
     dependencies:
       ua-parser-js: 1.0.37
 
@@ -2018,7 +2034,7 @@ snapshots:
 
   tapable@2.2.1: {}
 
-  terser-webpack-plugin@5.3.11(webpack@5.99.7):
+  terser-webpack-plugin@5.3.11(webpack@5.99.7(webpack-cli@6.0.1)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
@@ -2044,7 +2060,7 @@ snapshots:
 
   totalist@3.0.1: {}
 
-  ts-loader@9.5.2(typescript@5.8.3)(webpack@5.99.7):
+  ts-loader@9.5.2(typescript@5.8.3)(webpack@5.99.7(webpack-cli@6.0.1)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.18.1
@@ -2102,9 +2118,9 @@ snapshots:
   webpack-cli@6.0.1(webpack-bundle-analyzer@4.10.2)(webpack@5.99.7):
     dependencies:
       '@discoveryjs/json-ext': 0.6.3
-      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)
-      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)
-      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)
+      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1(webpack-bundle-analyzer@4.10.2)(webpack@5.99.7))(webpack@5.99.7(webpack-cli@6.0.1))
+      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1(webpack-bundle-analyzer@4.10.2)(webpack@5.99.7))(webpack@5.99.7(webpack-cli@6.0.1))
+      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1(webpack-bundle-analyzer@4.10.2)(webpack@5.99.7))(webpack@5.99.7(webpack-cli@6.0.1))
       colorette: 2.0.20
       commander: 12.1.0
       cross-spawn: 7.0.6
@@ -2117,6 +2133,23 @@ snapshots:
       webpack-merge: 6.0.1
     optionalDependencies:
       webpack-bundle-analyzer: 4.10.2
+
+  webpack-cli@6.0.1(webpack@5.99.7):
+    dependencies:
+      '@discoveryjs/json-ext': 0.6.3
+      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(webpack-cli@6.0.1))
+      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(webpack-cli@6.0.1))
+      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(webpack-cli@6.0.1))
+      colorette: 2.0.20
+      commander: 12.1.0
+      cross-spawn: 7.0.6
+      envinfo: 7.14.0
+      fastest-levenshtein: 1.0.16
+      import-local: 3.2.0
+      interpret: 3.1.1
+      rechoir: 0.8.0
+      webpack: 5.99.7(webpack-cli@6.0.1)
+      webpack-merge: 6.0.1
 
   webpack-merge@6.0.1:
     dependencies:
@@ -2149,7 +2182,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.2
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.11(webpack@5.99.7)
+      terser-webpack-plugin: 5.3.11(webpack@5.99.7(webpack-cli@6.0.1))
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     optionalDependencies:
