@@ -37,7 +37,7 @@ export async function zkParse(parseableObject: ZkoParseableObject, _options: Par
 
     try {
         const {zObject, textures} = await parseObject(threeObj)
-        const zactions = parseActions(actions)
+        const zactions = parseActions(actions, threeObj)
 
         const resultZObject = postProcess(zObject)
 

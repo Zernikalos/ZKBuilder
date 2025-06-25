@@ -12,6 +12,7 @@ message ZkSkeletalAction {
 
 message ZkBoneTrack {
   required string boneName = 1;
+  required string boneId = 2;
   repeated ZkPositionFrame positionTrack = 100;
   repeated ZkRotationFrame rotationTrack = 101;
   repeated ZkScaleFrame scaleTrack = 102;

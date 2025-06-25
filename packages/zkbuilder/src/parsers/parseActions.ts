@@ -1,4 +1,4 @@
-import {AnimationClip, KeyframeTrack} from "three";
+import {AnimationClip, KeyframeTrack, Object3D} from "three";
 import {ZVector3} from "../zernikalos/math/ZVector3";
 import {ZQuaternion} from "../zernikalos/math/ZQuaternion";
 import _ from "lodash";
@@ -9,7 +9,14 @@ import {ZBoneTrack} from "../zernikalos/action/ZBoneTrack";
 
 type RotPosScaleTypes = "position" | "rotation" | "scale"
 
-function extractTrackNameAndTarget(track: KeyframeTrack): {boneName: string, target: RotPosScaleTypes} {
+type BoneName = string
+
+interface TrackAndTarget {
+    boneName: string
+    target: RotPosScaleTypes
+}
+
+function extractTrackNameAndTarget(track: KeyframeTrack): TrackAndTarget {
     const nameSplit = track.name.split(".")
     let target: RotPosScaleTypes = undefined
     switch (nameSplit[1]) {
@@ -36,7 +43,14 @@ function getSizePerTarget(target: RotPosScaleTypes) {
     }
 }
 
+/**
+ * This method transform the KeyframeTrack into a collection of ZPositionFrame, ZRotationFrame and ZScaleFrame
+ * @param track
+ * @param target
+ * @returns
+ */
 function chunkifyKeyFrameTrack(track: KeyframeTrack, target: RotPosScaleTypes): (ZPositionFrame | ZScaleFrame | ZRotationFrame)[] {
+    // Since KeyframeTrack.values is an array of arrays, we need to split it into chunks of the size for the expected track
     const chunks = _.chunk(track.values, getSizePerTarget(target))
     return chunks
         .map((chunk, index) => {
@@ -54,7 +68,7 @@ function chunkifyKeyFrameTrack(track: KeyframeTrack, target: RotPosScaleTypes): 
                         value: ZQuaternion.initWithValues(chunk[3], chunk[0], chunk[1], chunk[2])
                     }
         }})
-        .map((data) => {
+        .map((data: { time: number, value: ZVector3 | ZQuaternion }) => {
             switch (target) {
                 case "position":
                     return new ZPositionFrame(
@@ -75,8 +89,12 @@ function chunkifyKeyFrameTrack(track: KeyframeTrack, target: RotPosScaleTypes): 
         })
 }
 
-function selectTracksByBones(tracks: KeyframeTrack[]): Map<string, Map<RotPosScaleTypes, KeyframeTrack>> {
-    const organizedTracks = new Map<string, Map<RotPosScaleTypes, KeyframeTrack>>();
+/**
+ * This method transform the KeyframeTrack array into a Map of Bone names to the collection of different tracks
+ * @param tracks
+ */
+function selectTracksByBones(tracks: KeyframeTrack[]): Map<BoneName, Map<RotPosScaleTypes, KeyframeTrack>> {
+    const organizedTracks = new Map<BoneName, Map<RotPosScaleTypes, KeyframeTrack>>();
 
     tracks.forEach(track => {
         const {boneName, target} = extractTrackNameAndTarget(track);
@@ -91,12 +109,37 @@ function selectTracksByBones(tracks: KeyframeTrack[]): Map<string, Map<RotPosSca
     return organizedTracks;
 }
 
+/**
+ * Finds and returns a bone within a given root object by its name or UUID.
+ *
+ * @param {string} boneNameOrId - The name or UUID of the bone to search for.
+ * @param {Object3D} root - The root object in which to search for the bone.
+ * @return {Object3D | undefined} The bone object if found, or undefined if not found.
+ */
+function findForBoneInRoot(boneNameOrId: string, root: Object3D): Object3D | undefined {
+    return root.getObjectByName(boneNameOrId) || root.getObjectByProperty("uuid", boneNameOrId)
+}
 
-function parseAction(action: AnimationClip) {
+/**
+ * Parses an animation clip and maps its tracks to corresponding bones in a 3D object hierarchy, creating a skeletal action.
+ *
+ * @param {AnimationClip} action - The animation clip containing tracks to be parsed.
+ * @param {Object3D} root - The root 3D object used to find bones for track mapping. Usually scene
+ * @return {ZSkeletalAction} A skeletal action containing processed tracks corresponding to bones.
+ */
+function parseAction(action: AnimationClip, root: Object3D) {
+    // Creates a map of bone names to its different tracks, this mean, split by type (position, rotation, scale)
     const tracksByBones = selectTracksByBones(action.tracks)
 
     const ztracks = tracksByBones.entries().map(([boneName, tracksByType]) => {
-        const zBoneTrack = new ZBoneTrack(boneName)
+        // Find the Threejs bone object by its name or UUID in the hierarchy
+        const bone = findForBoneInRoot(boneName, root)
+
+        // Creation of the ZBoneTrack object
+        const zBoneTrack = new ZBoneTrack(bone.name, bone.uuid)
+
+        // Final transformation, here we will invert the dependency and we will set for every bone all the tracks
+        // related to that specific bone.
         if (tracksByType.has("position")) {
             const positionTrack = tracksByType.get("position");
             const positionFrames = chunkifyKeyFrameTrack(positionTrack, "position")
@@ -130,6 +173,6 @@ function parseAction(action: AnimationClip) {
     return skeletalAction
 }
 
-export function parseActions(actions: AnimationClip[]): ZSkeletalAction[] {
-    return actions.map(action => parseAction(action))
+export function parseActions(actions: AnimationClip[], root: Object3D): ZSkeletalAction[] {
+    return actions.map(action => parseAction(action, root))
 }
