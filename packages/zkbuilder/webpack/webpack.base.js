@@ -11,7 +11,7 @@ const tsLoaderRule = {
 }
 
 function buildBaseConfig({entryName} = {entryName: ENTRY_NAME}) {
-    const packageDir = ROOT_PATH;
+    const packageDir = __dirname;
     const outputPath = path.join(packageDir, 'dist');
 
     return {

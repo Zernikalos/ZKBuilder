@@ -15,12 +15,12 @@
   },
   "dependencies": {
     "@zernikalos/zkbuilder": "workspace:*",
-    "commander": "13.1.0"
+    "commander": "14.0.0"
   },
   "devDependencies": {
-    "@types/node": "22.15.2",
+    "@types/node": "24.0.8",
     "typescript": "5.8.3",
-    "webpack": "5.99.7",
+    "webpack": "5.99.9",
     "webpack-cli": "6.0.1",
     "ts-loader": "9.5.2",
     "rimraf": "6.0.1"
