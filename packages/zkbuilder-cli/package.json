@@ -1,11 +1,26 @@
 {
   "name": "@zernikalos/zkbuilder-cli",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "CLI utility for ZkBuilder",
-  "main": "index.js",
+  "main": "dist/zkcli.js",
   "type": "commonjs",
   "bin": {
-    "zkcli": "./bin/zkcli"
+    "zkcli": "./dist/zkcli.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [],
+  "license": "MPL 2.0",
+  "author": "Aaron Negrin",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zernikalos/ZKBuilder.git",
+    "directory": "packages/zkbuilder-cli"
   },
   "scripts": {
     "build:node": "pnpm build",
@@ -15,17 +30,14 @@
   },
   "dependencies": {
     "@zernikalos/zkbuilder": "workspace:*",
-    "commander": "13.1.0"
+    "commander": "14.0.0"
   },
   "devDependencies": {
-    "@types/node": "22.15.2",
+    "@types/node": "24.0.8",
     "typescript": "5.8.3",
-    "webpack": "5.99.7",
+    "webpack": "5.99.9",
     "webpack-cli": "6.0.1",
     "ts-loader": "9.5.2",
     "rimraf": "6.0.1"
-  },
-  "keywords": [],
-  "license": "MPL 2.0",
-  "author": "Aaron Negrin"
+  }
 }
