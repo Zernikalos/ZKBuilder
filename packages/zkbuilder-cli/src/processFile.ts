@@ -1,11 +1,15 @@
 import {ZkBuilderCliOptions} from "./ZkBuilderCliOptions";
 import { zkLoad, zkParse, zkExport } from '@zernikalos/zkbuilder';
 import { writeFileSync } from 'fs';
+import * as path from 'path';
 
 export async function processFile(options: ZkBuilderCliOptions): Promise<void> {
+    const absoluteInputPath = path.resolve(options.input);
+    const absoluteOutputPath = path.resolve(options.output);
+
     // Load the file
     const loaded = await zkLoad({
-        filePath: options.input,
+        filePath: absoluteInputPath,
         format: options.inputFormat
     });
 
@@ -19,5 +23,5 @@ export async function processFile(options: ZkBuilderCliOptions): Promise<void> {
 
     // Write the result to the output file
     // @ts-ignore
-    writeFileSync(options.output, result);
+    writeFileSync(absoluteOutputPath, result);
 }
