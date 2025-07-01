@@ -1,11 +1,18 @@
 {
   "name": "@zernikalos/zkbuilder",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MPL 2.0",
   "author": "Aaron Negrin",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zernikalos/ZKBuilder.git",
+    "directory": "packages/zkbuilder"
+  },
   "main": "dist-node/index.js",
   "browser": "dist-browser/index.js",
-
   "types": "./build/src/index.d.ts",
   "scripts": {
     "start": "webpack watch --mode=development",
@@ -27,8 +34,8 @@
     "clean:modules": "rimraf node_modules"
   },
   "dependencies": {
+    "@zernikalos/zernikalos": "0.2.0",
     "@xmldom/xmldom": "0.9.8",
-    "@zernikalos/zernikalos": "file:../../../Zernikalos/build/js/packages/@zernikalos/zernikalos",
     "get-own-enumerable-property-symbols": "3.0.2",
     "is-obj": "3.0.0",
     "is-regexp": "3.1.0",
