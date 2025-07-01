@@ -1,0 +1,61 @@
+# GitHub Action for ZKBuilder CI
+
+name: Build Project
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push events but only for the main branch
+  push:
+    branches: [ main ]
+
+  # Triggers the workflow on pull requests targeting the main branch
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # These permissions are crucial for accessing private packages
+    permissions:
+      contents: read
+      packages: read # Allows reading packages from GitHub Packages within the organization
+
+    steps:
+      # 1. Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Sets up pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      # 3. Sets up Node.js and configures it to use the GitHub Packages registry for the @zernikalos scope
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@zernikalos'
+
+      # 4. Installs dependencies. The NODE_AUTH_TOKEN is automatically used by npm/pnpm for authentication.
+      - name: Install dependencies
+        run: pnpm install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 5. Generate assets before building
+      - name: Generate assets
+        run: pnpm generate
+
+      # 6. Runs the build script for all packages
+      - name: Build project
+        run: pnpm build
