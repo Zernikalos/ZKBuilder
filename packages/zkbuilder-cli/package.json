@@ -2,11 +2,15 @@
   "name": "@zernikalos/zkbuilder-cli",
   "version": "0.1.0",
   "description": "CLI utility for ZkBuilder",
-  "main": "index.js",
+  "main": "dist/zkcli.js",
   "type": "commonjs",
   "bin": {
-    "zkcli": "./bin/zkcli"
+    "zkcli": "./dist/zkcli.js"
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "keywords": [],
   "license": "MPL 2.0",
   "author": "Aaron Negrin",

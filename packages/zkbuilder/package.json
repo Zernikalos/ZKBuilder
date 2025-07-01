@@ -11,6 +11,13 @@
     "url": "git+https://github.com/Zernikalos/ZKBuilder.git",
     "directory": "packages/zkbuilder"
   },
+  "files": [
+    "dist-node",
+    "dist-browser",
+    "build",
+    "src",
+    "README.md"
+  ],
   "main": "dist-node/index.js",
   "browser": "dist-browser/index.js",
   "types": "./build/src/index.d.ts",
