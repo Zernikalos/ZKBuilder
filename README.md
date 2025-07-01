@@ -54,7 +54,12 @@ This is a `pnpm` workspace. Ensure you have `pnpm` installed.
     pnpm install
     ```
 
-2.  **Build all packages:**
+2.  **Generate assets:** This step is required before building.
+    ```bash
+    pnpm generate
+    ```
+
+3.  **Build all packages:**
     ```bash
     pnpm build
     ```
