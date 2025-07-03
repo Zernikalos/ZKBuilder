@@ -1,14 +1,8 @@
 package Zko;
 
-message ZkRefMaterial {
-  required string refId = 1;
-  required bool isReference = 2;
-
-  optional ZkMaterial data = 100;
-}
-
 message ZkMaterial {
-  optional ZkRefTexture texture = 1;
+  required string refId = 1;
+  optional ZkRefTexture texture = 10;
 }
 
 message ZkRefTexture {

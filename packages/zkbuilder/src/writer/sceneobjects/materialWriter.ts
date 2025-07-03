@@ -4,7 +4,7 @@ import {ZTexture} from "../../zernikalos/material/ZTexture"
 import {Zko} from "../../proto"
 import {WriterContext} from "../WriterContext"
 
-export function materialWriter(ctx: WriterContext, material: ZMaterial): Zko.ZkRefMaterial {
+export function materialWriter(ctx: WriterContext, material: ZMaterial): Zko.ZkMaterial {
     if (_.isNil(material)) {
         return
     }
@@ -13,14 +13,10 @@ export function materialWriter(ctx: WriterContext, material: ZMaterial): Zko.ZkR
     if (!_.isNil(texture)) {
         zkTexture = textureWriter(ctx, texture)
     }
-    return Zko.ZkRefMaterial.create({
+    return Zko.ZkMaterial.create({
         refId: material.refId,
-        isReference: false,
-        data: Zko.ZkMaterial.create({
-            texture: zkTexture
-        })
+        texture: zkTexture
     })
-
 }
 
 function textureWriter(_ctx: WriterContext, texture: ZTexture): Zko.ZkRefTexture {
