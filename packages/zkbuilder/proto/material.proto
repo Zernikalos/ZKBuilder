@@ -1,8 +1,17 @@
 package Zko;
 
+message ZkPbrMaterial {
+    required ZkColor color = 1;
+    required ZkColor emissive = 2;
+    required float emissiveIntensity = 3;
+    required float metalness = 4;
+    required float roughness = 5;
+}
+
 message ZkMaterial {
   required string refId = 1;
-  optional ZkRefTexture texture = 10;
+  optional ZkPbrMaterial pbr = 10;
+  optional ZkRefTexture texture = 100;
 }
 
 message ZkRefTexture {

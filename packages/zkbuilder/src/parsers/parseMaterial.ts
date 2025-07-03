@@ -1,8 +1,9 @@
-import {ZMaterial} from "../zernikalos/material/ZMaterial";
-import {Material, Texture} from "three";
+import {ZMaterial, ZPbrMaterialData} from "../zernikalos/material/ZMaterial";
+import {Material, MeshStandardMaterial, Texture} from "three";
 import _ from "lodash";
 import {ZTexture} from "../zernikalos/material/ZTexture";
 import {ParserContext} from "./ParserContext";
+import { ZColor } from "../zernikalos/math/ZColor";
 
 export async function parseMaterial(ctx: ParserContext,mat: Material): Promise<ZMaterial | undefined> {
     if (_.isNil(mat)) {
@@ -15,6 +16,10 @@ export async function parseMaterial(ctx: ParserContext,mat: Material): Promise<Z
 
     const material = ZMaterial.init()
 
+    if (mat instanceof MeshStandardMaterial) {
+        material.pbr = parseMeshStandardMaterial(mat)
+    }
+
     // @ts-ignore
     const tex = mat?.map
     if (!_.isNil(tex)) {
@@ -24,6 +29,18 @@ export async function parseMaterial(ctx: ParserContext,mat: Material): Promise<Z
 
     return material
 }
+
+function parseMeshStandardMaterial(material: MeshStandardMaterial): ZPbrMaterialData {
+    const pbrMaterial = new ZPbrMaterialData(
+        ZColor.initWithValues(material.color.r, material.color.g, material.color.b),
+        ZColor.initWithValues(material.emissive.r, material.emissive.g, material.emissive.b),
+        material.emissiveIntensity,
+        material.metalness,
+        material.roughness
+    )
+    return pbrMaterial
+}
+    
 
 async function parseTexture(ctx: ParserContext, tex: Texture): Promise<ZTexture> {
     if (ctx.hasComponent(tex.uuid + ".Texture")) {

@@ -15,7 +15,8 @@ export function materialWriter(ctx: WriterContext, material: ZMaterial): Zko.ZkM
     }
     return Zko.ZkMaterial.create({
         refId: material.refId,
-        texture: zkTexture
+        pbr: Zko.ZkPbrMaterial.fromObject(material.pbr),
+        texture: zkTexture,
     })
 }
 
