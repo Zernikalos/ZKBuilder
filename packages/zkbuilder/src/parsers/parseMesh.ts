@@ -168,12 +168,7 @@ export function parseMesh(ctx: ParserContext, mesh: Mesh | SkinnedMesh): ZMesh {
     let geometry = mesh.geometry
     const zmesh = ZMesh.init()
 
-    // TODO: Make this optional with a flag
-    // In case no index is reported create it
-    if (_.isNil(geometry.index)) {
-        geometry = BufferGeometryUtils.mergeVertices(geometry)
-    }
-    geometry = BufferGeometryUtils.toTrianglesDrawMode(geometry, TrianglesDrawMode)
+    geometry = sanitizeGeometry(geometry)
 
     const {keys, rawBuffers} = parseBuffersAndKeys(geometry)
 
@@ -182,6 +177,20 @@ export function parseMesh(ctx: ParserContext, mesh: Mesh | SkinnedMesh): ZMesh {
     ctx.registerComponent(mesh.uuid, zmesh)
 
     return zmesh
+}
+
+// TODO: Make this optional with a flag
+// In case no index is reported create it
+function sanitizeGeometry(geometry: BufferGeometry) {
+    if (_.isNil(geometry.index)) {
+        geometry = BufferGeometryUtils.mergeVertices(geometry)
+    }
+    if (!geometry.hasAttribute("normal")) {
+        geometry.computeVertexNormals()
+    }
+    geometry = BufferGeometryUtils.toTrianglesDrawMode(geometry, TrianglesDrawMode)
+
+    return geometry
 }
 
 function buildZBuffers(keys: ZBufferKey[], rawBuffers: ZRawBuffer[]): ZBuffer[] {
