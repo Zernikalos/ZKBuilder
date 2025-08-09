@@ -4,9 +4,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@zernikalos/zernikalos': link:../Zernikalos/build/js/packages/@zernikalos/zernikalos
+
 importers:
 
-  .: {}
+  .:
+    dependencies:
+      '@zernikalos/zernikalos':
+        specifier: link:../Zernikalos/build/js/packages/@zernikalos/zernikalos
+        version: link:../Zernikalos/build/js/packages/@zernikalos/zernikalos
 
   packages/zkbuilder:
     dependencies:
@@ -14,8 +21,8 @@ importers:
         specifier: 0.9.8
         version: 0.9.8
       '@zernikalos/zernikalos':
-        specifier: 0.2.0
-        version: 0.2.0
+        specifier: link:../../../Zernikalos/build/js/packages/@zernikalos/zernikalos
+        version: link:../../../Zernikalos/build/js/packages/@zernikalos/zernikalos
       get-own-enumerable-property-symbols:
         specifier: 3.0.2
         version: 3.0.2
@@ -325,9 +332,6 @@ packages:
 
   '@xtuc/long@4.2.2':
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
-
-  '@zernikalos/zernikalos@0.2.0':
-    resolution: {integrity: sha512-kiI6SNLHF2u0lkq+lNgKKHt7SeyK5WQkDamJelD6qe05eoK8f6PimS21FGtkNi1r/GHt2OwOAMeNkIBvEDDWKQ==, tarball: https://npm.pkg.github.com/download/@zernikalos/zernikalos/0.2.0/3be53e40322881054c2a854b0805d407a56a6a55}
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -1069,9 +1073,6 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  ua-parser-js@1.0.37:
-    resolution: {integrity: sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==}
-
   uc.micro@2.1.0:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
 
@@ -1402,10 +1403,6 @@ snapshots:
   '@xtuc/ieee754@1.2.0': {}
 
   '@xtuc/long@4.2.2': {}
-
-  '@zernikalos/zernikalos@0.2.0':
-    dependencies:
-      ua-parser-js: 1.0.37
 
   acorn-jsx@5.3.2(acorn@8.14.0):
     dependencies:
@@ -2057,8 +2054,6 @@ snapshots:
       prelude-ls: 1.1.2
 
   typescript@5.8.3: {}
-
-  ua-parser-js@1.0.37: {}
 
   uc.micro@2.1.0: {}
 

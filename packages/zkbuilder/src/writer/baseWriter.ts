@@ -18,7 +18,7 @@ export async function writeZko(zkoParsed: ZkoParsed): Promise<ZkoFormat> {
         actions = zkoParsed.actions.map((action) => Zko.ZkSkeletalAction.fromObject(action))
     }
     if (!_.isNil(zkoParsed.textures)) {
-     textures = zkoParsed.textures.map((texture) => Zko.ZkTexture.fromObject(texture))
+        textures = zkoParsed.textures.map((texture) => Zko.ZkTexture.fromObject(texture))
     }
     const objects = sortObjectList([...objectMap.values()])
     return new Zko.ZkoFormat({

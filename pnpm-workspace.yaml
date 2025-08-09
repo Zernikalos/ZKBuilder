@@ -1,3 +1,6 @@
 packages:
-  - 'packages/zkbuilder'
-  - 'packages/zkbuilder-cli'
+  - packages/zkbuilder
+  - packages/zkbuilder-cli
+
+overrides:
+  '@zernikalos/zernikalos': link:../Zernikalos/build/js/packages/@zernikalos/zernikalos
