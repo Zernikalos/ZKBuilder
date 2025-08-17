@@ -3,7 +3,6 @@ import {postProcess} from "./post";
 import {ZkoParseableObject} from "./formats/ZkoParseableObject";
 import {ZObject} from "./zernikalos/ZObject";
 import _ from "lodash";
-import {IdGenerator} from "./utils/IdGenerator";
 import {preProcess} from "./pre";
 import {parseActions} from "./parsers/parseActions";
 import {ZSkeletalAction} from "./zernikalos/action/ZSkeletalAction";
@@ -19,6 +18,7 @@ export const DEFAULT_PARSE_OPTIONS: ParseOptions = {
 
 }
 
+// TODO: Maybe this object should honor the Zko input format
 export interface ZkoParsed {
     root: ZObject,
     textures: ZTexture[],
@@ -30,18 +30,16 @@ export async function zkParse(parseableObject: ZkoParseableObject, _options: Par
     // @ts-ignore
     const mergedOptions = _.merge({}, DEFAULT_PARSE_OPTIONS)
 
-    IdGenerator.parseBegin()
-
     const threeObj = preProcess(parseableObject._threeObj, mergedOptions)
     const actions  = parseableObject._actions
 
     try {
+        // TODO: We could split this into two functions, one for the object and one for the textures
         const {zObject, textures} = await parseObject(threeObj)
         const zactions = parseActions(actions, threeObj)
 
         const resultZObject = postProcess(zObject)
 
-        IdGenerator.reset()
         return {root: resultZObject, textures, actions: zactions}
     } catch (e) {
         console.error(`Error parsing the object. Error: ${e}`)

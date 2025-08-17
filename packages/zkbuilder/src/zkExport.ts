@@ -1,10 +1,10 @@
-import {buf2hex} from "./utils/buf2hex";
 import {merge} from "lodash";
 import {jsonWrite} from "./writer/jsonWriter";
 import {protoWrite} from "./writer/protoWriter";
 import {objectWrite} from "./writer/objectWriter";
 import {ZkoParsed} from "./zkParse";
 import {Zko, ZkoFormat} from "./proto";
+import _ from "lodash";
 
 export type ExportFormat = 'json' | 'proto' | 'object'
 
@@ -23,6 +23,10 @@ export const DEFAULT_EXPORT_OPTIONS: ExportOptions = {
 export async function zkExport(zkParsed: ZkoParsed, options: ExportOptions = DEFAULT_EXPORT_OPTIONS): Promise<string | Uint8Array | ZkoFormat> {
     let result
 
+    if (_.isNil(zkParsed)) {
+        throw new Error("ZkoParsed is required")
+    }
+
     const mergedOptions = merge({}, DEFAULT_EXPORT_OPTIONS, options)
     const {format} = mergedOptions
     switch (format) {
@@ -37,16 +41,17 @@ export async function zkExport(zkParsed: ZkoParsed, options: ExportOptions = DEF
             break
     }
     if (options.stringify) {
-        result = stringify(result)
+        if (options.format === "proto") {
+            throw new Error("Cannot stringify binary format")
+        }
+        result = stringify(result as string | ZkoFormat)
     }
     return result
 }
 
-function stringify(parsed: string | Uint8Array | ZkoFormat): string {
+function stringify(parsed: string | ZkoFormat): string {
     if (typeof parsed === 'string') {
         return parsed
-    } else if (parsed instanceof Uint8Array) {
-        return buf2hex(parsed)
     } else if (parsed instanceof Zko.ZkoObjectProto) {
         return JSON.stringify(parsed)
     }
