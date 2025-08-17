@@ -22,4 +22,7 @@ export type { ParseOptions } from "./zkParse"
 export {zkExport, DEFAULT_EXPORT_OPTIONS} from "./zkExport"
 export type { ExportOptions, ExportFormat } from "./zkExport"
 
+export {zkConvert, DEFAULT_CONVERT_OPTIONS} from "./zkConvert"
+export type { ConvertOptions, ZkConvertResult } from "./zkConvert"
+
 export {findById} from "./tools"
