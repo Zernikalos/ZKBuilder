@@ -20,8 +20,5 @@
   "workspaces": [
     "packages/zkbuilder",
     "packages/zkbuilder-cli"
-  ],
-  "dependencies": {
-    "@zernikalos/zernikalos": "link:../Zernikalos/build/js/packages/@zernikalos/zernikalos"
-  }
+  ]
 }
