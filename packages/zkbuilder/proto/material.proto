@@ -8,9 +8,18 @@ message ZkPbrMaterial {
     required float roughness = 5;
 }
 
+message ZkPhongMaterial {
+
+  required ZkColor diffuse = 1;
+  required ZkColor ambient = 2;
+  required ZkColor specular = 3;
+  required float shininess = 4;
+}
+
 message ZkMaterial {
   required string refId = 1;
   optional ZkPbrMaterial pbr = 10;
+  optional ZkPhongMaterial phong = 11;
   optional ZkRefTexture texture = 100;
 }
 

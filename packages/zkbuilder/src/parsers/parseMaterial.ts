@@ -1,5 +1,5 @@
-import {ZMaterial, ZPbrMaterialData} from "../zernikalos/material/ZMaterial";
-import {Material, MeshStandardMaterial, Texture} from "three";
+import {ZMaterial, ZPbrMaterialData, ZPhongMaterialData} from "../zernikalos/material/ZMaterial";
+import {Material, MeshPhongMaterial, MeshStandardMaterial, Texture} from "three";
 import _ from "lodash";
 import {ZTexture} from "../zernikalos/material/ZTexture";
 import {ParserContext} from "./ParserContext";
@@ -18,6 +18,10 @@ export async function parseMaterial(ctx: ParserContext,mat: Material): Promise<Z
 
     if (mat instanceof MeshStandardMaterial) {
         material.pbr = parseMeshStandardMaterial(mat)
+    }
+
+    if (mat instanceof MeshPhongMaterial) {
+        material.phong = parseMeshPhongMaterial(mat)
     }
 
     // @ts-ignore
@@ -40,7 +44,16 @@ function parseMeshStandardMaterial(material: MeshStandardMaterial): ZPbrMaterial
     )
     return pbrMaterial
 }
-    
+
+function parseMeshPhongMaterial(material: MeshPhongMaterial): ZPhongMaterialData {
+    const phongMaterial = new ZPhongMaterialData(
+        ZColor.initWithValues(material.color.r, material.color.g, material.color.b),
+        ZColor.initWithValues(material.emissive.r, material.emissive.g, material.emissive.b),
+        ZColor.initWithValues(material.specular.r, material.specular.g, material.specular.b),
+        material.shininess
+    )
+    return phongMaterial
+}
 
 async function parseTexture(ctx: ParserContext, tex: Texture): Promise<ZTexture> {
     if (ctx.hasComponent(tex.uuid + ".Texture")) {
