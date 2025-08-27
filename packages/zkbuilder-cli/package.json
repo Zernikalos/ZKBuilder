@@ -29,7 +29,7 @@
     "postbuild": "chmod +x dist/zkcli.js"
   },
   "dependencies": {
-    "@zernikalos/zkbuilder": "workspace:*",
+    "@zernikalos/zkbuilder": "0.0.2",
     "@zernikalos/zernikalos": "0.4.0",
     "commander": "14.0.0"
   },

@@ -84,8 +84,8 @@ importers:
         specifier: 0.4.0
         version: 0.4.0
       '@zernikalos/zkbuilder':
-        specifier: workspace:*
-        version: link:../zkbuilder
+        specifier: 0.0.2
+        version: 0.0.2
       commander:
         specifier: 14.0.0
         version: 14.0.0
@@ -326,8 +326,14 @@ packages:
   '@xtuc/long@4.2.2':
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
 
+  '@zernikalos/zernikalos@0.2.0':
+    resolution: {integrity: sha512-kiI6SNLHF2u0lkq+lNgKKHt7SeyK5WQkDamJelD6qe05eoK8f6PimS21FGtkNi1r/GHt2OwOAMeNkIBvEDDWKQ==, tarball: https://npm.pkg.github.com/download/@zernikalos/zernikalos/0.2.0/3be53e40322881054c2a854b0805d407a56a6a55}
+
   '@zernikalos/zernikalos@0.4.0':
     resolution: {integrity: sha512-dKf0c7rzgLhkWVPK1AOewyn/6QrrzTZcGnoWboxzlDDgoXZ1Kocl1vXHmR7FIq3LV+ozEQbWzDzrRGY+Lbgurw==, tarball: https://npm.pkg.github.com/download/@zernikalos/zernikalos/0.4.0/1264c986e3e598849f8c9bf814de216a75b8df8b}
+
+  '@zernikalos/zkbuilder@0.0.2':
+    resolution: {integrity: sha512-KmVA1z68t8FEVlH5x4jVBdDiu3o0bNkOGInAD1bcVmMrS2ctzAXLTYpkDAfdJ+tQy9KB+KGTU449UDLMRcvqGg==, tarball: https://npm.pkg.github.com/download/@zernikalos/zkbuilder/0.0.2/7bf09e4f9f9973bc7a7c3c1c51c47070dec686a2}
 
   acorn-import-phases@1.0.4:
     resolution: {integrity: sha512-wKmbr/DDiIXzEOiWrTTUcDm24kQ2vGfZQvM2fwg2vXqR5uW6aapr7ObPtj1th32b9u90/Pf4AItvdTh42fBmVQ==}
@@ -893,6 +899,10 @@ packages:
     peerDependencies:
       protobufjs: ^7.0.0
 
+  protobufjs@7.5.3:
+    resolution: {integrity: sha512-sildjKwVqOI2kmFDiXQ6aEB0fjYTafpEvIBs8tOR8qI4spuL9OPROLVu2qZqi/xgCfsHIwVqlaF8JBjWFHnKbw==}
+    engines: {node: '>=12.0.0'}
+
   protobufjs@7.5.4:
     resolution: {integrity: sha512-CvexbZtbov6jW2eXAvLukXjXUW1TzFaivC46BpWc/3BpcCysb5Vffu+B3XHMm8lVEuy2Mm4XGex8hBSg1yapPg==}
     engines: {node: '>=12.0.0'}
@@ -1043,6 +1053,9 @@ packages:
     resolution: {integrity: sha512-+6erLbBm0+LROX2sPXlUYx/ux5PyE9K/a92Wrt6oA+WDAoFTdpHE5tCYCI5PNzq2y8df4rA+QgHLJuR4jNymsg==}
     engines: {node: '>=10'}
     hasBin: true
+
+  three@0.178.0:
+    resolution: {integrity: sha512-ybFIB0+x8mz0wnZgSGy2MO/WCO6xZhQSZnmfytSPyNpM0sBafGRVhdaj+erYh5U+RhQOAg/eXqw5uVDiM2BjhQ==}
 
   three@0.179.1:
     resolution: {integrity: sha512-5y/elSIQbrvKOISxpwXCR4sQqHtGiOI+MKLc3SsBdDXA2hz3Mdp3X59aUp8DyybMa34aeBwbFTpdoLJaUDEWSw==}
@@ -1410,9 +1423,25 @@ snapshots:
 
   '@xtuc/long@4.2.2': {}
 
+  '@zernikalos/zernikalos@0.2.0':
+    dependencies:
+      ua-parser-js: 1.0.37
+
   '@zernikalos/zernikalos@0.4.0':
     dependencies:
       ua-parser-js: 1.0.37
+
+  '@zernikalos/zkbuilder@0.0.2':
+    dependencies:
+      '@xmldom/xmldom': 0.9.8
+      '@zernikalos/zernikalos': 0.2.0
+      get-own-enumerable-property-symbols: 3.0.2
+      is-obj: 3.0.0
+      is-regexp: 3.1.0
+      isbinaryfile: 5.0.4
+      lodash: 4.17.21
+      protobufjs: 7.5.3
+      three: 0.178.0
 
   acorn-import-phases@1.0.4(acorn@8.15.0):
     dependencies:
@@ -1896,6 +1925,21 @@ snapshots:
       tmp: 0.2.5
       uglify-js: 3.19.3
 
+  protobufjs@7.5.3:
+    dependencies:
+      '@protobufjs/aspromise': 1.1.2
+      '@protobufjs/base64': 1.1.2
+      '@protobufjs/codegen': 2.0.4
+      '@protobufjs/eventemitter': 1.1.0
+      '@protobufjs/fetch': 1.1.0
+      '@protobufjs/float': 1.0.2
+      '@protobufjs/inquire': 1.1.0
+      '@protobufjs/path': 1.1.2
+      '@protobufjs/pool': 1.1.0
+      '@protobufjs/utf8': 1.1.0
+      '@types/node': 24.3.0
+      long: 5.3.2
+
   protobufjs@7.5.4:
     dependencies:
       '@protobufjs/aspromise': 1.1.2
@@ -2042,6 +2086,8 @@ snapshots:
       acorn: 8.15.0
       commander: 2.20.3
       source-map-support: 0.5.21
+
+  three@0.178.0: {}
 
   three@0.179.1: {}
 
