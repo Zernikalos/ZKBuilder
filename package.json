@@ -4,17 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:node": "pnpm build:node:builder && pnpm build:node:cli",
-    "build:node:builder": "pnpm --filter=@zernikalos/zkbuilder build:node",
-    "build:node:cli": "pnpm --filter=@zernikalos/zkbuilder-cli build:node",
-    "build:browser": "pnpm --filter=@zernikalos/zkbuilder build:browser",
-    "build": "pnpm build:node && pnpm build:browser",
-    "generate": "pnpm --filter=@zernikalos/zkbuilder generate",
-    "clean": "pnpm -r clean"
+    "build:node": "lerna run build:node",
+    "build:node:builder": "lerna run build:node --scope=@zernikalos/zkbuilder",
+    "build:node:cli": "lerna run build:node --scope=@zernikalos/zkbuilder-cli",
+    "build:browser": "lerna run build:browser --scope=@zernikalos/zkbuilder",
+    "build": "lerna run build",
+    "generate": "lerna run generate --scope=@zernikalos/zkbuilder",
+    "clean": "lerna run clean",
+    "dev": "lerna run start --parallel",
+    "test": "lerna run test",
+    "lint": "lerna run lint",
+    "newversion": "lerna version --no-push --yes",
+    "publish": "lerna publish"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Zernikalos/ZKBuilder.git"
+  },
+  "devDependencies": {
+    "lerna": "8.2.3"
   },
   "private": true,
   "workspaces": [

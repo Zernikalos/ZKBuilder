@@ -1,6 +1,6 @@
 {
   "name": "@zernikalos/zkbuilder-cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CLI utility for ZkBuilder",
   "main": "dist/zkcli.js",
   "type": "commonjs",
@@ -23,13 +23,13 @@
     "directory": "packages/zkbuilder-cli"
   },
   "scripts": {
-    "build:node": "pnpm build",
+    "build:node": "pnpm run build",
     "build": "webpack",
     "prebuild": "rimraf dist",
     "postbuild": "chmod +x dist/zkcli.js"
   },
   "dependencies": {
-    "@zernikalos/zkbuilder": "0.0.2",
+    "@zernikalos/zkbuilder": "workspace:*",
     "@zernikalos/zernikalos": "0.4.0",
     "commander": "14.0.0"
   },
