@@ -1,3 +1,6 @@
 packages:
   - packages/zkbuilder
   - packages/zkbuilder-cli
+
+onlyBuiltDependencies:
+  - protobufjs
