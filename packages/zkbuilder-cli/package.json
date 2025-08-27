@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@zernikalos/zkbuilder": "workspace:*",
-    "@zernikalos/zernikalos": "*",
+    "@zernikalos/zernikalos": "0.4.0",
     "commander": "14.0.0"
   },
   "devDependencies": {

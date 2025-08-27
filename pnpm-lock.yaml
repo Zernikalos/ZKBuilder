@@ -14,8 +14,8 @@ importers:
         specifier: 0.9.8
         version: 0.9.8
       '@zernikalos/zernikalos':
-        specifier: '*'
-        version: 0.3.0
+        specifier: 0.4.0
+        version: 0.4.0
       get-own-enumerable-property-symbols:
         specifier: 3.0.2
         version: 3.0.2
@@ -81,7 +81,7 @@ importers:
   packages/zkbuilder-cli:
     dependencies:
       '@zernikalos/zernikalos':
-        specifier: '*'
+        specifier: 0.4.0
         version: 0.4.0
       '@zernikalos/zkbuilder':
         specifier: workspace:*
@@ -325,9 +325,6 @@ packages:
 
   '@xtuc/long@4.2.2':
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
-
-  '@zernikalos/zernikalos@0.3.0':
-    resolution: {integrity: sha512-CwU0ww6SZD3FjLhs3jHpKtXNarKOBzIA1PPE+VoTQru3zE26Jdw9VUbhU3S7fMLUrtXwLyzQTWH2cx5Y8ry57Q==, tarball: https://npm.pkg.github.com/download/@zernikalos/zernikalos/0.3.0/3e8a1ccbf462d5d7ee973e3e96230817975a8a8b}
 
   '@zernikalos/zernikalos@0.4.0':
     resolution: {integrity: sha512-dKf0c7rzgLhkWVPK1AOewyn/6QrrzTZcGnoWboxzlDDgoXZ1Kocl1vXHmR7FIq3LV+ozEQbWzDzrRGY+Lbgurw==, tarball: https://npm.pkg.github.com/download/@zernikalos/zernikalos/0.4.0/1264c986e3e598849f8c9bf814de216a75b8df8b}
@@ -1412,10 +1409,6 @@ snapshots:
   '@xtuc/ieee754@1.2.0': {}
 
   '@xtuc/long@4.2.2': {}
-
-  '@zernikalos/zernikalos@0.3.0':
-    dependencies:
-      ua-parser-js: 1.0.37
 
   '@zernikalos/zernikalos@0.4.0':
     dependencies:
