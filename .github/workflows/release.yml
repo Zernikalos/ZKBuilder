@@ -35,7 +35,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: 10
 
       # 3. Sets up Node.js and configures it to use the GitHub Packages registry for the @zernikalos scope
       - name: Setup Node.js
@@ -48,7 +48,7 @@ jobs:
 
       # 4. Installs dependencies. The NODE_AUTH_TOKEN is automatically used by npm/pnpm for authentication.
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --recursive --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -62,6 +62,6 @@ jobs:
 
       # 7. Publish packages to GitHub Packages registry
       - name: Publish packages
-        run: pnpm publish --no-git-checks
+        run: pnpm publish --recursive
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
