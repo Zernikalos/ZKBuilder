@@ -136,8 +136,8 @@ def confirm_release(version, no_push):
     print()
     print_warning("This will:")
     print("  1. Update all package.json files to version {version}")
-    print("  2. Create release commit")
-    print("  3. Create git tag v{version}")
+    print("  2. Create release commit and git tag (via lerna)")
+    print("  3. [SKIP] Push changes (--no-push flag detected)")
     
     if no_push:
         print("  4. [SKIP] Push changes (--no-push flag detected)")
@@ -153,34 +153,19 @@ def confirm_release(version, no_push):
 
 
 def update_package_versions(version):
-    """Update all package versions using npm"""
+    """Update all package versions using pnpm newversion"""
     print_status("Updating package versions...")
     
-    # Use npm version with workspaces
-    result = run_command(f"npm version {version} --workspaces --no-git-tag", capture_output=True)
+    # Use pnpm newversion script
+    result = run_command(f"pnpm newversion {version}", capture_output=True)
     
     if result.returncode == 0:
-        print_success("All package versions updated with npm")
+        print_success("All package versions updated with pnpm newversion")
         print(result.stdout)
     else:
         print_error("Failed to update package versions")
         print(result.stderr)
         sys.exit(1)
-
-
-def create_release_commit(version):
-    """Create release commit"""
-    print_status("Creating release commit...")
-    run_command("git add .")
-    run_command(f'git commit -m "Release v{version}"')
-    print_success("Release commit created")
-
-
-def create_git_tag(version):
-    """Create git tag"""
-    print_status(f"Creating git tag v{version}...")
-    run_command(f"git tag v{version}")
-    print_success(f"Git tag v{version} created")
 
 
 def push_changes(version, no_push):
@@ -238,17 +223,16 @@ Examples:
     # Execute release steps
     try:
         update_package_versions(args.version)
-        create_release_commit(args.version)
-        create_git_tag(args.version)
         push_changes(args.version, args.no_push)
         
         print()
         print_success(f"Release v{args.version} completed successfully!")
         
         if args.no_push:
-            print_warning("Remember to push manually when ready:")
-            print(f"  git push origin main")
-            print(f"  git push origin v{args.version}")
+                    print_warning("Remember to push manually when ready:")
+        print(f"  git push origin main")
+        print(f"  git push origin v{args.version}")
+        print("  Or use: pnpm publish")
         
     except Exception as e:
         print_error(f"Release failed: {e}")

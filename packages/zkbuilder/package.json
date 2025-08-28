@@ -1,6 +1,6 @@
 {
   "name": "@zernikalos/zkbuilder",
-  "version": "0.0.2",
+  "version": "0.2.0",
   "license": "MPL 2.0",
   "author": "Aaron Negrin",
   "publishConfig": {
@@ -23,19 +23,19 @@
   "types": "./build/src/index.d.ts",
   "scripts": {
     "start": "webpack watch --mode=development",
-    "build": "npm-run-all build:browser build:node",
+    "build": "pnpm run build:browser && pnpm run build:node",
     "build:browser": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "build:profile": "webpack --env useMode=profile",
     "build:node": "webpack --mode=development --target=node",
-    "prebuild": "npm-run-all clean:build",
+    "prebuild": "pnpm run clean:build",
     "parse": "babel-node index.js",
-    "generate": "run-s clean:proto proto:folder proto:generate",
+    "generate": "pnpm run clean:proto && pnpm run proto:folder && pnpm run proto:generate",
     "proto:folder": "make-dir protobuild",
-    "proto:generate": "run-s proto:generate:pbjs proto:generate:pbts",
+    "proto:generate": "pnpm run proto:generate:pbjs && pnpm run proto:generate:pbts",
     "proto:generate:pbjs": "pbjs --target static-module --wrap es6 --es6 --force-message --no-delimited --out protobuild/index.js proto/zko.proto",
     "proto:generate:pbts": "pbts --no-comments --out protobuild/index.d.ts protobuild/index.js",
-    "clean": "run-s clean:proto clean:build clean:modules",
+    "clean": "pnpm run clean:proto && pnpm run clean:build && pnpm run clean:modules",
     "clean:proto": "rimraf protobuild",
     "clean:build": "rimraf dist build dist-browser dist-node",
     "clean:modules": "rimraf node_modules"
