@@ -45,27 +45,27 @@
     "get-own-enumerable-property-symbols": "3.0.2",
     "is-obj": "3.0.0",
     "is-regexp": "3.1.0",
-    "isbinaryfile": "5.0.4",
+    "isbinaryfile": "5.0.7",
     "lodash": "4.17.21",
     "protobufjs": "7.5.4",
-    "three": "0.179.1"
+    "three": "0.180.0"
   },
   "devDependencies": {
     "@types/lodash": "4.17.20",
-    "@types/node": "24.3.0",
-    "@types/three": "0.179.0",
+    "@types/node": "24.10.1",
+    "@types/three": "0.180.0",
     "make-dir-cli": "4.0.0",
     "npm-run-all2": "8.0.4",
     "protobufjs-cli": "1.1.3",
-    "rimraf": "6.0.1",
+    "rimraf": "6.1.0",
     "ts-loader": "9.5.4",
-    "typescript": "5.9.2",
-    "webpack": "5.101.3",
+    "typescript": "5.9.3",
+    "webpack": "5.102.1",
     "webpack-bundle-analyzer": "4.10.2",
     "webpack-cli": "6.0.1",
     "webpack-merge": "6.0.1"
   },
   "peerDependencies": {
-    "@zernikalos/zernikalos": "0.4.1"
+    "@zernikalos/zernikalos": ""
   }
 }
