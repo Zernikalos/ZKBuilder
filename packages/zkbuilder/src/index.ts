@@ -25,4 +25,6 @@ export type { ExportOptions, ExportFormat } from "./zkExport"
 export {zkConvert, DEFAULT_CONVERT_OPTIONS} from "./zkConvert"
 export type { ConvertOptions, ZkConvertResult } from "./zkConvert"
 
+export {ZkPipeline} from "./ZkPipeline"
+
 export {findById} from "./tools"

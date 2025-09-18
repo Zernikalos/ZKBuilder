@@ -1,5 +1,5 @@
 import {ZkBuilderCliOptions} from "./ZkBuilderCliOptions";
-import { zkLoad, zkParse, zkExport } from '@zernikalos/zkbuilder';
+import { ZkPipeline } from '@zernikalos/zkbuilder';
 import { writeFileSync } from 'fs';
 import * as path from 'path';
 
@@ -7,17 +7,14 @@ export async function processFile(options: ZkBuilderCliOptions): Promise<void> {
     const absoluteInputPath = path.resolve(options.input);
     const absoluteOutputPath = path.resolve(options.output);
 
-    // Load the file
-    const loaded = await zkLoad({
+    // Convert the file using the new ZkPipeline
+    const pipeline = new ZkPipeline();
+    await pipeline.load({
         filePath: absoluteInputPath,
         format: options.inputFormat
     });
-
-    // Parse the loaded content
-    const parsed = await zkParse(loaded);
-
-    // Export to desired format
-    const result = await zkExport(parsed, {
+    await pipeline.parse();
+    const result = await pipeline.export({
         format: options.outputFormat
     });
 
