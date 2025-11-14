@@ -5,9 +5,10 @@
   "main": "dist/zkcli.js",
   "type": "commonjs",
   "bin": {
-    "zkcli": "./dist/zkcli.js"
+    "zkcli": "./bin/zkcli"
   },
   "files": [
+    "bin",
     "dist",
     "README.md"
   ],
@@ -26,19 +27,20 @@
     "build:node": "pnpm run build",
     "build": "webpack",
     "prebuild": "rimraf dist",
-    "postbuild": "chmod +x dist/zkcli.js"
+    "postbuild": "chmod +x bin/zkcli",
+    "zkcli": "zkcli"
   },
   "dependencies": {
-    "@zernikalos/zernikalos": "0.4.0",
+    "@zernikalos/zernikalos": "*",
     "@zernikalos/zkbuilder": "workspace:*",
-    "commander": "14.0.0"
+    "commander": "14.0.2"
   },
   "devDependencies": {
-    "@types/node": "24.3.0",
-    "rimraf": "6.0.1",
+    "@types/node": "24.10.1",
+    "rimraf": "6.1.0",
     "ts-loader": "9.5.4",
-    "typescript": "5.9.2",
-    "webpack": "5.101.3",
+    "typescript": "5.9.3",
+    "webpack": "5.102.1",
     "webpack-cli": "6.0.1"
   }
 }

@@ -1,7 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
+
+const packageJson = require(path.join(__dirname, '..', 'package.json'));
 
 const ENTRY_NAME = 'zkbuilder'
 const ROOT_PATH = path.join(__dirname, '..');
+const BUILDER_VERSION = packageJson.version;
 
 const tsLoaderRule = {
     loader: 'ts-loader',
@@ -39,6 +43,11 @@ function buildBaseConfig({entryName} = {entryName: ENTRY_NAME}) {
                 }
             ]
         },
+        plugins: [
+            new webpack.DefinePlugin({
+                __ZKBUILDER_VERSION__: JSON.stringify(BUILDER_VERSION),
+            })
+        ]
     };
 }
 

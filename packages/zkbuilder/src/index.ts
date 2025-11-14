@@ -1,3 +1,6 @@
+export {ZKBUILDER_VERSION} from "./constants/ZkBuilderVersion"
+export {ZKO_VERSION} from "./constants/ZkoVersion"
+
 export {ZObject} from "./zernikalos/ZObject"
 export {ZObjectType} from "./zernikalos/ZObjectType"
 export {ZModel} from "./zernikalos/ZModel"
@@ -24,5 +27,7 @@ export type { ExportOptions, ExportFormat } from "./zkExport"
 
 export {zkConvert, DEFAULT_CONVERT_OPTIONS} from "./zkConvert"
 export type { ConvertOptions, ZkConvertResult } from "./zkConvert"
+
+export {ZkPipeline} from "./ZkPipeline"
 
 export {findById} from "./tools"

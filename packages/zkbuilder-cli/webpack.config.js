@@ -1,4 +1,5 @@
 const path = require('path');
+const packageJson = require('./package.json');
 
 module.exports = {
     target: 'node',
@@ -25,8 +26,11 @@ module.exports = {
         minimize: false
     },
     externals: {
-        // Aquí puedes listar dependencias que no quieres que se incluyan en el bundle
-        // Por ejemplo, módulos nativos de Node.js
-        //'fsevents': "require('fsevents')"
-    }
+
+    },
+    plugins: [
+        new (require('webpack')).DefinePlugin({
+            'process.env.PACKAGE_VERSION': JSON.stringify(packageJson.version)
+        })
+    ]
 };
