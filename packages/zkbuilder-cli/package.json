@@ -5,9 +5,10 @@
   "main": "dist/zkcli.js",
   "type": "commonjs",
   "bin": {
-    "zkcli": "./dist/zkcli.js"
+    "zkcli": "./bin/zkcli"
   },
   "files": [
+    "bin",
     "dist",
     "README.md"
   ],
@@ -26,7 +27,7 @@
     "build:node": "pnpm run build",
     "build": "webpack",
     "prebuild": "rimraf dist",
-    "postbuild": "chmod +x dist/zkcli.js",
+    "postbuild": "chmod +x bin/zkcli",
     "zkcli": "zkcli"
   },
   "dependencies": {
