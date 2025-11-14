@@ -1,6 +1,7 @@
 import { Command, Option } from 'commander';
 import {processFile} from "./processFile";
 import {InputFileFormat} from "@zernikalos/zkbuilder"
+import {ZKBUILDER_VERSION, ZKO_VERSION} from "@zernikalos/zkbuilder"
 
 const program = new Command();
 
@@ -14,17 +15,10 @@ const ofOptions = new Option('--of, --output-format <format>', 'Output file form
 ofOptions.choices(validOutputFormats)
 ofOptions.default('proto')
 
-// Declarar la variable de entorno que será inyectada por webpack
-declare const process: {
-    env: {
-        PACKAGE_VERSION: string;
-    };
-};
-
 program
     .name('zkcli')
     .description('CLI for generating Zernikalos Game Engine assets')
-    .version(process.env.PACKAGE_VERSION)
+    .version(`v${ZKBUILDER_VERSION}(Zko ${ZKO_VERSION})`)
     .requiredOption('-i, --input <path>', '3D scene input file path')
     .addOption(iffOptions)
     .requiredOption('-o, --output <path>', 'Output file path')

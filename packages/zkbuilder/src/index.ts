@@ -1,3 +1,6 @@
+export {ZKBUILDER_VERSION} from "./constants/ZkBuilderVersion"
+export {ZKO_VERSION} from "./constants/ZkoVersion"
+
 export {ZObject} from "./zernikalos/ZObject"
 export {ZObjectType} from "./zernikalos/ZObjectType"
 export {ZModel} from "./zernikalos/ZModel"
