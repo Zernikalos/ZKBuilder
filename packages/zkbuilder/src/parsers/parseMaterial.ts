@@ -63,8 +63,8 @@ async function parseTexture(ctx: ParserContext, tex: Texture): Promise<ZTexture>
     const internalParseTexture = async (tex: Texture): Promise<ZTexture> => {
         const zTexture = ZTexture.init()
 
-        let data
-        const imgElement = tex.source.data
+        let data: ArrayBuffer
+        const imgElement = tex.source.data as any
         if (imgElement.src !== undefined) {
             let imageSrc = imgElement.src
             const response = await fetch(imageSrc)

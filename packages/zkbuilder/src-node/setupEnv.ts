@@ -66,7 +66,7 @@ class NodeEnv extends Env {
         }
 
         THREE.TextureLoader.prototype.load = ( url, onLoad, _onProgress, onError ) => {
-            const texture = new Texture();
+            const texture = new Texture<HTMLImageElement>();
 
             async function read() {
                 let data: ArrayBuffer | string = loadFromDataUriScheme(url)
@@ -82,7 +82,7 @@ class NodeEnv extends Env {
                     throw new Error(`File ${url} not found`)
                 }
 
-                texture.image = data
+                texture.image = data as any
                 texture.needsUpdate = true
                 onLoad?.(texture)
             }
