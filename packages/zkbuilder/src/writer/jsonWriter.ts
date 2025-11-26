@@ -2,7 +2,7 @@ import stringifyObject from '../utils/stringifyObject'
 
 import {writeZko} from "./baseWriter"
 import {ExportOptions} from "../zkExport"
-import {ZkoParsed} from "../zkParse";
+import {ZkoParsed} from "../parsers";
 
 function jsonReplacer(_key: string, value: any) {
     if (value instanceof Map) {

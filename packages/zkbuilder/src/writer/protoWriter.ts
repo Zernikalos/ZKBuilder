@@ -1,6 +1,6 @@
 import {Zko} from "../proto"
 import {writeZko} from "./baseWriter";
-import {ZkoParsed} from "../zkParse";
+import {ZkoParsed} from "../parsers";
 import ZkoFormat = Zko.ZkoFormat;
 
 export async function protoWrite(zkoParsed: ZkoParsed): Promise<Uint8Array> {

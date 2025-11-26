@@ -1,8 +1,9 @@
 import { ZkoFormat } from "./proto"
 import { InputFileFormat, LoadOptions, zkLoad } from "./zkLoad"
-import { DEFAULT_PARSE_OPTIONS, ParseOptions, ZkoParsed, zkParse } from "./zkParse"
+import { DEFAULT_PARSE_OPTIONS, ParseOptions, zkParse } from "./zkParse"
 import { DEFAULT_EXPORT_OPTIONS, ExportFormat, ExportOptions, zkExport } from "./zkExport"
 import { ZkoParseableObject } from "./formats/ZkoParseableObject"
+import { ZkoParsed } from "./parsers"
 import _ from "lodash"
 
 export interface ConvertOptions {

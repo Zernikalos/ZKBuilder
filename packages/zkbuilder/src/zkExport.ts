@@ -2,7 +2,7 @@ import {merge} from "lodash";
 import {jsonWrite} from "./writer/jsonWriter";
 import {protoWrite} from "./writer/protoWriter";
 import {objectWrite} from "./writer/objectWriter";
-import {ZkoParsed} from "./zkParse";
+import {ZkoParsed} from "./parsers";
 import {Zko, ZkoFormat} from "./proto";
 import _ from "lodash";
 
