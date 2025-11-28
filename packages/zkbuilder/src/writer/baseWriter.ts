@@ -16,7 +16,6 @@ export async function writeZko(zkoParsed: ZkoParsed): Promise<ZkoFormat> {
     if (!_.isNil(zkoParsed.actions)) {
         actions = zkoParsed.actions.map((action) => Zko.ZkSkeletalAction.fromObject(action))
     }
-
     const components = componentCollectionsWrite(zkoParsed)
 
     const objects = sortObjectList([...objectMap.values()])
