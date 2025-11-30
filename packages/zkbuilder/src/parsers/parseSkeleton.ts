@@ -23,6 +23,7 @@ export function parseSkeletonObject(ctx: ParserContext, obj: Bone): { skeleton: 
     const skeleton = new ZSkeleton()
     skeleton.root = root
 
+    // TODO: Check what happens if taking the related skeleton id as the component id
     ctx.registerComponent(boneRoot.uuid, skeleton)
 
     return {skeleton, children}

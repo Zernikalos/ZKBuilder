@@ -162,8 +162,8 @@ export function parseMesh(ctx: ParserContext, mesh: Mesh | SkinnedMesh): ZMesh {
     // BufferGeometryUtils.mergeBufferAttributes(geometry.attributes)
 
     //TODO: Pending to be changed
-    if (ctx.hasComponent(mesh.uuid + ".Mesh")) {
-        return ctx.getComponent(mesh.uuid + ".Mesh") as ZMesh
+    if (ctx.hasComponent(mesh.uuid)) {
+        return ctx.getComponent(mesh.uuid) as ZMesh
     }
 
     let geometry = mesh.geometry
@@ -175,7 +175,7 @@ export function parseMesh(ctx: ParserContext, mesh: Mesh | SkinnedMesh): ZMesh {
 
     const buffers = buildZBuffers(keys, rawBuffers)
     buffers.forEach(buff => zmesh.addBuffer(buff))
-    ctx.registerComponent(mesh.uuid + ".Mesh", zmesh)
+    ctx.registerComponentWithTag(mesh.uuid, "Mesh", zmesh)
 
     return zmesh
 }
