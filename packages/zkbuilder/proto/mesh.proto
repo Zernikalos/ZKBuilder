@@ -26,6 +26,13 @@ message ZkMesh {
   repeated ZkRawBuffer rawBuffers = 102;
 }
 
+message ZkRefMesh {
+  required string refId = 1;
+  required bool isReference = 2;
+
+  optional ZkMesh data = 100;
+}
+
 /**
 BufferKeys are the one in charge to provide specific data about how the information is being stored inside
 the RawBuffer data arrays

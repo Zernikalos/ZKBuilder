@@ -16,3 +16,8 @@ message ZkReference {
   optional ZkTexture texture = 11;
   optional ZkMaterial material = 12;
 }
+
+message ZkComponentCollection {
+  repeated ZkMesh meshes = 1;
+  repeated ZkTexture textures = 2;
+}

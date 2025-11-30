@@ -19,7 +19,8 @@ export type { ImportOptions } from "./zkImport"
 export {zkLoad, DEFAULT_LOAD_OPTIONS} from "./zkLoad"
 export type { LoadOptions, InputFileFormat } from "./zkLoad"
 
-export {zkParse, DEFAULT_PARSE_OPTIONS, ZkoParsed} from "./zkParse"
+export {zkParse, DEFAULT_PARSE_OPTIONS} from "./zkParse"
+export type { ZkoParsed } from "./parsers"
 export type { ParseOptions } from "./zkParse"
 
 export {zkExport, DEFAULT_EXPORT_OPTIONS} from "./zkExport"

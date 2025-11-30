@@ -1,6 +1,7 @@
 import { ZkoFormat } from "./proto"
 import { LoadOptions, zkLoad } from "./zkLoad"
-import { ParseOptions, ZkoParsed, zkParse } from "./zkParse"
+import { ParseOptions, zkParse } from "./zkParse"
+import { ZkoParsed } from "./parsers"
 import { ExportOptions, zkExport } from "./zkExport"
 import { ZkoParseableObject } from "./formats/ZkoParseableObject"
 

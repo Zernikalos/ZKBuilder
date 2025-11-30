@@ -5,7 +5,7 @@ import {ZObjectType} from "../zernikalos/ZObjectType"
 import {modelWriter} from "./sceneobjects/modelWriter"
 import {ZModel} from "../zernikalos/ZModel"
 import {WriterContext} from "./WriterContext"
-import {ZkoParsed} from "../zkParse";
+import {ZkoParsed} from "../parsers";
 import {ZKO_VERSION} from "../constants/ZkoVersion";
 import ZkoObjectProto = Zko.ZkoObjectProto;
 import ZkoHierarchyNode = Zko.ZkoHierarchyNode;
@@ -13,18 +13,16 @@ import ZkoHierarchyNode = Zko.ZkoHierarchyNode;
 export async function writeZko(zkoParsed: ZkoParsed): Promise<ZkoFormat> {
     const {hierarchy, objectMap} = await writeTree(zkoParsed.root)
     let actions: Zko.ZkSkeletalAction[] = []
-    let textures: Zko.ZkTexture[] = []
     if (!_.isNil(zkoParsed.actions)) {
         actions = zkoParsed.actions.map((action) => Zko.ZkSkeletalAction.fromObject(action))
     }
-    if (!_.isNil(zkoParsed.textures)) {
-        textures = zkoParsed.textures.map((texture) => Zko.ZkTexture.fromObject(texture))
-    }
+    const components = componentCollectionsWrite(zkoParsed)
+
     const objects = sortObjectList([...objectMap.values()])
     return new Zko.ZkoFormat({
         header: headerWrite(),
+        components,
         hierarchy,
-        textures,
         objects,
         actions
     })
@@ -52,6 +50,10 @@ function headerWrite(): Zko.ZkoHeader {
     return Zko.ZkoHeader.create({
         version: ZKO_VERSION
     })
+}
+
+function componentCollectionsWrite(zkoParsed: ZkoParsed): Zko.ZkComponentCollection{
+    return Zko.ZkComponentCollection.fromObject(zkoParsed.components)
 }
 
 async function innerWriteTree(
