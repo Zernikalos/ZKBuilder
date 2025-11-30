@@ -1,8 +1,8 @@
 import {Bone, Object3D} from "three";
-import {ZBone} from "../zernikalos/skeleton/ZBone"
+import {ZBone} from "@/zernikalos"
 import {parseTransform} from "./parseTransform"
 import _ from "lodash";
-import {ZSkeleton} from "../zernikalos/ZSkeleton"
+import {ZSkeleton} from "@/zernikalos"
 import {ParserContext} from "./ParserContext";
 
 export class JointNode extends Object3D {

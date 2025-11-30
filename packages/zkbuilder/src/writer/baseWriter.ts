@@ -1,9 +1,9 @@
-import {ZObject} from "../zernikalos/ZObject"
+import {ZObject} from "@/zernikalos"
 import {Zko, ZkoFormat} from "../proto"
 import _ from "lodash"
-import {ZObjectType} from "../zernikalos/ZObjectType"
+import {ZObjectType} from "@/zernikalos"
 import {modelWriter} from "./sceneobjects/modelWriter"
-import {ZModel} from "../zernikalos/ZModel"
+import {ZModel} from "@/zernikalos"
 import {WriterContext} from "./WriterContext"
 import {ZkoParsed} from "../parsers";
 import {ZKO_VERSION} from "../constants/ZkoVersion";

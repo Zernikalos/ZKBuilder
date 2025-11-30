@@ -1,7 +1,7 @@
-import {ZMesh} from "../zernikalos/mesh/ZMesh";
-import {ZTexture} from "../zernikalos/material/ZTexture";
-import {ZObject} from "../zernikalos/ZObject";
-import {ZSkeletalAction} from "../zernikalos/action/ZSkeletalAction";
+import {ZMesh} from "@/zernikalos";
+import {ZTexture} from "@/zernikalos";
+import {ZObject} from "@/zernikalos";
+import {ZSkeletalAction} from "@/zernikalos";
 
 export interface ZkComponentCollection {
     meshes?: ZMesh[]

@@ -1,7 +1,7 @@
 import {merge} from "lodash"
 import {zernikalos} from "@zernikalos/zernikalos"
 import loadFromProto = zernikalos.loader.loadFromProto
-import {ZObject} from "./zernikalos/ZObject";
+import {ZObject} from "@/zernikalos";
 
 export interface ImportOptions {
     data: string | Int8Array

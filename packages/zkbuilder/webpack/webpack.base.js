@@ -29,7 +29,10 @@ function buildBaseConfig({entryName} = {entryName: ENTRY_NAME}) {
         },
         resolve: {
             extensions: ['.ts', '.js'],
-            symlinks: true
+            symlinks: true,
+            alias: {
+                '@': path.join(ROOT_PATH, 'src')
+            }
         },
         devtool: 'source-map',
         module: {

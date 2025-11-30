@@ -1,4 +1,4 @@
-import {ZRef} from "../zernikalos/ZRef";
+import {ZRef} from "@/zernikalos";
 
 type ComponentId = string
 type ComponentTag = string

@@ -1,9 +1,9 @@
-import {ZMaterial, ZPbrMaterialData, ZPhongMaterialData} from "../zernikalos/material/ZMaterial";
+import {ZMaterial, ZPbrMaterialData, ZPhongMaterialData} from "@/zernikalos";
 import {Material, MeshPhongMaterial, MeshStandardMaterial, Texture} from "three";
 import _ from "lodash";
-import {ZTexture} from "../zernikalos/material/ZTexture";
+import {ZTexture} from "@/zernikalos";
 import {ParserContext} from "./ParserContext";
-import { ZColor } from "../zernikalos/math/ZColor";
+import { ZColor } from "@/zernikalos";
 
 export async function parseMaterial(ctx: ParserContext,mat: Material): Promise<ZMaterial | undefined> {
     if (_.isNil(mat)) {

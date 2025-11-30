@@ -1,6 +1,6 @@
 import {Color, Object3D, Scene} from "three";
-import {ZScene} from "../zernikalos/ZScene";
-import {ZColor} from "../zernikalos/math/ZColor";
+import {ZScene} from "@/zernikalos";
+import {ZColor} from "@/zernikalos";
 
 export function parseScene(obj: Scene): { scene: ZScene, children: Object3D[] } {
     const scene = new ZScene()

@@ -1,11 +1,11 @@
 import {AnimationClip, KeyframeTrack, Object3D} from "three";
-import {ZVector3} from "../zernikalos/math/ZVector3";
-import {ZQuaternion} from "../zernikalos/math/ZQuaternion";
+import {ZVector3} from "@/zernikalos";
+import {ZQuaternion} from "@/zernikalos";
 import _ from "lodash";
-import {ZTypes} from "../zernikalos/ZDataType";
-import {ZPositionFrame, ZRotationFrame, ZScaleFrame} from "../zernikalos/action/ZKeyFrame";
-import {ZSkeletalAction} from "../zernikalos/action/ZSkeletalAction";
-import {ZBoneTrack} from "../zernikalos/action/ZBoneTrack";
+import {ZTypes} from "@/zernikalos";
+import {ZPositionFrame, ZRotationFrame, ZScaleFrame} from "@/zernikalos";
+import {ZSkeletalAction} from "@/zernikalos";
+import {ZBoneTrack} from "@/zernikalos";
 
 type RotPosScaleTypes = "position" | "rotation" | "scale"
 

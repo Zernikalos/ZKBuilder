@@ -1,7 +1,7 @@
 import { Bone, SkinnedMesh } from "three";
 import _ from "lodash";
 import { ParserContext } from "./ParserContext";
-import { ZSkinning } from "../zernikalos/skeleton/ZSkinning";
+import { ZSkinning } from "@/zernikalos";
 import { parseBone } from "./parseSkeleton";
 
 /**

@@ -1,11 +1,11 @@
 import {Material, Mesh, Object3D, Skeleton, SkinnedMesh} from "three"
 import {parseMesh} from "./parseMesh"
-import {ZModel} from "../zernikalos/ZModel"
+import {ZModel} from "@/zernikalos"
 import _ from "lodash";
 import {parseMaterial} from "./parseMaterial";
 import {ParserContext} from "./ParserContext";
-import {ZSkeleton} from "../zernikalos/ZSkeleton";
-import {ZRef} from "../zernikalos/ZRef";
+import {ZSkeleton} from "@/zernikalos";
+import {ZRef} from "@/zernikalos";
 import { parseSkinning } from "./parseSkinning";
 
 export async function parseModel(ctx: ParserContext, obj: Mesh | SkinnedMesh): Promise<{ model: ZModel, children: Object3D[] }> {

@@ -1,4 +1,4 @@
-import {ZRef} from "../zernikalos/ZRef";
+import {ZRef} from "@/zernikalos";
 
 export class WriterContext {
     private writtenComponents: Map<String, ZRef> = new Map()

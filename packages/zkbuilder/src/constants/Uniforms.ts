@@ -1,4 +1,4 @@
-import {ZDataType} from "../zernikalos/ZDataType";
+import {ZDataType} from "@/zernikalos";
 
 export class Uniform {
     name: string
