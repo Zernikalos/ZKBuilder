@@ -1,6 +1,6 @@
 import {Attrib, AttribList} from "./Attribs";
 import {Uniform} from "./Uniforms";
-import {ZTypes} from "../zernikalos/ZDataType";
+import {ZTypes} from "@/zernikalos";
 
 export const ATTR_INDEX: Attrib = new Attrib({id: 0, name: 'indices', shaderName: '', three: ''})
 export const ATTR_POSITION: Attrib = new Attrib({id: 1, name: 'position', shaderName: 'position', three: 'position'})

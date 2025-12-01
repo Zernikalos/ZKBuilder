@@ -1,16 +1,36 @@
-import {ZRef} from "../zernikalos/ZRef";
+import {ZRef} from "@/zernikalos";
+
+type ComponentId = string
+type ComponentTag = string
+
+interface ComponentRegistryItem {
+    component: ZRef
+    tag?: ComponentTag
+}
 
 export class ParserContext {
 
-    private components = new Map<string, ZRef>()
+    private components = new Map<ComponentId, ComponentRegistryItem>()
 
-    private componentRegisterCallbacks: Map<string, (() => void)[]> = new Map()
+    private componentRegisterCallbacks: Map<ComponentId, (() => void)[]> = new Map()
 
-    registerComponent(id: string, component: ZRef) {
+    registerComponent(id: ComponentId, component: ZRef) {
         if (this.components.has(id)) {
             console.error("Re-registering component", component.refId)
         }
-        this.components.set(id, component)
+        this.components.set(id, {component})
+        this.triggerPendingCallbacks(id)
+    }
+
+    registerComponentWithTag(id: ComponentId, tag: ComponentTag, component: ZRef) {
+        if (this.components.has(id)) {
+            console.error("Re-registering component", component.refId)
+        }
+        this.components.set(id, {component, tag})
+        this.triggerPendingCallbacks(id)
+    }
+
+    private triggerPendingCallbacks(id: ComponentId) {
         if (this.componentRegisterCallbacks.has(id)) {
             this.componentRegisterCallbacks.get(id)
                 .forEach((callback) => {
@@ -20,19 +40,20 @@ export class ParserContext {
         }
     }
 
-    hasComponent(id: string): boolean {
+    hasComponent(id: ComponentId): boolean {
         return this.components.has(id)
     }
 
-    getComponent(id: string): ZRef {
-        return this.components.get(id)
+    getComponent(id: ComponentId): ZRef {
+        return this.components.get(id).component
     }
     
-    getComponentsByTag(tag: string): ZRef[] {
-        return [...this.components].filter(([id]) => id.endsWith(`.${tag}`)).map(([_, component]) => component)
+    getComponentsByTag(tag: ComponentTag): ZRef[] {
+        //return [...this.components].filter(([id]) => id.endsWith(`.${tag}`)).map(([_, component]) => component)
+        return Array.from(this.components.values()).filter((item) => item.tag === tag).map((item) => item.component)
     }
 
-    private registerCallback(id: string, callback: () => void) {
+    private registerCallback(id: ComponentId, callback: () => void) {
         if (this.componentRegisterCallbacks.has(id)) {
             this.componentRegisterCallbacks.get(id).push(callback)
             return
@@ -40,7 +61,7 @@ export class ParserContext {
         this.componentRegisterCallbacks.set(id, [callback])
     }
 
-    async getComponentAsync(id: string): Promise<ZRef> {
+    async getComponentAsync(id: ComponentId): Promise<ZRef> {
         if (this.hasComponent(id)) {
             return this.getComponent(id)
         }

@@ -27,11 +27,11 @@ export async function zkParse(parseableObject: ZkoParseableObject, _options: Par
     try {
         // TODO: We could split this into two functions, one for the object and one for the textures
         const {zObject, zComponents} = await parseObject(threeObj)
-        const zactions = parseActions(actions, threeObj)
+        const zActions = parseActions(actions, threeObj)
 
         const resultZObject = postProcess(zObject)
 
-        return {root: resultZObject, components: zComponents, actions: zactions}
+        return {root: resultZObject, components: zComponents, actions: zActions}
     } catch (e) {
         console.error(`Error parsing the object. Error: ${e}`)
         throw e

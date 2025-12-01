@@ -1,6 +1,6 @@
-import {ZMaterial} from "../../zernikalos/material/ZMaterial"
+import {ZMaterial} from "@/zernikalos"
 import _ from "lodash"
-import {ZTexture} from "../../zernikalos/material/ZTexture"
+import {ZTexture} from "@/zernikalos"
 import {Zko} from "../../proto"
 import {WriterContext} from "../WriterContext"
 

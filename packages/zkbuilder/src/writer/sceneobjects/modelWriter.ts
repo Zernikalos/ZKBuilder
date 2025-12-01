@@ -1,4 +1,4 @@
-import {ZModel} from "../../zernikalos/ZModel";
+import {ZModel} from "@/zernikalos";
 import {Zko} from "../../proto";
 import {materialWriter} from "./materialWriter";
 import {WriterContext} from "../WriterContext";

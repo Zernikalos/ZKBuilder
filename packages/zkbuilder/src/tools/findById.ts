@@ -1,4 +1,4 @@
-import {ZObject} from "../zernikalos/ZObject"
+import {ZObject} from "@/zernikalos"
 
 export function findById(obj: ZObject, id: string): ZObject | undefined {
     if (obj.refId === id) {

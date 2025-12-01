@@ -1,7 +1,7 @@
 import {Object3D} from "three";
-import {ZTransform} from "../zernikalos/ZTransform";
-import {ZVector3} from "../zernikalos/math/ZVector3";
-import {ZQuaternion} from "../zernikalos/math/ZQuaternion";
+import {ZTransform} from "@/zernikalos";
+import {ZVector3} from "@/zernikalos";
+import {ZQuaternion} from "@/zernikalos";
 
 export function parseTransform(obj: Object3D): ZTransform {
     const transform = new ZTransform()

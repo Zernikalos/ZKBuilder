@@ -1,8 +1,8 @@
 import {Bone, Object3D} from "three";
-import {ZBone} from "../zernikalos/skeleton/ZBone"
+import {ZBone} from "@/zernikalos"
 import {parseTransform} from "./parseTransform"
 import _ from "lodash";
-import {ZSkeleton} from "../zernikalos/ZSkeleton"
+import {ZSkeleton} from "@/zernikalos"
 import {ParserContext} from "./ParserContext";
 
 export class JointNode extends Object3D {
@@ -23,6 +23,7 @@ export function parseSkeletonObject(ctx: ParserContext, obj: Bone): { skeleton: 
     const skeleton = new ZSkeleton()
     skeleton.root = root
 
+    // TODO: Check what happens if taking the related skeleton id as the component id
     ctx.registerComponent(boneRoot.uuid, skeleton)
 
     return {skeleton, children}

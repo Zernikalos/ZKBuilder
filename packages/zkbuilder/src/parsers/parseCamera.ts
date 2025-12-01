@@ -1,6 +1,6 @@
 import {Camera, Object3D, PerspectiveCamera} from "three";
-import {ZCamera} from "../zernikalos/ZCamera";
-import {ZPerspectiveLens} from "../zernikalos/camera/ZPerspectiveLens";
+import {ZCamera} from "@/zernikalos";
+import {ZPerspectiveLens} from "@/zernikalos";
 
 export function parseCamera(obj: Camera): { camera: ZCamera, children: Object3D[] } {
     const camera = new ZCamera()

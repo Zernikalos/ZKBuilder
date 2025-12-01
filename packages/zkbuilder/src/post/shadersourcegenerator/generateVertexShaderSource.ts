@@ -1,4 +1,4 @@
-import {ZModel} from "../../zernikalos/ZModel"
+import {ZModel} from "@/zernikalos"
 import {
     BR, buildSource,
     CLOSE_MAIN,
@@ -25,7 +25,7 @@ import {
 } from "../../constants"
 import _ from "lodash"
 import {kotlinMapToJsMap, mapFlatJs} from "../../utils/mapFlatJs";
-import {ZBufferKey} from "../../zernikalos/mesh/ZBufferKey";
+import {ZBufferKey} from "@/zernikalos";
 
 export function generateVertexShaderSource(obj: ZModel): string {
 

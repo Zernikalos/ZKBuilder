@@ -1,15 +1,6 @@
 export {ZKBUILDER_VERSION} from "./constants/ZkBuilderVersion"
 export {ZKO_VERSION} from "./constants/ZkoVersion"
 
-export {ZObject} from "./zernikalos/ZObject"
-export {ZObjectType} from "./zernikalos/ZObjectType"
-export {ZModel} from "./zernikalos/ZModel"
-
-export {ZVector3} from "./zernikalos/math/ZVector3"
-export {ZVector4} from "./zernikalos/math/ZVector4"
-export {ZQuaternion} from "./zernikalos/math/ZQuaternion"
-export {ZTransform} from "./zernikalos/ZTransform"
-
 export {ZkoParseableObject} from "./formats/ZkoParseableObject"
 export {ZkoObjectProto, ZkoFormat, ZkObjectTypes} from "./proto"
 

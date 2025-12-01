@@ -1,5 +1,5 @@
-import {ZObject} from "../zernikalos/ZObject"
-import {ZGroup} from "../zernikalos/ZGroup"
+import {ZObject} from "@/zernikalos"
+import {ZGroup} from "@/zernikalos"
 import {parseGroup} from "./parseGroup"
 import {parseModel} from "./parseModel"
 import {isNil} from "lodash"
@@ -9,8 +9,8 @@ import {parseScene} from "./parseScene"
 import {parseCamera} from "./parseCamera"
 import {ParserContext} from "./ParserContext";
 import {parseSkeletonObject} from "./parseSkeleton";
-import { ZTexture } from "../zernikalos/material/ZTexture"
-import { ZMesh } from "../zernikalos/mesh/ZMesh"
+import { ZTexture } from "@/zernikalos"
+import { ZMesh } from "@/zernikalos"
 import {ZkComponentCollection} from "./ZkoParsed"
 
 export interface ParseResult {

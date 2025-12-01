@@ -28,7 +28,7 @@ export class ZkPipeline {
         return this.steps 
     }
 
-    // Método para obtener información del pipeline
+    // Method used to get data from the pipeline
     get status() {
         return {
             hasLoaded: !!this.steps.loaded,

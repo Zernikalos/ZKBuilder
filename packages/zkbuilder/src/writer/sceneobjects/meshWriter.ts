@@ -1,5 +1,5 @@
 import {WriterContext} from "../WriterContext";
-import {ZMesh} from "../../zernikalos/mesh/ZMesh"
+import {ZMesh} from "@/zernikalos"
 import {Zko} from "../../proto"
 import _ from "lodash";
 

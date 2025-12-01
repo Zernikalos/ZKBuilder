@@ -1,9 +1,9 @@
-import {ZSkeleton} from "../../zernikalos/ZSkeleton";
+import {ZSkeleton} from "@/zernikalos";
 import {Zko} from "../../proto";
 import _ from "lodash";
 import ZkRefSkeleton = Zko.ZkRefSkeleton;
 import {WriterContext} from "../WriterContext";
-import {ZObjectType} from "../../zernikalos/ZObjectType";
+import {ZObjectType} from "@/zernikalos";
 
 export function skeletonWriter(_ctx: WriterContext, skeleton: ZSkeleton): ZkRefSkeleton {
     if (_.isNil(skeleton)) {

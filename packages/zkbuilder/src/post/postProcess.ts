@@ -1,6 +1,6 @@
-import {ZObject} from "../zernikalos/ZObject"
-import {ZObjectType} from "../zernikalos/ZObjectType"
-import {ZModel} from "../zernikalos/ZModel"
+import {ZObject} from "@/zernikalos"
+import {ZObjectType} from "@/zernikalos"
+import {ZModel} from "@/zernikalos"
 import {isNil} from "lodash"
 import {postModel} from "./postModel"
 
