@@ -174,6 +174,8 @@ export function parseMesh(ctx: ParserContext, mesh: Mesh | SkinnedMesh): ZMesh {
     const {keys, rawBuffers} = parseBuffersAndKeys(geometry)
 
     const buffers = buildZBuffers(keys, rawBuffers)
+    // TODO: For future use when interleaving is supported
+    //ZBuffer.Companion.interleave(buffers.filter(buff => !buff.isIndexBuffer) as ZBuffer[])
     buffers.forEach(buff => zmesh.addBuffer(buff))
     ctx.registerComponentWithTag(mesh.uuid, "Mesh", zmesh)
 
