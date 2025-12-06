@@ -23,7 +23,7 @@ message ZkMesh {
   optional ZkDrawingMode drawingMode = 11;
 
   repeated ZkBufferKey bufferKeys = 101;
-  repeated ZkRawBuffer rawBuffers = 102;
+  repeated ZkBufferContent bufferContents = 102;
 }
 
 message ZkRefMesh {
@@ -73,7 +73,7 @@ message ZkBufferKey {
   required uint32 bufferId = 10;
 }
 
-message ZkRawBuffer {
+message ZkBufferContent {
   required uint32 id = 1;
   required bytes dataArray = 2;
 }

@@ -21,7 +21,7 @@ export {ZColor} from "./math/ZColor"
 
 // Mesh
 export {ZMesh} from "./mesh/ZMesh"
-export {ZRawBuffer} from "./mesh/ZRawBuffer"
+export {ZBufferContent} from "./mesh/ZBufferContent"
 export {ZBuffer} from "./mesh/ZBuffer"
 export {ZBufferKey} from "./mesh/ZBufferKey"
 

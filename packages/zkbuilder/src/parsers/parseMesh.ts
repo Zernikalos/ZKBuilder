@@ -1,7 +1,7 @@
 import {BufferAttribute, BufferGeometry, InterleavedBufferAttribute, Mesh, SkinnedMesh, TrianglesDrawMode} from "three"
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils"
 import {ZMesh} from "@/zernikalos"
-import {ZRawBuffer} from "@/zernikalos"
+import {ZBufferContent} from "@/zernikalos"
 import {ZBuffer} from "@/zernikalos"
 import _ from "lodash"
 import {ZBufferKey} from "@/zernikalos"
@@ -93,7 +93,7 @@ function parseBufferKey(attr: BufferAttribute | InterleavedBufferAttribute, zatt
     if (_.isNil(attr)) {
         throw new Error("Attributes must be defined when exported")
     }
-    const zKey = new ZBufferKey()
+    const zKey = ZBufferKey.init()
     zKey.id = zattr.id
     zKey.dataType = detectDataType(attr)
     zKey.name = zattr.name
@@ -108,11 +108,11 @@ function parseBufferKey(attr: BufferAttribute | InterleavedBufferAttribute, zatt
     return zKey
 }
 
-function parseBuffer(buffAttr: BufferAttribute | InterleavedBufferAttribute, zattr: Attrib): ZRawBuffer {
+function parseBuffer(buffAttr: BufferAttribute | InterleavedBufferAttribute, zattr: Attrib): ZBufferContent {
     // Creating a copy first is required in order to avoid issues with shared memory
     const copyData = buffAttr.array.slice()
     const data = new Int8Array(copyData.buffer)
-    return new ZRawBuffer(zattr.id, data)
+    return ZBufferContent.initWithArgs(zattr.id, data)
 }
 
 /**
@@ -121,7 +121,7 @@ function parseBuffer(buffAttr: BufferAttribute | InterleavedBufferAttribute, zat
  */
 function parseBuffersAndKeys(geometry: BufferGeometry) {
     const keys: ZBufferKey[] = []
-    const rawBuffers: ZRawBuffer[] = []
+    const bufferContents: ZBufferContent[] = []
 
     let attrCounter = 0
 
@@ -132,7 +132,7 @@ function parseBuffersAndKeys(geometry: BufferGeometry) {
         indicesKey.isIndexBuffer = true
 
         keys.push(indicesKey)
-        rawBuffers.push(indicesBuffer)
+        bufferContents.push(indicesBuffer)
         attrCounter++
     }
 
@@ -144,12 +144,12 @@ function parseBuffersAndKeys(geometry: BufferGeometry) {
             const zBuffer = parseBuffer(attr, zattr)
 
             keys.push(zKey)
-            rawBuffers.push(zBuffer)
+            bufferContents.push(zBuffer)
             attrCounter++
         }
     }
 
-    return {keys, rawBuffers}
+    return {keys, bufferContents}
 }
 
 /**
@@ -171,11 +171,11 @@ export function parseMesh(ctx: ParserContext, mesh: Mesh | SkinnedMesh): ZMesh {
 
     geometry = sanitizeGeometry(geometry)
 
-    const {keys, rawBuffers} = parseBuffersAndKeys(geometry)
+    const {keys, bufferContents} = parseBuffersAndKeys(geometry)
 
-    const buffers = buildZBuffers(keys, rawBuffers)
-    // TODO: For future use when interleaving is supported
-    //ZBuffer.Companion.interleave(buffers.filter(buff => !buff.isIndexBuffer) as ZBuffer[])
+    const buffers = buildZBuffers(keys, bufferContents)
+    // TODO: this needs a group by count
+    ZBuffer.Companion.interleave(buffers.filter(buff => !buff.isIndexBuffer) as ZBuffer[])
     buffers.forEach(buff => zmesh.addBuffer(buff))
     ctx.registerComponentWithTag(mesh.uuid, "Mesh", zmesh)
 
@@ -196,9 +196,9 @@ function sanitizeGeometry(geometry: BufferGeometry) {
     return geometry
 }
 
-function buildZBuffers(keys: ZBufferKey[], rawBuffers: ZRawBuffer[]): ZBuffer[] {
+function buildZBuffers(keys: ZBufferKey[], bufferContents: ZBufferContent[]): ZBuffer[] {
     return keys.map(key => {
-        const rawBuffer = _.find(rawBuffers, (rawBuff) => rawBuff.id === key.bufferId)
+        const bufferContent = _.find(bufferContents, (rawBuff) => rawBuff.id === key.bufferId)
         return ZBuffer.initWithArgs(
             key.id,
             key.dataType,
@@ -209,8 +209,8 @@ function buildZBuffers(keys: ZBufferKey[], rawBuffers: ZRawBuffer[]): ZBuffer[] 
             key.offset,
             key.stride,
             key.isIndexBuffer,
-            rawBuffer.id,
-            rawBuffer.dataArray
+            bufferContent.id,
+            bufferContent.dataArray
         )
     })
 }

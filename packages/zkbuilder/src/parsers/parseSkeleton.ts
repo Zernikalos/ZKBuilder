@@ -24,6 +24,7 @@ export function parseSkeletonObject(ctx: ParserContext, obj: Bone): { skeleton: 
     skeleton.root = root
 
     // TODO: Check what happens if taking the related skeleton id as the component id
+    // TODO: Check parseModel to discover why
     ctx.registerComponent(boneRoot.uuid, skeleton)
 
     return {skeleton, children}

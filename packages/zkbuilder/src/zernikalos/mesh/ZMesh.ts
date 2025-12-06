@@ -14,22 +14,22 @@ Zko.ZkMesh.fromObject = (obj: any) => {
         return ogFromObject(obj)
     }
     const buffers = mapFlatJs(obj.buffers)
-    const {rawBuffers, bufferKeys} = writeBuffers(buffers as any as {[key: string]: ZBuffer}[])
+    const {bufferContents, bufferKeys} = writeBuffers(buffers as any as {[key: string]: ZBuffer}[])
 
     return ogFromObject({
         refId: obj.refId,
         bufferKeys,
-        rawBuffers
+        bufferContents
     })
 }
 
 /**
- * Interface representing a temporary raw buffer.
+ * Interface representing a temporary buffer content.
  *
  * This interface contains the structure for handling temporary buffers
  * with a unique identifier and a data array containing raw byte data.
  */
-interface TempRawBuffer {
+interface TempBufferContent {
     id: number,
     dataArray: Int8Array
 }
@@ -39,44 +39,44 @@ interface TempRawBuffer {
  * @param buffers
  */
 function writeBuffers(buffers: {[key: string]: ZBuffer}[]) {
-    const rawBuffers: TempRawBuffer[] = []
+    const bufferContents: TempBufferContent[] = []
     const bufferKeys = []
 
-    // We need to find the index of the raw buffer that contains the same data as the current buffer,
-    const findWrittenRawBufferIndex = (dataArray: Int8Array) => {
-        return rawBuffers.findIndex((buff) => buff.dataArray === dataArray)
+    // We need to find the index of the BufferContent that contains the same data as the current buffer,
+    const findWrittenBufferConentIndex = (dataArray: Int8Array) => {
+        return bufferContents.findIndex((buff) => buff.dataArray === dataArray)
     }
 
     // We need to write the buffers into a temporary format that can be serialized.
     for (const pairBuff of buffers) {
         const buff = pairBuff.value
         
-        let currentRawBuffer: TempRawBuffer
-        const currentRawBufferIdx = findWrittenRawBufferIndex(buff.dataArray)
-        // If the buffer is not already written, we need to write it into the rawBuffers array.
-        if (currentRawBufferIdx == -1) {
-            currentRawBuffer = {
-                id: rawBuffers.length,
+        let currentBufferContent: TempBufferContent
+        const currentBufferContentIdx = findWrittenBufferConentIndex(buff.dataArray)
+        // If the buffer is not already written, we need to write it into the bufferContents array.
+        if (currentBufferContentIdx == -1) {
+            currentBufferContent = {
+                id: bufferContents.length,
                 dataArray: buff.dataArray
             }
-            rawBuffers.push(currentRawBuffer)
+            bufferContents.push(currentBufferContent)
         } else {
-            currentRawBuffer = rawBuffers[currentRawBufferIdx]
+            currentBufferContent = bufferContents[currentBufferContentIdx]
         }
-        bufferKeys.push(createTempBufferKey(buff, currentRawBuffer))
+        bufferKeys.push(createTempBufferKey(buff, currentBufferContent))
     }
 
-    return {rawBuffers, bufferKeys}
+    return {bufferContents, bufferKeys}
 }
 
 /**
  * Creates a temporary buffer key from a ZBuffer object.
  * @param buff
- * @param tempRawBuffer
+ * @param tempBufferContent
  */
-function createTempBufferKey(buff: ZBuffer, tempRawBuffer: TempRawBuffer): Partial<ZBufferKey> {
+function createTempBufferKey(buff: ZBuffer, tempBufferContent: TempBufferContent): Partial<ZBufferKey> {
     return {
-        bufferId: tempRawBuffer.id,
+        bufferId: tempBufferContent.id,
         count: buff.count,
         dataType: buff.dataType,
         id: buff.id,
