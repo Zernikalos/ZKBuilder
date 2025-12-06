@@ -18,8 +18,8 @@ importers:
         specifier: 0.9.8
         version: 0.9.8
       '@zernikalos/zernikalos':
-        specifier: 0.5.0
-        version: 0.5.0
+        specifier: 0.6.0
+        version: 0.6.0
       get-own-enumerable-property-symbols:
         specifier: 3.0.2
         version: 3.0.2
@@ -760,6 +760,9 @@ packages:
 
   '@zernikalos/zernikalos@0.5.0':
     resolution: {integrity: sha512-2LxQlm4pPoctV0fhc/9MUci7PSzBB7lHU5+yyvqCAoIMKvvSm/OBmYh3iRnn/zQjaFQ3kNy6tbyLkGPljfh5QQ==, tarball: https://npm.pkg.github.com/download/@zernikalos/zernikalos/0.5.0/45a1e259fba63a3d0bda18b8cbee597b374f95de}
+
+  '@zernikalos/zernikalos@0.6.0':
+    resolution: {integrity: sha512-RlDbMyJhiLULaavczxzROScumlTeXxOG1NDQimhOUI2nnlYE8sfFWiJTFOSzAil2eSjVWLHFRsgSh1A/OvGUDQ==, tarball: https://npm.pkg.github.com/download/@zernikalos/zernikalos/0.6.0/2ec66d0b8232492f93b258b4ae15427b62c8c224}
 
   '@zkochan/js-yaml@0.0.7':
     resolution: {integrity: sha512-nrUSn7hzt7J6JWgWGz78ZYI8wj+gdIJdk0Ynjpp8l+trkn58Uqsf6RYrYkEK+3X18EX+TNdtJI0WxAtc+L84SQ==}
@@ -3903,6 +3906,10 @@ snapshots:
       tslib: 2.8.1
 
   '@zernikalos/zernikalos@0.5.0':
+    dependencies:
+      ua-parser-js: 1.0.37
+
+  '@zernikalos/zernikalos@0.6.0':
     dependencies:
       ua-parser-js: 1.0.37
 
