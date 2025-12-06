@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/Zernikalos/ZKBuilder/compare/v0.3.0...v0.4.0) (2025-12-06)
+
+
+### Bug Fixes
+
+* 🐛 Fixing TS errors when upgrading threejs version ([4e00e68](https://github.com/Zernikalos/ZKBuilder/commit/4e00e68755f6cb009fe69ccd2c308a65558a8f79))
+* 🐛 Small configuration fix ([66cb0e4](https://github.com/Zernikalos/ZKBuilder/commit/66cb0e41516a8f6ce98373089e5f169a7dfa0e07))
+
+
+### Features
+
+* 🎸 Adding first steps to reference meshes on zko ([748c329](https://github.com/Zernikalos/ZKBuilder/commit/748c32944db5ac0bcfddcf5b695782a3e644faf3))
+* 🎸 Adding support for tags on ParserContext class ([6086195](https://github.com/Zernikalos/ZKBuilder/commit/6086195ea562afc70dc2ab5252ec36c7714616a6))
+* 🎸 Better versioning providing on builder cli ([bf3f671](https://github.com/Zernikalos/ZKBuilder/commit/bf3f671c285ee4172d85507cfbeb1be225eca88e))
+* 🎸 Fully support for referenciable meshes ([0266e10](https://github.com/Zernikalos/ZKBuilder/commit/0266e1084ea8606962ca22642ad12452113fd548))
+* 🎸 Improving ZkCLI behavior exporting content ([1166dbd](https://github.com/Zernikalos/ZKBuilder/commit/1166dbd42c9ae4d6e770245c6dcc102a97bdc2bb))
+* 🎸 Interleave buffer support on the builder ([b07d3a5](https://github.com/Zernikalos/ZKBuilder/commit/b07d3a513943467bcb6d5270d9192237dfadb491))
+* 🎸 Refactoring Buffer format to support interleaving ([1b95455](https://github.com/Zernikalos/ZKBuilder/commit/1b95455f5016d867ca9124c8bc236e1f6e9e622a))
+
+
+
+
+
 # 0.3.0 (2025-08-28)
 
 
