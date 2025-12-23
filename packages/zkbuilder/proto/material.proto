@@ -1,3 +1,5 @@
+syntax = "proto2";
+
 package Zko;
 
 message ZkPbrMaterial {
@@ -30,11 +32,37 @@ message ZkRefTexture {
   optional ZkTexture data = 100;
 }
 
+enum ZkTextureFilterMode {
+  NEAREST = 0;
+  LINEAR = 1;
+}
+
+enum ZkTextureWrapMode {
+  REPEAT = 0;
+  CLAMP_TO_EDGE = 1;
+  MIRROR_REPEAT = 2;
+}
+
+enum ZkTextureFormat {
+  RGBA8UNORM = 0;
+  RGBA8UNORM_SRGB = 1;
+  BGRA8UNORM = 2;
+  BGRA8UNORM_SRGB = 3;
+  R8UNORM = 4;
+  RG8UNORM = 5;
+  RGB8UNORM = 6;
+}
+
 message ZkTexture {
   required string refId = 1;
   required int32 width = 2;
   required int32 height = 3;
   required bool flipX = 4;
   required bool flipY = 5;
-  optional bytes dataArray = 10;
+  optional ZkTextureFilterMode minFilter = 6;
+  optional ZkTextureFilterMode magFilter = 7;
+  optional ZkTextureWrapMode wrapModeU = 8;
+  optional ZkTextureWrapMode wrapModeV = 9;
+  optional ZkTextureFormat format = 10;
+  optional bytes dataArray = 100;
 }
