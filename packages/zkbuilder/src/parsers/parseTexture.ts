@@ -1,16 +1,17 @@
 import {Texture} from "three";
 import _ from "lodash";
-import {ZTexture} from "@/zernikalos";
+import {
+    ZTexture,
+    ZTextureFilterMode,
+    ZTextureWrapMode,
+    ZTextureChannels,
+    ZTextureColorSpace,
+    ZBaseType
+} from "@/zernikalos";
 import {ParserContext} from "./ParserContext";
-import {zernikalos} from "@zernikalos/zernikalos";
 
 // Import Three.js constants
 import * as THREE from "three";
-
-// Import Zernikalos enums
-const ZTextureFilterMode = zernikalos.components.material.ZTextureFilterMode;
-const ZTextureWrapMode = zernikalos.components.material.ZTextureWrapMode;
-const ZTextureFormat = zernikalos.components.material.ZTextureFormat;
 
 /**
  * Maps Three.js filter mode to Zernikalos filter mode enum
@@ -42,24 +43,77 @@ function mapThreeWrapToZTextureWrap(threeWrap: number): any {
 }
 
 /**
- * Maps Three.js format and colorSpace to Zernikalos format enum
+ * Maps Three.js texture type to Zernikalos pixel type
  */
-function mapThreeFormatToZTextureFormat(threeFormat: number, colorSpace?: string): any {
-    const isSRGB = colorSpace === THREE.SRGBColorSpace || colorSpace === THREE.LinearSRGBColorSpace;
-
-    if (threeFormat === THREE.RGBAFormat) {
-        return isSRGB ? ZTextureFormat.RGBA8UNORM_SRGB : ZTextureFormat.RGBA8UNORM;
-    } else if (threeFormat === THREE.RGBFormat) {
-        // RGB8UNORM might not be available, fallback to RGBA8UNORM
-        return isSRGB ? ZTextureFormat.RGBA8UNORM_SRGB : ZTextureFormat.RGBA8UNORM;
-    } else if (threeFormat === THREE.RedFormat) {
-        return ZTextureFormat.R8UNORM;
-    } else if (threeFormat === THREE.RGFormat) {
-        return ZTextureFormat.RG8UNORM;
+function mapThreeTypeToZPixelType(threeType: number): any {
+    switch(threeType) {
+        case THREE.UnsignedByteType:
+            return ZBaseType.UNSIGNED_BYTE;
+        case THREE.ByteType:
+            return ZBaseType.BYTE;
+        case THREE.ShortType:
+            return ZBaseType.SHORT;
+        case THREE.UnsignedShortType:
+            return ZBaseType.UNSIGNED_SHORT;
+        case THREE.IntType:
+            return ZBaseType.INT;
+        case THREE.UnsignedIntType:
+            return ZBaseType.UNSIGNED_INT;
+        case THREE.FloatType:
+        case THREE.HalfFloatType:
+            return ZBaseType.FLOAT;
+        default:
+            return ZBaseType.UNSIGNED_BYTE;
     }
-    
-    // Default to RGBA8UNORM
-    return isSRGB ? ZTextureFormat.RGBA8UNORM_SRGB : ZTextureFormat.RGBA8UNORM;
+}
+
+/**
+ * Maps Three.js format to Zernikalos texture channels
+ */
+function mapThreeFormatToZChannels(threeFormat: number): any {
+    if (threeFormat === THREE.RGBAFormat) {
+        return ZTextureChannels.RGBA;
+    } else if (threeFormat === THREE.RGBFormat) {
+        return ZTextureChannels.RGB;
+    } else if (threeFormat === THREE.RedFormat) {
+        return ZTextureChannels.R;
+    } else if (threeFormat === THREE.RGFormat) {
+        return ZTextureChannels.RG;
+    } else {
+        return ZTextureChannels.RGBA; // default
+    }
+}
+
+/**
+ * Maps Three.js color space to Zernikalos color space
+ */
+function mapThreeColorSpaceToZColorSpace(colorSpace?: string): any {
+    const isSRGB = colorSpace === THREE.SRGBColorSpace || colorSpace === THREE.LinearSRGBColorSpace;
+    return isSRGB ? ZTextureColorSpace.SRGB : ZTextureColorSpace.LINEAR;
+}
+
+/**
+ * Determines if texture values should be normalized based on type
+ */
+function mapThreeTypeToNormalized(threeType: number): boolean {
+    switch(threeType) {
+        case THREE.FloatType:
+        case THREE.HalfFloatType:
+            // Float types are not normalized (concept doesn't apply)
+            return false;
+        case THREE.UnsignedByteType:
+        case THREE.ByteType:
+        case THREE.ShortType:
+        case THREE.UnsignedShortType:
+            // Integer types are typically normalized for standard image textures
+            return true;
+        case THREE.IntType:
+        case THREE.UnsignedIntType:
+            // Int types are typically NOT normalized (used for data/indices)
+            return false;
+        default:
+            return true;
+    }
 }
 
 /**
@@ -92,8 +146,11 @@ async function internalParseTexture(ctx: ParserContext, tex: Texture): Promise<Z
     zTexture.wrapModeU = mapThreeWrapToZTextureWrap(tex.wrapS)
     zTexture.wrapModeV = mapThreeWrapToZTextureWrap(tex.wrapT)
 
-    // Map Three.js format and colorSpace to ZTextureFormat
-    zTexture.format = mapThreeFormatToZTextureFormat(tex.format, tex.colorSpace)
+    // Map Three.js texture properties to ZTexture components
+    zTexture.pixelType = mapThreeTypeToZPixelType(tex.type)
+    zTexture.channels = mapThreeFormatToZChannels(tex.format)
+    zTexture.colorSpace = mapThreeColorSpaceToZColorSpace(tex.colorSpace)
+    zTexture.normalized = mapThreeTypeToNormalized(tex.type)
 
     ctx.registerComponentWithTag(tex.uuid, "Texture", zTexture)
     return zTexture
@@ -113,10 +170,16 @@ export async function parseTexture(ctx: ParserContext, tex: Texture): Promise<ZT
     }
 
     return new Promise((resolve) => {
+        let attempts = 0
+        const maxAttempts = 6 // 3 seconds / 500ms = 6 attempts
         const interval = setInterval(async () => {
+            attempts++
             if (!_.isNil(tex?.source?.data)) {
-                resolve(internalParseTexture(ctx, tex))
                 clearInterval(interval)
+                resolve(internalParseTexture(ctx, tex))
+            } else if (attempts >= maxAttempts) {
+                clearInterval(interval)
+                resolve(null as any)
             }
         }, 500)
     })
