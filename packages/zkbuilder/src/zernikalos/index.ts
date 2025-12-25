@@ -27,7 +27,13 @@ export {ZBufferKey} from "./mesh/ZBufferKey"
 
 // Material
 export {ZMaterial, ZPbrMaterialData, ZPhongMaterialData} from "./material/ZMaterial"
-export {ZTexture} from "./material/ZTexture"
+export {
+    ZTexture,
+    ZTextureFilterMode,
+    ZTextureWrapMode,
+    ZTextureChannels,
+    ZTextureColorSpace
+} from "./material/ZTexture"
 
 // Skeleton
 export {ZBone} from "./skeleton/ZBone"
