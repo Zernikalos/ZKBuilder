@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@zernikalos/zernikalos':
+        specifier: next
+        version: 0.6.0-SNAPSHOT
       lerna:
         specifier: 9.0.1
         version: 9.0.1(@types/node@24.10.1)
@@ -17,9 +20,6 @@ importers:
       '@xmldom/xmldom':
         specifier: 0.9.8
         version: 0.9.8
-      '@zernikalos/zernikalos':
-        specifier: 0.6.0
-        version: 0.6.0
       get-own-enumerable-property-symbols:
         specifier: 3.0.2
         version: 3.0.2
@@ -51,6 +51,9 @@ importers:
       '@types/three':
         specifier: 0.181.0
         version: 0.181.0
+      '@zernikalos/zernikalos':
+        specifier: next
+        version: 0.6.0-SNAPSHOT
       make-dir-cli:
         specifier: 4.0.0
         version: 4.0.0
@@ -85,8 +88,8 @@ importers:
   packages/zkbuilder-cli:
     dependencies:
       '@zernikalos/zernikalos':
-        specifier: '*'
-        version: 0.5.0
+        specifier: next
+        version: 0.6.0-SNAPSHOT
       '@zernikalos/zkbuilder':
         specifier: workspace:*
         version: link:../zkbuilder
@@ -758,11 +761,8 @@ packages:
     resolution: {integrity: sha512-/HcYgtUSiJiot/XWGLOlGxPYUG65+/31V8oqk17vZLW1xlCoR4PampyePljOxY2n8/3jz9+tIFzICsyGujJZoA==}
     engines: {node: '>=18.12.0'}
 
-  '@zernikalos/zernikalos@0.5.0':
-    resolution: {integrity: sha512-2LxQlm4pPoctV0fhc/9MUci7PSzBB7lHU5+yyvqCAoIMKvvSm/OBmYh3iRnn/zQjaFQ3kNy6tbyLkGPljfh5QQ==, tarball: https://npm.pkg.github.com/download/@zernikalos/zernikalos/0.5.0/45a1e259fba63a3d0bda18b8cbee597b374f95de}
-
-  '@zernikalos/zernikalos@0.6.0':
-    resolution: {integrity: sha512-RlDbMyJhiLULaavczxzROScumlTeXxOG1NDQimhOUI2nnlYE8sfFWiJTFOSzAil2eSjVWLHFRsgSh1A/OvGUDQ==, tarball: https://npm.pkg.github.com/download/@zernikalos/zernikalos/0.6.0/2ec66d0b8232492f93b258b4ae15427b62c8c224}
+  '@zernikalos/zernikalos@0.6.0-SNAPSHOT':
+    resolution: {integrity: sha512-fzmxfrbO4lhpbJo7UtH/4vDR+pYGhfvCB3pFGHMnCYZiAp2BMyhJfAg7BfqV34Gda9j3Ns03ollNaMH+FTFTmA==, tarball: https://npm.pkg.github.com/download/@zernikalos/zernikalos/0.6.0-SNAPSHOT/97a02ded72bffd506f736f945ceb7942ecbe13cf}
 
   '@zkochan/js-yaml@0.0.7':
     resolution: {integrity: sha512-nrUSn7hzt7J6JWgWGz78ZYI8wj+gdIJdk0Ynjpp8l+trkn58Uqsf6RYrYkEK+3X18EX+TNdtJI0WxAtc+L84SQ==}
@@ -3905,11 +3905,7 @@ snapshots:
       js-yaml: 3.14.1
       tslib: 2.8.1
 
-  '@zernikalos/zernikalos@0.5.0':
-    dependencies:
-      ua-parser-js: 1.0.37
-
-  '@zernikalos/zernikalos@0.6.0':
+  '@zernikalos/zernikalos@0.6.0-SNAPSHOT':
     dependencies:
       ua-parser-js: 1.0.37
 

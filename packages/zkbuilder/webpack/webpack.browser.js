@@ -5,9 +5,8 @@ const browserConfig = {
     entry: {
         'index': {
             import: './src-browser/index.ts',
-            dependOn: ['zernikalos', 'zkoproto', 'vendor'],
+            dependOn: ['zkoproto', 'vendor'],
         },
-        'zernikalos': '@zernikalos/zernikalos',
         'zkoproto': './protobuild/index.js',
         'vendor': [
             'lodash',
@@ -18,6 +17,9 @@ const browserConfig = {
             'three/examples/jsm/loaders/GLTFLoader',
             'three/examples/jsm/loaders/OBJLoader'
         ]
+    },
+    externals: {
+        '@zernikalos/zernikalos': '@zernikalos/zernikalos'
     },
     output: {
         path: path.join(ROOT_PATH, 'dist-browser'),
