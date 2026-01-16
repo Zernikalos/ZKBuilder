@@ -57,8 +57,40 @@ jobs:
       - name: Build project
         run: pnpm build
 
-      # 7. Publish packages to GitHub Packages registry with 'next' tag
+      # 7. Get commit SHA for version suffix
+      - name: Get commit SHA
+        id: sha
+        run: |
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          echo "sha=${SHORT_SHA}" >> $GITHUB_OUTPUT
+
+      # 8. Modify package.json versions to include pre-release suffix
+      - name: Set pre-release version
+        run: |
+          CURRENT_VERSION=$(node -p "require('./lerna.json').version")
+          NEXT_VERSION="${CURRENT_VERSION}-next.${{ steps.sha.outputs.sha }}"
+          
+          # Update lerna.json
+          node -e "
+            const fs = require('fs');
+            const lerna = JSON.parse(fs.readFileSync('lerna.json', 'utf8'));
+            lerna.version = '${NEXT_VERSION}';
+            fs.writeFileSync('lerna.json', JSON.stringify(lerna, null, 2) + '\n');
+          "
+          
+          # Update all package.json files
+          find packages -name "package.json" -exec node -e "
+            const fs = require('fs');
+            const path = process.argv[1];
+            const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+            pkg.version = '${NEXT_VERSION}';
+            fs.writeFileSync(path, JSON.stringify(pkg, null, 2) + '\n');
+          " {} \;
+          
+          echo "Set version to: ${NEXT_VERSION}"
+
+      # 9. Publish packages to GitHub Packages registry with 'next' tag
       - name: Publish packages with next tag
-        run: pnpm publish --recursive --tag next
+        run: pnpm publish --recursive --tag next --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
