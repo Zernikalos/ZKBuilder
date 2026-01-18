@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/Zernikalos/ZKBuilder/compare/v0.4.0...v0.5.0) (2026-01-18)
+
+
+### Bug Fixes
+
+* 🐛 Possible error when next tag would be created ([461f959](https://github.com/Zernikalos/ZKBuilder/commit/461f959ab8669844617fcfe806634401161b8496))
+
+
+### Features
+
+* 🎸 Providing extra fields for textures ([077e858](https://github.com/Zernikalos/ZKBuilder/commit/077e858d88c1dfbcb78608017d159e8b9eef9cb8))
+
+
+
+
+
 # [0.4.0](https://github.com/Zernikalos/ZKBuilder/compare/v0.3.0...v0.4.0) (2025-12-06)
 
 
