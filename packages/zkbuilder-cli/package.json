@@ -31,7 +31,7 @@
     "zkcli": "zkcli"
   },
   "dependencies": {
-    "@zernikalos/zernikalos": "next",
+    "@zernikalos/zernikalos": "*",
     "@zernikalos/zkbuilder": "workspace:*",
     "commander": "14.0.2"
   },
