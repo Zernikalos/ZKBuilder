@@ -7,6 +7,7 @@ import "./scene.proto";
 import "./model.proto";
 import "./camera.proto";
 import "./skeleton.proto";
+import "./light.proto";
 
 enum ZkObjectType {
   SCENE = 0;
@@ -28,4 +29,5 @@ message ZkoObjectProto {
   optional ZkCamera camera = 103;
   optional ZkSkeleton skeleton = 104;
   optional ZkJoint joint = 105;
+  optional ZkLight light = 106;
 }

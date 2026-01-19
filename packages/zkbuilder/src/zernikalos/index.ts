@@ -1,12 +1,15 @@
 // Core objects
 export {ZObject} from "./ZObject"
+export {ZComponent} from "./ZComponent"
+export {ZRef} from "./ZRef"
+
 export {ZObjectType} from "./ZObjectType"
 export {ZModel} from "./ZModel"
 export {ZGroup} from "./ZGroup"
 export {ZScene} from "./ZScene"
 export {ZCamera} from "./ZCamera"
-export {ZComponent} from "./ZComponent"
-export {ZRef} from "./ZRef"
+export {ZLight} from "./ZLight"
+
 export {ZSkeleton} from "./ZSkeleton"
 export {ZTransform} from "./ZTransform"
 
@@ -47,3 +50,5 @@ export {ZKeyFrame, ZPositionFrame, ZRotationFrame, ZScaleFrame} from "./action/Z
 // Camera
 export {ZPerspectiveLens} from "./camera/ZPerspectiveLens"
 
+// Light
+export {ZLamp, ZLampType, ZDirectionalLamp, ZPointLamp, ZSpotLamp} from "./light/ZLamp"
