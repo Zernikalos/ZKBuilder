@@ -8,8 +8,17 @@ import "./model.proto";
 import "./camera.proto";
 import "./skeleton.proto";
 
+enum ZkObjectType {
+  SCENE = 0;
+  GROUP = 1;
+  MODEL = 2;
+  CAMERA = 3;
+  SKELETON = 4;
+  LIGHT = 5;
+}
+
 message ZkoObjectProto {
-  required string type = 1;
+  required ZkObjectType type = 1;
   required string refId = 2;
   required bool isReference = 3;
 

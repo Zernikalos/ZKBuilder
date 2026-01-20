@@ -146,51 +146,51 @@ function asyncConvertZtoZk(ctx: WriterContext, obj: ZObject): Promise<Zko.ZkoObj
  * processing is applied based on the object's type.
  *
  * @param {WriterContext} ctx - The context used for writing or converting the object to the proto format.
- * @param {ZObject} obj - The object that needs to be converted into a proto representation.
+ * @param {ZObject} zobj - The object that needs to be converted into a proto representation.
  * @return {Zko.ZkoObjectProto} The converted ZkoObjectProto representation of the provided ZObject.
  */
-function convertZtoZk(ctx: WriterContext, obj: ZObject): Zko.ZkoObjectProto {
+function convertZtoZk(ctx: WriterContext, zobj: ZObject): Zko.ZkoObjectProto {
     // TODO: The use of fromObject affects a lot to the performance
     let auxNode: Zko.ZkoObjectProto
-    switch (obj.type.name) {
-        case ZObjectType.SCENE.name:
+    switch (zobj.type) {
+        case ZObjectType.SCENE:
             auxNode = new Zko.ZkoObjectProto({
-                type: ZObjectType.SCENE.name,
-                refId: obj.refId,
+                type: Zko.ZkObjectType.SCENE,
+                refId: zobj.refId,
                 isReference: false,
-                scene: Zko.ZkScene.fromObject(obj)
+                scene: Zko.ZkScene.fromObject(zobj)
             })
             break
-        case ZObjectType.GROUP.name:
+        case ZObjectType.GROUP:
             auxNode = new Zko.ZkoObjectProto({
-                type: ZObjectType.GROUP.name,
-                refId: obj.refId,
+                type: Zko.ZkObjectType.GROUP,
+                refId: zobj.refId,
                 isReference: false,
-                group: Zko.ZkGroup.fromObject(obj)
+                group: Zko.ZkGroup.fromObject(zobj)
             })
             break
-        case ZObjectType.MODEL.name:
+        case ZObjectType.MODEL:
             auxNode = new Zko.ZkoObjectProto({
-                type: ZObjectType.MODEL.name,
-                refId: obj.refId,
+                type: Zko.ZkObjectType.MODEL,
+                refId: zobj.refId,
                 isReference: false,
-                model: modelWriter(ctx, obj as ZModel)
+                model: modelWriter(ctx, zobj as ZModel)
             })
             break
-        case ZObjectType.CAMERA.name:
+        case ZObjectType.CAMERA:
             auxNode = new Zko.ZkoObjectProto({
-                type: ZObjectType.CAMERA.name,
-                refId: obj.refId,
+                type: Zko.ZkObjectType.CAMERA,
+                refId: zobj.refId,
                 isReference: false,
-                camera: Zko.ZkCamera.fromObject(obj)
+                camera: Zko.ZkCamera.fromObject(zobj)
             })
             break
-        case ZObjectType.SKELETON.name:
+        case ZObjectType.SKELETON:
             auxNode = new Zko.ZkoObjectProto({
-                type: ZObjectType.SKELETON.name,
-                refId: obj.refId,
+                type: Zko.ZkObjectType.SKELETON,
+                refId: zobj.refId,
                 isReference: false,
-                skeleton: Zko.ZkSkeleton.fromObject(obj)
+                skeleton: Zko.ZkSkeleton.fromObject(zobj)
             })
             break
         // case ZObjectType.JOINT:
@@ -202,15 +202,21 @@ function convertZtoZk(ctx: WriterContext, obj: ZObject): Zko.ZkoObjectProto {
     return auxNode
 }
 
+/**
+ * Workaround to sort the objects list by type and refId leaving the skeletons at the beginning of the list.
+ * @param list - The list of objects to sort.
+ * @returns The sorted list of objects.
+ */
 function sortObjectList(list: ZkoObjectProto[]): ZkoObjectProto[] {
-    return list.sort((a, b) => {
-        if (a.type === ZObjectType.SKELETON.name && b.type === ZObjectType.SKELETON.name) {
+    const sortedList = list.sort((a, b) => {
+        if (a.type === ZObjectType.SKELETON.ordinal && b.type === ZObjectType.SKELETON.ordinal) {
             return a.refId.localeCompare(b.refId);
         }
 
-        if (a.type === ZObjectType.SKELETON.name) return -1;
-        if (b.type === ZObjectType.SKELETON.name) return 1;
+        if (a.type === ZObjectType.SKELETON.ordinal) return -1;
+        if (b.type === ZObjectType.SKELETON.ordinal) return 1;
 
         return a.refId.localeCompare(b.refId);
     })
+    return sortedList
 }

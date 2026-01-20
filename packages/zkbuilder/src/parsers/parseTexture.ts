@@ -179,6 +179,7 @@ export async function parseTexture(ctx: ParserContext, tex: Texture): Promise<ZT
                 resolve(internalParseTexture(ctx, tex))
             } else if (attempts >= maxAttempts) {
                 clearInterval(interval)
+                console.error("Failed to parse texture", tex.name || tex.uuid)
                 resolve(null as any)
             }
         }, 500)
