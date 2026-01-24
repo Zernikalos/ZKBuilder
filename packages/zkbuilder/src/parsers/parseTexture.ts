@@ -133,8 +133,8 @@ async function internalParseTexture(ctx: ParserContext, tex: Texture): Promise<Z
     }
 
     zTexture.dataArray = new Int8Array(data)
-    zTexture.width = imgElement.width
-    zTexture.height = imgElement.height
+    zTexture.width = tex.width
+    zTexture.height = tex.height
     zTexture.flipX = (tex as any).flipX ?? false
     zTexture.flipY = tex.flipY
 
