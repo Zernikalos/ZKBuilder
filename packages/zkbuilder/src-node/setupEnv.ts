@@ -1,100 +1,81 @@
 import * as THREE from "three"
 import {Texture} from "three"
-import {isBinaryFile} from "isbinaryfile"
-import fs from "node:fs/promises"
 import _ from "lodash"
 import {DOMParser} from "@xmldom/xmldom"
-import path from "node:path"
 import {Env, EnvSetup} from "../src/EnvSetup";
+import { imageSize } from "image-size"
+import {threeCustomLoad} from "./load";
 
 export function setupEnv() {
     EnvSetup.configureEnv(new NodeEnv())
 }
 
-function loadFromDataUriScheme(url: string): ArrayBuffer | undefined {
-    if ( url.slice( 0, 5 ) === 'data:' ) {
-        const match = url.match(/base64,(.+)/)
-        if (match && match[1]) {
-            const encodedData = match[1]
-            return Uint8Array.from(atob(encodedData), c => c.charCodeAt(0)) as any as ArrayBuffer
+class MockVideoFrame {}
+
+function fakeFileDownload(
+    url: string,
+    onLoad?: (fdatasync: any) => void,
+    _onProgress?: any,
+    onError?: (error: Error) => void
+) {
+    async function loadFile() {
+        const data = await threeCustomLoad(url)
+        if (_.isNil(data)) {
+            onError?.(new Error(`File ${url} not found`))
+            return
         }
+        onLoad?.(data)
     }
+    
+    loadFile().catch((err) => {
+        onError?.(err)
+    })
 }
 
-async function loadFromFile(pathStr: string): Promise<ArrayBuffer | string> {
-    const fullPath = path.resolve(__dirname, pathStr)
-    try {
-        await fs.access(fullPath, fs.constants.R_OK)
-    } catch (err) {
-        return undefined
-    }
-    const isBinary = await isBinaryFile(fullPath)
-    const file = await fs.open(fullPath)
-    const options = isBinary ? undefined : "utf-8"
-    const data: Buffer | string = await file.readFile(options)
-    await file.close()
-    return isBinary ? (data as unknown as Buffer).buffer as any as ArrayBuffer: data
-}
+function fakeTextureDownload(
+    url: string,
+    onLoad?: (fdatasync: any) => void,
+    _onProgress?: any,
+    onError?: (error: Error) => void
+): Texture<any> {
+    const texture = new Texture<HTMLImageElement>();
+    
+    async function loadTexture() {
+        const data = await threeCustomLoad(url, true)
+        if (_.isNil(data) || typeof data === 'string') {
+            onError?.(new Error(`File ${url} not found`))
+            return
+        }
+        const buffer = new Uint8Array(data)
+        const {width, height} = imageSize(buffer)
 
-async function loadFromUrl(url: string): Promise<ArrayBuffer | undefined> {
-    const response = await fetch(url)
-    return await response.arrayBuffer()
+        texture.image = data as any
+        texture.source.data.width = width
+        texture.source.data.height = height
+        texture.needsUpdate = true
+        onLoad?.(texture)
+    }
+    
+    loadTexture().catch((err) => {
+        onError?.(err)
+    })
+
+    return texture
 }
 
 class NodeEnv extends Env {
     setup(): void {
         // @ts-ignore
         global.DOMParser = DOMParser
+        // @ts-ignore
+        global.VideoFrame = MockVideoFrame
 
         THREE.FileLoader.prototype.load = (url, onLoad, _onProgress, onError) => {
-            async function read() {
-                let data: ArrayBuffer | string = loadFromDataUriScheme(url)
-                if (_.isNil(data))  {
-                    data = await loadFromFile(url)
-                }
-                if (_.isNil(data)) {
-                    throw new Error(`File ${url} not found`)
-                }
-                onLoad?.(data)
-            }
-            try {
-                read()
-            } catch (err) {
-                console.trace(err)
-                onError(err)
-            }
+            fakeFileDownload(url, onLoad, _onProgress, onError)
         }
 
         THREE.TextureLoader.prototype.load = ( url, onLoad, _onProgress, onError ) => {
-            const texture = new Texture<HTMLImageElement>();
-
-            async function read() {
-                let data: ArrayBuffer | string = loadFromDataUriScheme(url)
-                if (_.isNil(data)) {
-                    // const response = await fetch(url)
-                    // data = await response.arrayBuffer()
-                    data = await loadFromFile(url)
-                }
-                if (_.isNil(data)) {
-                    data = await loadFromUrl(url)
-                }
-                if (_.isNil(data)) {
-                    throw new Error(`File ${url} not found`)
-                }
-
-                texture.image = data as any
-                texture.needsUpdate = true
-                onLoad?.(texture)
-            }
-            try {
-                read()
-            } catch (err) {
-                console.trace(err)
-                onError(err)
-            }
-
-            return texture;
-
+            return fakeTextureDownload(url, onLoad, _onProgress, onError)
         }
 
         // @ts-ignore

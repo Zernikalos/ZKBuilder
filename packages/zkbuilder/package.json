@@ -48,7 +48,8 @@
     "isbinaryfile": "5.0.7",
     "lodash": "4.17.21",
     "protobufjs": "7.5.4",
-    "three": "0.181.1"
+    "three": "0.181.1",
+    "image-size": "2.0.2"
   },
   "devDependencies": {
     "@types/lodash": "4.17.20",
