@@ -35,3 +35,7 @@ message ZkColor {
   required float b = 3;
   required float a = 4;
 }
+
+message ZkMatrix4 {
+  repeated float floatArray = 10;
+}

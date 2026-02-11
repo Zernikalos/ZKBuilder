@@ -1,0 +1,5 @@
+export {ZVector3} from "./ZVector3"
+export {ZVector4} from "./ZVector4"
+export {ZQuaternion} from "./ZQuaternion"
+export {ZMatrix4} from "./ZMatrix4"
+export {ZColor} from "./ZColor"

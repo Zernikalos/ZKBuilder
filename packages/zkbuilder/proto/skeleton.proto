@@ -30,6 +30,7 @@ message ZkBone {
 
 message ZkSkinning {
   repeated string boneIds = 10;
+  repeated ZkMatrix4 inverseBindMatrices = 11;
 }
 
 message ZkJoint {

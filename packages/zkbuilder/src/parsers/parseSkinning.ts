@@ -1,7 +1,7 @@
-import { Bone, SkinnedMesh } from "three";
+import { Bone, Matrix4, Skeleton, SkinnedMesh } from "three";
 import _ from "lodash";
 import { ParserContext } from "./ParserContext";
-import { ZSkinning } from "@/zernikalos";
+import { ZMatrix4, ZSkinning } from "@/zernikalos";
 import { parseBone } from "./parseSkeleton";
 
 /**
@@ -15,17 +15,25 @@ export function parseSkinning(ctx: ParserContext, mesh: SkinnedMesh): ZSkinning 
         return
     }
 
+    const skeleton: Skeleton = mesh.skeleton
+
     // Check if we already processed this mesh
-    if (ctx.hasComponent(mesh.skeleton.uuid)) {
-        return ctx.getComponent(mesh.skeleton.uuid) as ZSkinning
+    if (ctx.hasComponent(skeleton.uuid)) {
+        return ctx.getComponent(skeleton.uuid) as ZSkinning
     }
 
     // Create a new ZSkinning component
     const skinning = ZSkinning.init();
 
-    mesh.skeleton.bones.forEach((bone: Bone) => {
+    skeleton.bones.forEach((bone: Bone) => {
         const zbone = parseBone(ctx, bone)
         skinning.addBoneId(zbone.id)
+    })
+
+    const invBindMatrices = skeleton.boneInverses
+    invBindMatrices.forEach((invBindMatrix: Matrix4, idx: number) => {
+        const zInvBindMatrix = ZMatrix4.initWithValues(invBindMatrix.elements)
+        skinning.addInverseBindMatrixAt(idx, zInvBindMatrix)
     })
     
     // Register the skinning component
