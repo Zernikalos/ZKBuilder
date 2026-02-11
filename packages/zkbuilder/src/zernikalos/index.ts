@@ -17,10 +17,7 @@ export {ZTransform} from "./ZTransform"
 export {ZDataType, ZBaseType, ZFormatType, ZTypes} from "./ZDataType"
 
 // Math
-export {ZVector3} from "./math/ZVector3"
-export {ZVector4} from "./math/ZVector4"
-export {ZQuaternion} from "./math/ZQuaternion"
-export {ZColor} from "./math/ZColor"
+export {ZVector3, ZVector4, ZQuaternion, ZColor, ZMatrix4} from "./math"
 
 // Mesh
 export {ZMesh} from "./mesh/ZMesh"
