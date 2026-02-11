@@ -1,0 +1,50 @@
+syntax = "proto2";
+
+package Zko;
+
+enum ZkLightType {
+  DIRECTIONAL = 0;
+  POINT = 1;
+  SPOT = 2;
+}
+
+message ZkLight {
+  required string id = 1;
+  required string name = 2;
+
+  required ZkTransform transform = 3;
+
+  required ZkLightType type = 4;
+
+  required ZkColor color = 5;
+  required float intensity = 6;
+
+  optional ZkDirectionalLamp directionalLamp = 10;
+  optional ZkPointLamp pointLamp = 11;
+  optional ZkSpotLamp spotLamp = 12;
+
+  // Future: shadows
+  // optional ZkShadowSettings shadow = 20;
+}
+
+message ZkDirectionalLamp {
+}
+
+message ZkPointLamp {
+  optional float range = 1;
+  optional float decay = 2;
+}
+
+message ZkSpotLamp {
+  optional float range = 1;
+  optional float decay = 2;
+  optional float innerAngle = 3;
+  optional float outerAngle = 4;
+}
+
+// message ZkShadowSettings {
+//   required bool enabled = 1;
+//   optional int32 mapSize = 2;      // Shadow map resolution
+//   optional float bias = 3;
+//   optional float normalBias = 4;
+// }

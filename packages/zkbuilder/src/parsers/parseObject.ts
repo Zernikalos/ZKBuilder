@@ -3,7 +3,7 @@ import {ZGroup} from "@/zernikalos"
 import {parseGroup} from "./parseGroup"
 import {parseModel} from "./parseModel"
 import {isNil} from "lodash"
-import {Bone, Camera, Group, Mesh, Object3D, Scene} from "three"
+import {Bone, Camera, Group, Light, Mesh, Object3D, Scene} from "three"
 import {parseTransform} from "./parseTransform"
 import {parseScene} from "./parseScene"
 import {parseCamera} from "./parseCamera"
@@ -12,6 +12,7 @@ import {parseSkeletonObject} from "./parseSkeleton";
 import { ZTexture } from "@/zernikalos"
 import { ZMesh } from "@/zernikalos"
 import {ZkComponentCollection} from "./ZkoParsed"
+import { parseLight } from "./parseLight"
 
 export interface ParseResult {
     zObject: ZObject,
@@ -76,6 +77,14 @@ async function parseObjectByType(ctx: ParserContext, threeObj: Object3D): Promis
         case "Bone":
             res = parseSkeletonObject(ctx, threeObj as Bone)
             zObject = res.skeleton
+            children = res.children
+            break
+        case "Light":
+        case "DirectionalLight":
+        case "PointLight":
+        case "SpotLight":
+            res = parseLight(threeObj as Light)
+            zObject = res.light
             children = res.children
             break
         // case "Joint":

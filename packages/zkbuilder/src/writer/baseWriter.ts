@@ -193,6 +193,14 @@ function convertZtoZk(ctx: WriterContext, zobj: ZObject): Zko.ZkoObjectProto {
                 skeleton: Zko.ZkSkeleton.fromObject(zobj)
             })
             break
+        case ZObjectType.LIGHT:
+            auxNode = new Zko.ZkoObjectProto({
+                type: Zko.ZkObjectType.LIGHT,
+                refId: zobj.refId,
+                isReference: false,
+                light: Zko.ZkLight.fromObject(zobj)
+            })
+            break
         // case ZObjectType.JOINT:
         //     auxNode = new Zko.ProtoZkObject({
         //         type: "Joint",
