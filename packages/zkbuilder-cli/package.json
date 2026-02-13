@@ -31,16 +31,16 @@
     "zkcli": "zkcli"
   },
   "dependencies": {
-    "@zernikalos/zernikalos": "*",
+    "@zernikalos/zernikalos": "0.8.0",
     "@zernikalos/zkbuilder": "workspace:*",
-    "commander": "14.0.2"
+    "commander": "14.0.3"
   },
   "devDependencies": {
-    "@types/node": "24.10.1",
-    "rimraf": "6.1.0",
+    "@types/node": "25.2.3",
+    "rimraf": "6.1.2",
     "ts-loader": "9.5.4",
     "typescript": "5.9.3",
-    "webpack": "5.102.1",
+    "webpack": "5.105.2",
     "webpack-cli": "6.0.1"
   }
 }
