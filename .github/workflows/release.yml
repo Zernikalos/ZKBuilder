@@ -2,7 +2,7 @@
 
 name: Release Package
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push events but only for tags matching semver pattern
   push:
@@ -11,22 +11,25 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Tag or ref to release (e.g. v0.6.0). Leave empty to use current branch.'
+        required: false
+        type: string
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   release:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # These permissions are crucial for accessing and publishing packages
-    permissions:
-      contents: read
-      packages: write # Allows publishing packages to GitHub Packages
-
     steps:
-      # 1. Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # 1. Checks-out your repository (ref from input when manual, else trigger ref)
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.ref || github.ref }}
 
       # 2. Sets up pnpm
       - name: Setup pnpm
@@ -57,8 +60,26 @@ jobs:
       - name: Build project
         run: pnpm build
 
-      # 7. Publish packages to GitHub Packages registry
+      # 7. Publish packages to GitHub Packages registry (--no-git-checks: CI is detached HEAD or behind remote)
       - name: Publish packages
-        run: pnpm publish --recursive
+        run: pnpm publish --recursive --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  create-github-release:
+    if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && github.event.inputs.ref != '')
+    name: Create GitHub Release
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Create release for tag
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.ref || github.ref_name }}
+          name: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.ref || github.ref_name }}
+          generateReleaseNotes: true
+          draft: false
+          prerelease: false
+          allowUpdates: true
