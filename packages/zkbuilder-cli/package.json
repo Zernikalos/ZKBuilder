@@ -1,6 +1,6 @@
 {
   "name": "@zernikalos/zkbuilder-cli",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "CLI utility for ZkBuilder",
   "main": "dist/zkcli.js",
   "type": "commonjs",

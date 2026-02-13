@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/Zernikalos/ZKBuilder/compare/v0.5.0...v0.6.0) (2026-02-13)
+
+
+### Bug Fixes
+
+* 🐛 No width and height being exported by nodejs builder ([5d0c169](https://github.com/Zernikalos/ZKBuilder/commit/5d0c169603228e46c90795586145b0f08d0fc58b))
+
+
+### Features
+
+* 🎸 Exporting inverse bind matrices ([0f7e051](https://github.com/Zernikalos/ZKBuilder/commit/0f7e051493985fbae6a4e1e64cb2684f5607dd20))
+* 🎸 Lightning system implementation ([fcc24e4](https://github.com/Zernikalos/ZKBuilder/commit/fcc24e4347053f3f1dea2c8e4c15370a2132f7f3))
+
+
+
+
+
 # [0.5.0](https://github.com/Zernikalos/ZKBuilder/compare/v0.4.0...v0.5.0) (2026-01-18)
 
 
