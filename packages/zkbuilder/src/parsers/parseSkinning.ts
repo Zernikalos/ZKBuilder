@@ -25,6 +25,8 @@ export function parseSkinning(ctx: ParserContext, mesh: SkinnedMesh): ZSkinning 
     // Create a new ZSkinning component
     const skinning = ZSkinning.init();
 
+    skinning.modelSkinBindMatrix = ZMatrix4.initWithValues(mesh.bindMatrix.elements)
+
     skeleton.bones.forEach((bone: Bone) => {
         const zbone = parseBone(ctx, bone)
         skinning.addBoneId(zbone.id)
