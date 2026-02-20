@@ -29,6 +29,7 @@ message ZkBone {
 }
 
 message ZkSkinning {
+  required ZkMatrix4 modelSkinBindMatrix = 1;
   repeated string boneIds = 10;
   repeated ZkMatrix4 inverseBindMatrices = 11;
 }

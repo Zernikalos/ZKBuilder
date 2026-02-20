@@ -27,7 +27,7 @@ jobs:
       packages: read # Allows reading packages from GitHub Packages within the organization
 
     container:
-      image: node:20-alpine
+      image: node:24-alpine
 
     steps:
       # 1. Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -44,7 +44,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'pnpm'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@zernikalos'
