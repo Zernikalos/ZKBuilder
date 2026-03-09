@@ -6,6 +6,7 @@ import {ZBuffer} from "@/zernikalos"
 import _ from "lodash"
 import {ZBufferKey} from "@/zernikalos"
 import {ATTR_INDEX, ATTRS} from "../constants";
+import {transformBuffer} from "../utils";
 import {ZBaseType, ZDataType, ZFormatType} from "@/zernikalos"
 import {Attrib} from "../constants/Attribs"
 import {ParserContext} from "./ParserContext"
@@ -130,19 +131,15 @@ function castBufferToDesiredType(
     const current = zKey.dataType
     if (current.type === desired.type && current.format === desired.format) return
 
-    // Float32 -> Uint32 conversion (e.g. VEC4F -> UINT4 for bone indices)
-    if (current.type === ZBaseType.FLOAT && desired.type === ZBaseType.UNSIGNED_INT) {
-        const elemCount = zKey.size * zKey.count
-        const src = new Float32Array(
-            bufferContent.dataArray.buffer,
-            bufferContent.dataArray.byteOffset,
-            elemCount
-        )
-        const dst = new Uint32Array(elemCount)
-        for (let i = 0; i < src.length; i++) {
-            dst[i] = Math.max(0, Math.floor(src[i]))
-        }
-        bufferContent.dataArray = new Int8Array(dst.buffer)
+    const elemCount = zKey.size * zKey.count
+    const result = transformBuffer(
+        bufferContent.dataArray,
+        current.type,
+        desired.type,
+        elemCount
+    )
+    if (result) {
+        bufferContent.dataArray = result
         zKey.dataType = desired
     }
 }
