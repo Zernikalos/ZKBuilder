@@ -9,7 +9,13 @@ export const ATTR_COLOR: Attrib = new Attrib({id: 3, name: 'color', shaderName: 
 export const ATTR_UV: Attrib = new Attrib({id:4, name: 'uv', shaderName: 'uv', three: 'uv'})
 export const ATTR_BONE_WEIGHT: Attrib = new Attrib({id: 5, name: 'boneWeight', shaderName: 'boneWeight', three: 'skinWeight'})
 
-export const ATTR_BONE_INDICES: Attrib = new Attrib({id: 6, name: 'boneIndices', shaderName: 'boneIndices', three: 'skinIndex'})
+export const ATTR_BONE_INDICES: Attrib = new Attrib({
+    id: 6,
+    name: 'boneIndices',
+    shaderName: 'boneIndices',
+    three: 'skinIndex',
+    desiredDataType: ZTypes.UINT4
+})
 
 export const ATTRS = new AttribList([
     ATTR_POSITION, ATTR_NORMAL, ATTR_UV, ATTR_COLOR, ATTR_BONE_WEIGHT, ATTR_BONE_INDICES

@@ -23,62 +23,62 @@ function findZAttributeByName(name: string): Attrib {
 }
 
 /**
- * Detects the appropriate base data type for a buffer key attribute
- * @param attr
- */
-function detectBaseType(attr: BufferAttribute | InterleavedBufferAttribute): ZBaseType {
-    const array = attr.array
-    if (array instanceof Int8Array) {
-        return ZBaseType.BYTE
-    }
-    if (array instanceof Uint8Array) {
-        return ZBaseType.UNSIGNED_BYTE
-    }
-    if (array instanceof Int16Array) {
-        return ZBaseType.SHORT
-    }
-    if (array instanceof Uint16Array) {
-        return ZBaseType.UNSIGNED_SHORT
-    }
-    if (array instanceof Int32Array) {
-        return ZBaseType.INT
-    }
-    if (array instanceof Uint32Array) {
-        return ZBaseType.UNSIGNED_INT
-    }
-    if (array instanceof Float32Array) {
-        return ZBaseType.FLOAT
-    }
-    if (array instanceof Float64Array) {
-        return ZBaseType.DOUBLE
-    }
-    throw new Error(`Unable to detect base type for attr: ${attr.name}`)
-}
-
-/**
- * Detects the appropriate base data type for a buffer key attribute
- * @param attr
- */
-function detectFormatType(attr: BufferAttribute | InterleavedBufferAttribute): ZFormatType {
-    const itemSize = attr.itemSize
-    switch (itemSize) {
-        case 1:
-            return ZFormatType.SCALAR
-        case 2:
-            return ZFormatType.VEC2
-        case 3:
-            return ZFormatType.VEC3
-        case 4:
-            return ZFormatType.VEC4
-    }
-    throw new Error(`Unable to detect format type for attr: ${attr.name}`)
-}
-
-/**
  * Detects the appropriate data type for a buffer key attribute
  * @param attr
  */
 function detectDataType(attr: BufferAttribute | InterleavedBufferAttribute): ZDataType {
+    /**
+     * Detects the appropriate base data type for a buffer key attribute
+     * @param attr
+     */
+    function detectFormatType(attr: BufferAttribute | InterleavedBufferAttribute): ZFormatType {
+        const itemSize = attr.itemSize
+        switch (itemSize) {
+            case 1:
+                return ZFormatType.SCALAR
+            case 2:
+                return ZFormatType.VEC2
+            case 3:
+                return ZFormatType.VEC3
+            case 4:
+                return ZFormatType.VEC4
+        }
+        throw new Error(`Unable to detect format type for attr: ${attr.name}`)
+    }
+
+    /**
+     * Detects the appropriate base data type for a buffer key attribute
+     * @param attr
+     */
+    function detectBaseType(attr: BufferAttribute | InterleavedBufferAttribute): ZBaseType {
+        const array = attr.array
+        if (array instanceof Int8Array) {
+            return ZBaseType.BYTE
+        }
+        if (array instanceof Uint8Array) {
+            return ZBaseType.UNSIGNED_BYTE
+        }
+        if (array instanceof Int16Array) {
+            return ZBaseType.SHORT
+        }
+        if (array instanceof Uint16Array) {
+            return ZBaseType.UNSIGNED_SHORT
+        }
+        if (array instanceof Int32Array) {
+            return ZBaseType.INT
+        }
+        if (array instanceof Uint32Array) {
+            return ZBaseType.UNSIGNED_INT
+        }
+        if (array instanceof Float32Array) {
+            return ZBaseType.FLOAT
+        }
+        if (array instanceof Float64Array) {
+            return ZBaseType.DOUBLE
+        }
+        throw new Error(`Unable to detect base type for attr: ${attr.name}`)
+    }
+
     const baseType = detectBaseType(attr)
     const formatType = detectFormatType(attr)
     return new ZDataType(baseType, formatType)
@@ -108,11 +108,43 @@ function parseBufferKey(attr: BufferAttribute | InterleavedBufferAttribute, zatt
     return zKey
 }
 
-function parseBuffer(buffAttr: BufferAttribute | InterleavedBufferAttribute, zattr: Attrib): ZBufferContent {
+function parseBufferContent(buffAttr: BufferAttribute | InterleavedBufferAttribute, zattr: Attrib): ZBufferContent {
     // Creating a copy first is required in order to avoid issues with shared memory
     const copyData = buffAttr.array.slice()
     const data = new Int8Array(copyData.buffer)
     return ZBufferContent.initWithArgs(zattr.id, data)
+}
+
+/**
+ * Converts buffer data to the desired type when the attribute declares a canonical type.
+ * E.g. bone indices from Collada come as Float32Array but must be exported as Uint32Array for WebGPU.
+ */
+function castBufferToDesiredType(
+    attrib: Attrib,
+    zKey: ZBufferKey,
+    bufferContent: ZBufferContent
+): void {
+    const desired = attrib.desiredDataType
+    if (!desired) return
+
+    const current = zKey.dataType
+    if (current.type === desired.type && current.format === desired.format) return
+
+    // Float32 -> Uint32 conversion (e.g. VEC4F -> UINT4 for bone indices)
+    if (current.type === ZBaseType.FLOAT && desired.type === ZBaseType.UNSIGNED_INT) {
+        const elemCount = zKey.size * zKey.count
+        const src = new Float32Array(
+            bufferContent.dataArray.buffer,
+            bufferContent.dataArray.byteOffset,
+            elemCount
+        )
+        const dst = new Uint32Array(elemCount)
+        for (let i = 0; i < src.length; i++) {
+            dst[i] = Math.max(0, Math.floor(src[i]))
+        }
+        bufferContent.dataArray = new Int8Array(dst.buffer)
+        zKey.dataType = desired
+    }
 }
 
 /**
@@ -127,9 +159,10 @@ function parseBuffersAndKeys(geometry: BufferGeometry) {
 
     if (!_.isNil(geometry.index)) {
         const indicesKey = parseBufferKey(geometry.index, ATTR_INDEX)
-        const indicesBuffer = parseBuffer(geometry.index, ATTR_INDEX)
+        const indicesBuffer = parseBufferContent(geometry.index, ATTR_INDEX)
 
         indicesKey.isIndexBuffer = true
+        castBufferToDesiredType(ATTR_INDEX, indicesKey, indicesBuffer)
 
         keys.push(indicesKey)
         bufferContents.push(indicesBuffer)
@@ -141,7 +174,9 @@ function parseBuffersAndKeys(geometry: BufferGeometry) {
         if (attr instanceof BufferAttribute || attr instanceof InterleavedBufferAttribute) {
             const zattr = findZAttributeByName(threeName)
             const zKey = parseBufferKey(attr, zattr)
-            const zBuffer = parseBuffer(attr, zattr)
+            const zBuffer = parseBufferContent(attr, zattr)
+
+            castBufferToDesiredType(zattr, zKey, zBuffer)
 
             keys.push(zKey)
             bufferContents.push(zBuffer)

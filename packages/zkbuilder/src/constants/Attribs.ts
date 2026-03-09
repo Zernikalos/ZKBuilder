@@ -1,16 +1,25 @@
 import _ from "lodash";
+import type {ZDataType} from "@/zernikalos";
 
 export class Attrib {
     name: string
     three: string
     shaderName: string
     id: number
+    desiredDataType?: ZDataType
 
-    constructor({id, name, three, shaderName}: {id: number, name: string, three: string, shaderName: string}) {
+    constructor({id, name, three, shaderName, desiredDataType}: {
+        id: number
+        name: string
+        three: string
+        shaderName: string
+        desiredDataType?: ZDataType
+    }) {
         this.id = id
         this.name = name
         this.shaderName = shaderName
         this.three = three
+        this.desiredDataType = desiredDataType
     }
 
     get attribName() {
