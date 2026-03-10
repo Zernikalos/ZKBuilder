@@ -3,10 +3,10 @@ import {isBinaryFile} from "isbinaryfile"
 import fs from "node:fs/promises"
 import path from "node:path"
 
-export async function threeCustomLoad(url: string, allowHttp: boolean = false): Promise<ArrayBuffer | string | undefined> {
+export async function threeCustomLoad(url: string, allowHttp: boolean = false, resourcePath: string[]): Promise<ArrayBuffer | string | undefined> {
     let data: ArrayBuffer | string | undefined = loadFromDataUriScheme(url)
     if (_.isNil(data))  {
-        data = await loadFromFile(url)
+        data = await loadFromFile(url, resourcePath)
     }
     if (_.isNil(data) && allowHttp) {
         data = await loadFromUrl(url)
@@ -24,13 +24,25 @@ function loadFromDataUriScheme(url: string): ArrayBuffer | undefined {
     }
 }
 
-async function loadFromFile(pathStr: string): Promise<ArrayBuffer | string | undefined> {
-    const fullPath = path.resolve(__dirname, pathStr)
-    try {
-        await fs.access(fullPath, fs.constants.R_OK)
-    } catch (err) {
+async function findFileInResourcePath(url: string, resourcePath: string[]): Promise<string | undefined> {
+    for (const p of resourcePath) {
+        const fullPath = path.resolve(p, url)
+        try {
+            await fs.access(fullPath, fs.constants.R_OK)
+            return fullPath
+        } catch (err) {
+            continue
+        }
+    }
+    return undefined
+}
+
+async function loadFromFile(pathStr: string, resourcePath: string[]): Promise<ArrayBuffer | string | undefined> {
+    const fullPath = await findFileInResourcePath(pathStr, resourcePath)
+    if (_.isNil(fullPath)) {
         return undefined
     }
+    console.debug("Loading file from file system", fullPath)
     const isBinary = await isBinaryFile(fullPath)
     const file = await fs.open(fullPath)
     const options = isBinary ? undefined : "utf-8"

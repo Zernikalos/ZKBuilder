@@ -5,6 +5,7 @@ import {DOMParser} from "@xmldom/xmldom"
 import {Env, EnvSetup} from "../src/EnvSetup";
 import { imageSize } from "image-size"
 import {threeCustomLoad} from "./load";
+import path from "node:path"
 
 export function setupEnv() {
     EnvSetup.configureEnv(new NodeEnv())
@@ -14,12 +15,13 @@ class MockVideoFrame {}
 
 function fakeFileDownload(
     url: string,
+    resourcePath: string[],
     onLoad?: (fdatasync: any) => void,
     _onProgress?: any,
     onError?: (error: Error) => void
 ) {
     async function loadFile() {
-        const data = await threeCustomLoad(url)
+        const data = await threeCustomLoad(url, false, resourcePath)
         if (_.isNil(data)) {
             onError?.(new Error(`File ${url} not found`))
             return
@@ -34,6 +36,7 @@ function fakeFileDownload(
 
 function fakeTextureDownload(
     url: string,
+    resourcePath: string[],
     onLoad?: (fdatasync: any) => void,
     _onProgress?: any,
     onError?: (error: Error) => void
@@ -41,7 +44,7 @@ function fakeTextureDownload(
     const texture = new Texture<HTMLImageElement>();
     
     async function loadTexture() {
-        const data = await threeCustomLoad(url, true)
+        const data = await threeCustomLoad(url, true, resourcePath)
         if (_.isNil(data) || typeof data === 'string') {
             onError?.(new Error(`File ${url} not found`))
             return
@@ -70,12 +73,21 @@ class NodeEnv extends Env {
         // @ts-ignore
         global.VideoFrame = MockVideoFrame
 
+        // The resource path is the directory of the current script file
+        const resourcePath = [
+            path.resolve(__dirname)
+        ]
+
         THREE.FileLoader.prototype.load = (url, onLoad, _onProgress, onError) => {
-            fakeFileDownload(url, onLoad, _onProgress, onError)
+            // Filling the resource path with the directory of the current file
+            resourcePath.push(path.dirname(url))
+            fakeFileDownload(url, resourcePath, onLoad, _onProgress, onError)
         }
 
         THREE.TextureLoader.prototype.load = ( url, onLoad, _onProgress, onError ) => {
-            return fakeTextureDownload(url, onLoad, _onProgress, onError)
+            // Passing the resource path to the texture loader to allow loading textures from the same directory
+            // as other files which has been requested
+            return fakeTextureDownload(url, resourcePath, onLoad, _onProgress, onError)
         }
 
         // @ts-ignore
