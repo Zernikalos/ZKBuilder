@@ -6,6 +6,7 @@ enum ZkLightType {
   DIRECTIONAL = 0;
   POINT = 1;
   SPOT = 2;
+  AMBIENT = 3;
 }
 
 message ZkLight {
@@ -14,32 +15,40 @@ message ZkLight {
 
   required ZkTransform transform = 3;
 
-  required ZkLightType type = 4;
-
   required ZkColor color = 5;
   required float intensity = 6;
 
-  optional ZkDirectionalLamp directionalLamp = 10;
-  optional ZkPointLamp pointLamp = 11;
-  optional ZkSpotLamp spotLamp = 12;
+  oneof lamp {
+    ZkDirectionalLamp directionalLamp = 10;
+    ZkPointLamp pointLamp = 11;
+    ZkSpotLamp spotLamp = 12;
+    ZkAmbientLamp ambientLamp = 13;
+  }
 
   // Future: shadows
   // optional ZkShadowSettings shadow = 20;
 }
 
 message ZkDirectionalLamp {
+  required ZkLightType lampType = 1;
+}
+
+message ZkAmbientLamp {
+  required ZkLightType lampType = 1;
 }
 
 message ZkPointLamp {
-  optional float range = 1;
-  optional float decay = 2;
+  required ZkLightType lampType = 1;
+  optional float range = 2;
+  optional float decay = 3;
 }
 
 message ZkSpotLamp {
-  optional float range = 1;
-  optional float decay = 2;
-  optional float innerAngle = 3;
-  optional float outerAngle = 4;
+  required ZkLightType lampType = 1;
+  optional float range = 2;
+  optional float decay = 3;
+  optional float innerAngle = 4;
+  optional float outerAngle = 5;
 }
 
 // message ZkShadowSettings {
