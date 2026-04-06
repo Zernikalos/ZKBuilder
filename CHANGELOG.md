@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/Zernikalos/ZKBuilder/compare/v0.6.0...v0.7.0) (2026-04-06)
+
+
+### Bug Fixes
+
+* 🐛 Unable to load texture files on Node for collada ([178842f](https://github.com/Zernikalos/ZKBuilder/commit/178842fd2f3bc594f9ca71dfa24dd8cb13da2643))
+
+
+### Features
+
+* 🎸 Adding ambient light support ([29a5240](https://github.com/Zernikalos/ZKBuilder/commit/29a5240f97771395dea3103b3d88af1ea0659a98))
+* 🎸 Exporting model skin bind matrix ([32d722f](https://github.com/Zernikalos/ZKBuilder/commit/32d722f01928b2a1791e1e7b754bd90a1e48acf4))
+* 🎸 Setting fixed types for Attribute exporting ([04b7e9b](https://github.com/Zernikalos/ZKBuilder/commit/04b7e9be3cd687fe74cad0969de80916c3c71c4e))
+* 🎸 Upgrade ZKO to v0.16.0 ([a3a0828](https://github.com/Zernikalos/ZKBuilder/commit/a3a0828c086e90fe32cba3485b89f6b5f702a724))
+
+
+
+
+
 # [0.6.0](https://github.com/Zernikalos/ZKBuilder/compare/v0.5.0...v0.6.0) (2026-02-13)
 
 
