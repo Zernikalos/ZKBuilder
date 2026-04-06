@@ -22,8 +22,8 @@
     "url": "https://github.com/Zernikalos/ZKBuilder.git"
   },
   "devDependencies": {
-    "@zernikalos/zernikalos": "0.8.0",
-    "lerna": "9.0.4"
+    "@zernikalos/zernikalos": "0.9.0",
+    "lerna": "9.0.7"
   },
   "private": true,
   "workspaces": [
