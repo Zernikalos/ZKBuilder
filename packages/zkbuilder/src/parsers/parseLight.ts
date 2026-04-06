@@ -1,4 +1,4 @@
-import { ZLight, ZLampType, ZDirectionalLamp, ZPointLamp, ZSpotLamp } from "@/zernikalos";
+import { ZLight, ZDirectionalLamp, ZPointLamp, ZSpotLamp } from "@/zernikalos";
 import { DirectionalLight, Light, Object3D, PointLight, SpotLight } from "three";
 
 export function parseLight(obj: Light): { light: ZLight, children: Object3D[] } {
@@ -7,16 +7,13 @@ export function parseLight(obj: Light): { light: ZLight, children: Object3D[] } 
 
     switch (obj.type) {
         case "DirectionalLight":
-            light.lampType = ZLampType.DIRECTIONAL
-            light.directionalLamp = parseDirectionalLamp(obj as DirectionalLight)
+            light.lamp = parseDirectionalLamp(obj as DirectionalLight)
             break
         case "PointLight":
-            light.lampType = ZLampType.POINT
-            light.pointLamp = parsePointLamp(obj as PointLight)
+            light.lamp = parsePointLamp(obj as PointLight)
             break
         case "SpotLight":
-            light.lampType = ZLampType.SPOT
-            light.spotLamp = parseSpotLamp(obj as SpotLight)
+            light.lamp = parseSpotLamp(obj as SpotLight)
             break
     }
 
