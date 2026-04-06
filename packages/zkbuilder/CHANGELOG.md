@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.1](https://github.com/Zernikalos/ZKBuilder/compare/v0.7.0...v0.7.1) (2026-04-06)
+
+
+### Bug Fixes
+
+* 🐛 Error on postinstall script execution ([f9e6384](https://github.com/Zernikalos/ZKBuilder/commit/f9e638483f00c1fa02d1df5bc947f734d08ce89f))
+
+
+
+
+
 # [0.7.0](https://github.com/Zernikalos/ZKBuilder/compare/v0.6.0...v0.7.0) (2026-04-06)
 
 
