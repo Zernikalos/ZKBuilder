@@ -16,13 +16,13 @@
     "dist-browser",
     "build",
     "src",
+    "protobuild",
     "README.md"
   ],
   "main": "dist-node/index.js",
   "browser": "dist-browser/index.js",
   "types": "./build/src/index.d.ts",
   "scripts": {
-    "postinstall": "pnpm generate",
     "start": "webpack watch --mode=development",
     "build": "pnpm run build:browser && pnpm run build:node",
     "build:browser": "webpack --mode=development",
