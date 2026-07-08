@@ -33,9 +33,9 @@ jobs:
 
       # 2. Sets up pnpm
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: 11.3.0
 
       # 3. Sets up Node.js and configures it to use the GitHub Packages registry for the @zernikalos scope
       - name: Setup Node.js
