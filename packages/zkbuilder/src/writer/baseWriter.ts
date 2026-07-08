@@ -2,7 +2,7 @@ import {ZObject} from "@/zernikalos"
 import {Zko, ZkoFormat} from "../proto"
 import _ from "lodash"
 import {ZObjectType} from "@/zernikalos"
-import {modelWriter} from "./sceneobjects/modelWriter"
+import {modelWriter} from "./customwriters/modelWriter"
 import {ZModel} from "@/zernikalos"
 import {WriterContext} from "./WriterContext"
 import {ZkoParsed} from "../parsers";

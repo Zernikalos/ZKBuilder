@@ -16,7 +16,7 @@ import * as THREE from "three";
 /**
  * Maps Three.js filter mode to Zernikalos filter mode enum
  */
-function mapThreeFilterToZTextureFilter(threeFilter: number): any {
+function mapThreeFilterToZTextureFilter(threeFilter: number): ZTextureFilterMode {
     // For minFilter, we only care about Nearest vs Linear (ignore mipmap variants)
     if (threeFilter === THREE.NearestFilter || 
         threeFilter === THREE.NearestMipmapNearestFilter ||
@@ -30,7 +30,7 @@ function mapThreeFilterToZTextureFilter(threeFilter: number): any {
 /**
  * Maps Three.js wrap mode to Zernikalos wrap mode enum
  */
-function mapThreeWrapToZTextureWrap(threeWrap: number): any {
+function mapThreeWrapToZTextureWrap(threeWrap: number): ZTextureWrapMode {
     if (threeWrap === THREE.RepeatWrapping) {
         return ZTextureWrapMode.REPEAT;
     } else if (threeWrap === THREE.ClampToEdgeWrapping) {
@@ -45,7 +45,7 @@ function mapThreeWrapToZTextureWrap(threeWrap: number): any {
 /**
  * Maps Three.js texture type to Zernikalos pixel type
  */
-function mapThreeTypeToZPixelType(threeType: number): any {
+function mapThreeTypeToZPixelType(threeType: number): ZBaseType {
     switch(threeType) {
         case THREE.UnsignedByteType:
             return ZBaseType.UNSIGNED_BYTE;
@@ -70,7 +70,7 @@ function mapThreeTypeToZPixelType(threeType: number): any {
 /**
  * Maps Three.js format to Zernikalos texture channels
  */
-function mapThreeFormatToZChannels(threeFormat: number): any {
+function mapThreeFormatToZChannels(threeFormat: number): ZTextureChannels {
     if (threeFormat === THREE.RGBAFormat) {
         return ZTextureChannels.RGBA;
     } else if (threeFormat === THREE.RGBFormat) {
@@ -87,7 +87,7 @@ function mapThreeFormatToZChannels(threeFormat: number): any {
 /**
  * Maps Three.js color space to Zernikalos color space
  */
-function mapThreeColorSpaceToZColorSpace(colorSpace?: string): any {
+function mapThreeColorSpaceToZColorSpace(colorSpace?: string): ZTextureColorSpace {
     const isSRGB = colorSpace === THREE.SRGBColorSpace || colorSpace === THREE.LinearSRGBColorSpace;
     return isSRGB ? ZTextureColorSpace.SRGB : ZTextureColorSpace.LINEAR;
 }
