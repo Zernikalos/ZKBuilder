@@ -14,8 +14,8 @@ importers:
   .:
     devDependencies:
       '@zernikalos/zernikalos':
-        specifier: 0.10.0
-        version: 0.10.0
+        specifier: 0.10.1
+        version: 0.10.1
       lerna:
         specifier: 9.0.7
         version: 9.0.7(@types/node@26.1.0)
@@ -26,8 +26,8 @@ importers:
         specifier: 0.9.10
         version: 0.9.10
       '@zernikalos/zernikalos':
-        specifier: 0.10.0
-        version: 0.10.0
+        specifier: 0.10.1
+        version: 0.10.1
       get-own-enumerable-property-symbols:
         specifier: 3.0.2
         version: 3.0.2
@@ -96,8 +96,8 @@ importers:
   packages/zkbuilder-cli:
     dependencies:
       '@zernikalos/zernikalos':
-        specifier: 0.10.0
-        version: 0.10.0
+        specifier: 0.10.1
+        version: 0.10.1
       '@zernikalos/zkbuilder':
         specifier: workspace:*
         version: link:../zkbuilder
@@ -701,8 +701,8 @@ packages:
   '@yarnpkg/lockfile@1.1.0':
     resolution: {integrity: sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==}
 
-  '@zernikalos/zernikalos@0.10.0':
-    resolution: {integrity: sha512-C4091z3vgwgn4WSmqKwMPQLLaAcw89/ZuN+qMKwsGB4wlAOCY6yKbLJsmD1O/N/e4EtuoAsSqsBF9zIt1ebMxA==, tarball: https://npm.pkg.github.com/download/@zernikalos/zernikalos/0.10.0/bacc4ad260bbda99e9b36cdccee43774b8c1baee}
+  '@zernikalos/zernikalos@0.10.1':
+    resolution: {integrity: sha512-uj8nlfBnbq4TM2MSupZ5RuNM7WXLLHeUs1LE+hmELaHSP0I+95u7k7e/jC7959ZRnf/ucXLtNfUDhcExaE8NwA==, tarball: https://npm.pkg.github.com/download/@zernikalos/zernikalos/0.10.1/9f53d22ca5096e4554e122547566eccf921473b2}
 
   '@zkochan/js-yaml@0.0.7':
     resolution: {integrity: sha512-nrUSn7hzt7J6JWgWGz78ZYI8wj+gdIJdk0Ynjpp8l+trkn58Uqsf6RYrYkEK+3X18EX+TNdtJI0WxAtc+L84SQ==}
@@ -3664,7 +3664,7 @@ snapshots:
 
   '@yarnpkg/lockfile@1.1.0': {}
 
-  '@zernikalos/zernikalos@0.10.0': {}
+  '@zernikalos/zernikalos@0.10.1': {}
 
   '@zkochan/js-yaml@0.0.7':
     dependencies:
