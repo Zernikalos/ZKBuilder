@@ -22,7 +22,7 @@ export async function zkParse(parseableObject: ZkoParseableObject, _options: Par
     const mergedOptions = _.merge({}, DEFAULT_PARSE_OPTIONS)
 
     const threeObj = preProcess(parseableObject._threeObj, mergedOptions)
-    const actions  = parseableObject._actions
+    const actions  = parseableObject._actions ?? []
 
     try {
         // TODO: We could split this into two functions, one for the object and one for the textures
