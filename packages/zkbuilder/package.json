@@ -42,7 +42,7 @@
     "clean:modules": "rimraf node_modules"
   },
   "dependencies": {
-    "@xmldom/xmldom": "0.9.10",
+    "@xmldom/xmldom": "0.9.11",
     "get-own-enumerable-property-symbols": "3.0.2",
     "image-size": "2.0.2",
     "is-obj": "3.0.0",

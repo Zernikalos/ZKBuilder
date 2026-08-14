@@ -25,9 +25,15 @@ allowBuilds:
   esbuild: false
   nx: false
 
-# Temporary: force patched transitive deps from lerna → nx / node-gyp.
-# Remove once lerna ships updated nx/npmcli dependency trees.
+# Temporary: lerna → nx still pulls vulnerable brace-expansion / js-yaml.
+# Remove once lerna ships a fixed tree.
 overrides:
-  "tmp@<0.2.6": ">=0.2.6"
-  "form-data@<4.0.6": ">=4.0.6"
-  "undici@<6.27.0": ">=6.27.0"
+  "brace-expansion@>=4.0.0 <5.0.9": "5.0.9"
+  "js-yaml@>=4.0.0 <4.3.1": "4.3.1"
+
+# Temporary: ignore image-size security vulnerability
+# Right now on the repo it is indicated it is a ai sloppy thing.
+auditConfig:
+  ignoreGhsas:
+    - GHSA-w3rx-r6r6-pgpr
+    - GHSA-5p2g-fcmc-qvqq
