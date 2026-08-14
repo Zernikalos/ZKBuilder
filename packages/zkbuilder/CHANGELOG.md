@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.2](https://github.com/Zernikalos/ZKBuilder/compare/v0.7.1...v0.7.2) (2026-08-14)
+
+### Bug Fixes
+
+* 🐛 Fix error when importing objects not containing actions ([55e2849](https://github.com/Zernikalos/ZKBuilder/commit/55e2849c77e26cf3021252a38db322c630656f93))
+* 🐛 Fixing several issues on texture exporting ([b1995c4](https://github.com/Zernikalos/ZKBuilder/commit/b1995c4e9c86cccba96fa74e64f491553d6f6765))
+
+
 ## [0.7.1](https://github.com/Zernikalos/ZKBuilder/compare/v0.7.0...v0.7.1) (2026-04-06)
 
 
