@@ -1,5 +1,9 @@
 syntax = "proto2";
 
+import "./commons.proto";
+import "./math.proto";
+import "./texture.proto";
+
 package Zko;
 
 message ZkPbrMaterial {
@@ -23,53 +27,4 @@ message ZkMaterial {
   optional ZkPbrMaterial pbr = 10;
   optional ZkPhongMaterial phong = 11;
   optional ZkRefTexture texture = 100;
-}
-
-message ZkRefTexture {
-  required string refId = 1;
-  required bool isReference = 2;
-
-  optional ZkTexture data = 100;
-}
-
-enum ZkTextureFilterMode {
-  NEAREST = 0;
-  LINEAR = 1;
-}
-
-enum ZkTextureWrapMode {
-  REPEAT = 0;
-  CLAMP_TO_EDGE = 1;
-  MIRROR_REPEAT = 2;
-}
-
-enum ZkTextureChannel {
-  RGBA = 0;
-  RGB = 1;
-  R = 2;
-  RG = 3;
-}
-
-enum ZkTextureColorSpace {
-  SRGB = 0;
-  LINEAR = 1;
-}
-
-message ZkTexture {
-  required string refId = 1;
-  required int32 width = 2;
-  required int32 height = 3;
-  required bool flipX = 4;
-  required bool flipY = 5;
-  optional ZkTextureFilterMode minFilter = 6;
-  optional ZkTextureFilterMode magFilter = 7;
-
-  optional ZkTextureWrapMode wrapModeU = 8;
-  optional ZkTextureWrapMode wrapModeV = 9;
-
-  optional ZkBaseType pixelType = 10;
-  optional ZkTextureChannel channels = 11;
-  optional ZkTextureColorSpace colorSpace = 12;
-  optional bool normalized = 13;
-  optional bytes dataArray = 100;
 }
