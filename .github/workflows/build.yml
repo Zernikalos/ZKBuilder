@@ -26,39 +26,44 @@ jobs:
       contents: read
       packages: read # Allows reading packages from GitHub Packages within the organization
 
+    # Required by setup-node@v7 when registry-url writes ${NODE_AUTH_TOKEN} into .npmrc
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     container:
       image: node:24-alpine
 
     steps:
       # 1. Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # 2. Sets up pnpm
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 11.3.0
 
       # 3. Sets up Node.js and configures it to use the GitHub Packages registry for the @zernikalos scope
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '24'
           cache: 'pnpm'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@zernikalos'
 
-      # 4. Installs dependencies. The NODE_AUTH_TOKEN is automatically used by npm/pnpm for authentication.
+      # 4. Installs dependencies
       - name: Install dependencies
         run: pnpm install --recursive --frozen-lockfile
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Audit dependencies
+      # High: non-blocking (step shows yellow). Critical: fails the job.
+      - name: Audit dependencies (high)
+        continue-on-error: true
         run: pnpm audit --audit-level=high
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Audit dependencies (critical)
+        run: pnpm audit --audit-level=critical
 
       # 5. Generate assets before building
       - name: Generate assets
