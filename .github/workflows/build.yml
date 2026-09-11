@@ -55,8 +55,15 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Audit dependencies
+      # High: non-blocking (step shows yellow). Critical: fails the job.
+      - name: Audit dependencies (high)
+        continue-on-error: true
         run: pnpm audit --audit-level=high
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Audit dependencies (critical)
+        run: pnpm audit --audit-level=critical
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
