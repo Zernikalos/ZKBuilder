@@ -23,6 +23,8 @@ Zko.ZkTexture.fromObject = (obj: any) => {
 
     const texToZk: Zko.IZkTexture = {
         refId: obj.refId,
+        isReference: false,
+
         width: obj.width,
         height: obj.height,
 
