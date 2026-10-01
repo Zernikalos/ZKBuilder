@@ -2,13 +2,17 @@ syntax = "proto2";
 
 package Zko;
 
+import "./math.proto";
+
 message ZkCamera {
+  // --- ZObject (1-9) ---
   required string id = 1;
   required string name = 2;
-
   required ZkTransform transform = 3;
+  optional ZkBounds bounds = 4;
 
-  required ZkLens lens = 4;
+  // --- ZCamera (10+) ---
+  required ZkLens lens = 10;
 }
 
 message ZkLens {

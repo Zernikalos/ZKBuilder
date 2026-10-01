@@ -5,10 +5,12 @@ package Zko;
 import "./math.proto";
 
 message ZkScene {
+  // --- ZObject (1-9) ---
   required string id = 1;
   required string name = 2;
-
   required ZkTransform transform = 3;
+  optional ZkBounds bounds = 4;
 
-  optional ZkColor clearColor = 4;
+  // --- ZScene (10+) ---
+  optional ZkColor clearColor = 10;
 }
