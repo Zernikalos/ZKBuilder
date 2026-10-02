@@ -13,6 +13,7 @@ export function modelWriter(ctx: WriterContext, model: ZModel) {
         mesh: meshWriter(ctx, model.mesh),
         material: materialWriter(ctx, model.material),
         skeleton: skeletonWriter(ctx, model.skeleton),
-        skinning: model.skinning ? Zko.ZkSkinning.fromObject(model.skinning) : undefined
+        skinning: model.skinning ? Zko.ZkSkinning.fromObject(model.skinning) : undefined,
+        bounds: model.bounds ? Zko.ZkBounds.fromObject(model.bounds) : undefined
     })
 }

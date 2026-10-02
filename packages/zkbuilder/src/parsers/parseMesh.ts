@@ -1,13 +1,9 @@
 import {BufferAttribute, BufferGeometry, InterleavedBufferAttribute, Mesh, SkinnedMesh, TrianglesDrawMode} from "three"
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils"
-import {ZMesh} from "@/zernikalos"
-import {ZBufferContent} from "@/zernikalos"
-import {ZBuffer} from "@/zernikalos"
+import {ZBaseType, ZBuffer, ZBufferContent, ZBufferKey, ZDataType, ZFormatType, ZMesh} from "@/zernikalos"
 import _ from "lodash"
-import {ZBufferKey} from "@/zernikalos"
 import {ATTR_INDEX, ATTRS} from "../constants";
 import {transformBuffer} from "../utils";
-import {ZBaseType, ZDataType, ZFormatType} from "@/zernikalos"
 import {Attrib} from "../constants/Attribs"
 import {ParserContext} from "./ParserContext"
 

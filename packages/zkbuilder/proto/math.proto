@@ -45,12 +45,12 @@ message ZkBox3D {
   required ZkVector3 max = 2;
 }
 
-message ZkSphere {
+message ZkBoundingSphere {
   required ZkVector3 center = 1;
   required float radius = 2;
 }
 
 message ZkBounds {
   optional ZkBox3D box = 1;
-  optional ZkSphere sphere = 2;
+  optional ZkBoundingSphere sphere = 2;
 }
