@@ -7,6 +7,7 @@ import {ParserContext} from "./ParserContext";
 import {ZSkeleton} from "@/zernikalos";
 import {ZRef} from "@/zernikalos";
 import { parseSkinning } from "./parseSkinning";
+import {parseBounding} from "./parseBounding";
 
 export async function parseModel(ctx: ParserContext, obj: Mesh | SkinnedMesh): Promise<{ model: ZModel, children: Object3D[] }> {
     const model = new ZModel()
@@ -23,6 +24,11 @@ export async function parseModel(ctx: ParserContext, obj: Mesh | SkinnedMesh): P
         })
         model.skinning = parseSkinning(ctx, obj as SkinnedMesh)
     }
+    if (_.isNil(obj.geometry.boundingBox) || _.isNil(obj.geometry.boundingSphere)) {
+        obj.geometry.computeBoundingBox()
+        obj.geometry.computeBoundingSphere()
+    }
+    model.bounds = parseBounding(obj)
 
     return {model, children: obj.children}
 }

@@ -4,9 +4,10 @@ package Zko;
 
 import "./math.proto";
 
+// ZObject fields use tags 1-9.
 message ZkGroup {
   required string id = 1;
   required string name = 2;
-
   required ZkTransform transform = 3;
+  optional ZkBounds bounds = 4;
 }

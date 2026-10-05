@@ -6,15 +6,18 @@ import "./component.proto";
 import "./mesh.proto";
 import "./material.proto";
 import "./skeleton.proto";
+import "./math.proto";
 
 message ZkModel {
+  // --- ZObject (1-9) ---
   required string id = 1;
   required string name = 2;
-
   required ZkTransform transform = 3;
+  optional ZkBounds bounds = 4;
 
-  required ZkRefMesh mesh = 4;
-  optional ZkMaterial material = 6;
-  optional ZkRefSkeleton skeleton = 7;
-  optional ZkSkinning skinning = 8;
+  // --- ZModel (10+) ---
+  required ZkRefMesh mesh = 10;
+  optional ZkMaterial material = 11;
+  optional ZkRefSkeleton skeleton = 12;
+  optional ZkSkinning skinning = 13;
 }

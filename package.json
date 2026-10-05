@@ -22,11 +22,11 @@
     "url": "https://github.com/Zernikalos/ZKBuilder.git"
   },
   "devDependencies": {
-    "@zernikalos/zernikalos": "0.10.1",
+    "@zernikalos/zernikalos": "next",
     "lerna": "10.0.1"
   },
   "private": true,
-  "packageManager": "pnpm@11.3.0",
+  "packageManager": "pnpm@12.4.2",
   "engines": {
     "node": ">=24",
     "pnpm": ">=11.1"

@@ -2,7 +2,7 @@ packages:
   - packages/zkbuilder
   - packages/zkbuilder-cli
 
-managePackageManagerVersions: true
+initPackageManager: true
 
 # Supply chain protection (pnpm 11 defaults; explicit for clarity)
 minimumReleaseAge: 1440

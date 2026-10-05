@@ -15,8 +15,8 @@ message ZkRefSkeleton {
 message ZkSkeleton {
   required string refId = 1;
   required string name = 2;
-
   required ZkTransform transform = 3;
+  optional ZkBounds bounds = 4;
 
   optional ZkBone root = 101;
 }
@@ -37,8 +37,8 @@ message ZkSkinning {
 message ZkJoint {
   required string id = 1;
   required string name = 2;
-
   required ZkTransform transform = 3;
+  optional ZkBounds bounds = 4;
 
-  required ZkBone bone = 4;
+  required ZkBone bone = 10;
 }

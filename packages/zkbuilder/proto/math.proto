@@ -39,3 +39,18 @@ message ZkColor {
 message ZkMatrix4 {
   repeated float floatArray = 10;
 }
+
+message ZkBox3D {
+  required ZkVector3 min = 1;
+  required ZkVector3 max = 2;
+}
+
+message ZkBoundingSphere {
+  required ZkVector3 center = 1;
+  required float radius = 2;
+}
+
+message ZkBounds {
+  optional ZkBox3D box = 1;
+  optional ZkBoundingSphere sphere = 2;
+}

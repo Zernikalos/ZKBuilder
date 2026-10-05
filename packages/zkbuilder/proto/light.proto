@@ -2,6 +2,8 @@ syntax = "proto2";
 
 package Zko;
 
+import "./math.proto";
+
 enum ZkLightType {
   DIRECTIONAL = 0;
   POINT = 1;
@@ -10,19 +12,22 @@ enum ZkLightType {
 }
 
 message ZkLight {
+  // --- ZObject (1-9) ---
   required string id = 1;
   required string name = 2;
-
   required ZkTransform transform = 3;
+  optional ZkBounds bounds = 4;
 
-  required ZkColor color = 5;
-  required float intensity = 6;
+  // --- ZLight (10+) ---
+  required ZkColor color = 10;
+  required float intensity = 11;
 
+  // Polymorphic lamp payload (engine field 12). Distinct oneof tags for each lamp kind.
   oneof lamp {
-    ZkDirectionalLamp directionalLamp = 10;
-    ZkPointLamp pointLamp = 11;
-    ZkSpotLamp spotLamp = 12;
-    ZkAmbientLamp ambientLamp = 13;
+    ZkDirectionalLamp directionalLamp = 12;
+    ZkPointLamp pointLamp = 13;
+    ZkSpotLamp spotLamp = 14;
+    ZkAmbientLamp ambientLamp = 15;
   }
 
   // Future: shadows
